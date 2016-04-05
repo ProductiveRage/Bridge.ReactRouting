@@ -14589,9 +14589,10 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
     
     Bridge.define('ProductiveRage.ReactRouting.RouteBuilder', {
         statics: {
+            _empty: null,
             config: {
                 init: function () {
-                    this._empty = new ProductiveRage.ReactRouting.RouteBuilder(Bridge.get(ProductiveRage.Immutable.Set$1(ProductiveRage.ReactRouting.NonBlankTrimmedString)).getEmpty()) || null;
+                    this._empty = new ProductiveRage.ReactRouting.RouteBuilder(Bridge.get(ProductiveRage.Immutable.Set$1(ProductiveRage.ReactRouting.NonBlankTrimmedString)).getEmpty());
                 }
             },
             getEmpty: function () {
@@ -14661,12 +14662,12 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
     Bridge.define('ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult', {
         inherits: [ProductiveRage.Immutable.IAmImmutable],
         config: {
-            properties: {
-                IsVariableSegment: false
+            init: function () {
+                Bridge.property(this, "ValueExtractedFromVariableSegment", new ProductiveRage.Immutable.Optional$1(Object)());
             }
         },
-        constructor: function (isVariableSegment) {
-            ProductiveRage.Immutable.ImmutabilityHelpers.ctorSet(this, $_.ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult.f1, isVariableSegment);
+        constructor: function (valueExtractedFromVariableSegment) {
+            ProductiveRage.Immutable.ImmutabilityHelpers.ctorSet(this, $_.ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult.f1, valueExtractedFromVariableSegment);
         }
     });
     
@@ -14676,7 +14677,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
     
     Bridge.apply($_.ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult, {
         f1: function (_) {
-            return _.getIsVariableSegment();
+            return _.getValueExtractedFromVariableSegment();
         }
     });
     
@@ -14810,7 +14811,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
         _segmentMatchers: null,
         config: {
             init: function () {
-                this._extractedValueBuilder = new ProductiveRage.Immutable.Optional$1(Function)() || new ProductiveRage.Immutable.Optional$1(Function)();
+                this._extractedValueBuilder = new ProductiveRage.Immutable.Optional$1(Function)();
             }
         },
         constructor$1: function (segmentMatchers, extractedValueBuilder) {
@@ -14840,7 +14841,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                 throw new Bridge.ArgumentNullException("parser");
             }
     
-            var extractedValueBuilderExpanded = Bridge.fn.bind(this, function (matchedSegments) {
+            var extractedValueBuilderExpanded = Bridge.fn.bind(this, function (valuesExtractedFromMatchedVariables) {
                 // Every time that a variable URL segment is added to the route, we need to update the "value extractor" so that we can handle this additional variable segment
                 // - The first time that a variable segment is added, there will not be any value extractor from previous variable segments and so the new value extractor will
                 //   simply be the provided Func
@@ -14853,7 +14854,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                 //   > The first value extractor only has to take a url segment and produce an "extracted value" while each subsequent value extractor has to take the previous
                 //     value AND a url segment and produce a new value from those two pieces of information
                 var previousValue;
-                if (matchedSegments.getCount() === 1) {
+                if (valuesExtractedFromMatchedVariables.getCount() === 1) {
                     // Note: When using anonymous types (which is how I expect the interim values to be represented), Bridge requires that the classes and methods specify
                     // [IgnoreGeneric] (since it doesn't generate classes for anonymous types and so will emit "Anonymous Type" as the type parameter, which means that the
                     // JavaScript will be invalid). The problem with this is that we can't use "default(TValues)" since the JavaScript won't know what "TValues" is, as that
@@ -14865,16 +14866,20 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                     // When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
                     // generates the JavaScript - so we need to copy the function reference (to "valueBuilderForPreviousSegments", here) and then execute that as a function
                     // - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
-                    var previousSegments = Bridge.Linq.Enumerable.from(matchedSegments).take(Bridge.cast(matchedSegments.getCount(), Bridge.Int) - 1);
+                    var previousSegments = Bridge.Linq.Enumerable.from(valuesExtractedFromMatchedVariables).take(Bridge.cast(valuesExtractedFromMatchedVariables.getCount(), Bridge.Int) - 1);
                     var valueBuilderForPreviousSegments = this._extractedValueBuilder.getValue();
-                    previousValue = valueBuilderForPreviousSegments(ProductiveRage.ReactRouting.IEnumerableExtensions.toSet(ProductiveRage.ReactRouting.NonBlankTrimmedString, previousSegments));
+                    previousValue = valueBuilderForPreviousSegments(ProductiveRage.ReactRouting.IEnumerableExtensions.toSet(Object, previousSegments));
                 }
-                var parsedValue = parser(Bridge.Linq.Enumerable.from(matchedSegments).last()); // TODO: Not ideal calling parser twice (once here and once.. elsewhere)
-                if (!parsedValue.getIsDefined()) {
-                    // TODO: This shouldn't happen because.. (and will definitely be impossible if only call parser once)
-                    throw new Bridge.Exception("FAIL");
-                }
-                return valueExtender(previousValue, parsedValue.getValue());
+    
+                // If this lambda is executed then we know that the last segment that was matched was a variable which was parsed using the current parser (since that is
+                // the point at which this lambda would be useful). However, valuesExtractedFromMatchedVariables is only a Set<object> and each value does not have any
+                // additional type information - so we need to perform a cast from object to TVariable (which, again, we are confident is safe since the only way that
+                // this code path should be executed is if the last parsed value was parsed using the parser in this scope). We can't use a regular cast since TVariable
+                // is not available at runtime (due to the use of [IgnoreGeneric]) but, since we know that the value is already of the correct type and that there is no
+                // cast logic that must be performed (there is no change that an implicit cast operator will be executed, for example, since the type is already correct),
+                // we can use Script.Write<T> to step around C#'s compile-time type checking even without having access to TVariable at runtime.
+                var finalValueExtractedFromMatchedVariables = Bridge.Linq.Enumerable.from(valuesExtractedFromMatchedVariables).last();
+                return valueExtender(previousValue, finalValueExtractedFromMatchedVariables);
             });
     
             return new ProductiveRage.ReactRouting.RouteBuilder.BuilderWithExtractedValues$1("constructor$1", this._segmentMatchers.add(new ProductiveRage.ReactRouting.RouteBuilder.VariableStringSegmentMatcher$3(parser)), ProductiveRage.Immutable.Optional$1(Function).op_Implicit(extractedValueBuilderExpanded));
@@ -14893,7 +14898,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
         _ifMatched: null,
         config: {
             init: function () {
-                this._extractedValueBuilder = new ProductiveRage.Immutable.Optional$1(Function)() || new ProductiveRage.Immutable.Optional$1(Function)();
+                this._extractedValueBuilder = new ProductiveRage.Immutable.Optional$1(Function)();
             }
         },
         constructor: function (segmentMatchers, extractedValueBuilder, ifMatched) {
@@ -14918,7 +14923,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                 return false;
             }
     
-            var matchedVariables = Bridge.get(ProductiveRage.Immutable.Set$1(ProductiveRage.ReactRouting.NonBlankTrimmedString)).getEmpty();
+            var valuesExtractedFromMatchedVariables = Bridge.get(ProductiveRage.Immutable.Set$1(Object)).getEmpty();
             $t = Bridge.getEnumerator(Bridge.Linq.Enumerable.from(url.getSegments()).zip(this._segmentMatchers, $_.ProductiveRage.ReactRouting.RouteBuilder.BuilderWithExtractedValues$1.VariableRouteDetails.f1));
             while ($t.moveNext()) {
                 var segmentAndMatcher = $t.getCurrent();
@@ -14927,11 +14932,11 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                     return false;
                 }
     
-                if (matchResult.getValue().getIsVariableSegment()) {
-                    matchedVariables = matchedVariables.add(segmentAndMatcher.segment);
+                if (matchResult.getValue().getValueExtractedFromVariableSegment().getIsDefined()) {
+                    valuesExtractedFromMatchedVariables = valuesExtractedFromMatchedVariables.add(matchResult.getValue().getValueExtractedFromVariableSegment().getValue());
                 }
             }
-            if (!Bridge.Linq.Enumerable.from(matchedVariables).any()) {
+            if (!Bridge.Linq.Enumerable.from(valuesExtractedFromMatchedVariables).any()) {
                 // The VariableRouteDetails class should only be used if there is at least one variable url segment to match, otherwise the StaticRouteDetails would be
                 // more sensible. Since both VariableRouteDetails and StaticRouteDetails are private and may only be instantiated by the RouteBuilder, there is no way
                 // that we should find ourselves here with no variable segments to process.
@@ -14947,7 +14952,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
                 // generates the JavaScript - so we need to copy the function reference (to "valueBuilder", here) and then execute that as a function
                 // - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
                 var valueBuilder = this._extractedValueBuilder.getValue();
-                extractedValue = valueBuilder(matchedVariables);
+                extractedValue = valueBuilder(valuesExtractedFromMatchedVariables);
             }
             else  {
                 extractedValue = null;
@@ -14978,7 +14983,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
             if (!Bridge.hasValue(segment)) {
                 throw new Bridge.ArgumentNullException("segment");
             }
-            return ProductiveRage.Immutable.Optional$1(ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult).op_Implicit(Bridge.String.equals(segment.getValue(), this._segment.getValue(), 5) ? new ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult(false) : null);
+            return ProductiveRage.Immutable.Optional$1(ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult).op_Implicit(Bridge.String.equals(segment.getValue(), this._segment.getValue(), 5) ? new ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult(ProductiveRage.Immutable.Optional$1(Object).op_Implicit(null)) : null);
         }
     });
     
@@ -15041,7 +15046,7 @@ Bridge.Class.generic('Bridge.ReadOnlyCollection$1', function (T) {
             }
     
             var parsedValue = this._parser(segment);
-            return ProductiveRage.Immutable.Optional$1(ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult).op_Implicit(parsedValue.getIsDefined() ? new ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult(true) : null);
+            return ProductiveRage.Immutable.Optional$1(ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult).op_Implicit(parsedValue.getIsDefined() ? new ProductiveRage.ReactRouting.RouteBuilder.SegmentMatchResult(ProductiveRage.Immutable.Optional$1(Object).op_Implicit(parsedValue.getValue())) : null);
         }
     });
     

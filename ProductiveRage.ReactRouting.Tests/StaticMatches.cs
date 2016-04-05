@@ -1,7 +1,5 @@
-﻿using System;
-using Bridge.Html5;
+﻿using Bridge.Html5;
 using Bridge.QUnit;
-using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting.Tests
 {

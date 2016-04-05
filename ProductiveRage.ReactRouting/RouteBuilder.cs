@@ -78,8 +78,8 @@ namespace ProductiveRage.ReactRouting
 		private sealed class BuilderWithExtractedValues<TValues> : IBuildRoutesWithVariablesToMatch<TValues> where TValues : class
 		{
 			private readonly Set<IMatchSegments> _segmentMatchers;
-			private readonly Optional<Func<Set<NonBlankTrimmedString>, TValues>> _extractedValueBuilder;
-			private BuilderWithExtractedValues(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<NonBlankTrimmedString>, TValues>> extractedValueBuilder)
+			private readonly Optional<Func<Set<object>, TValues>> _extractedValueBuilder;
+			private BuilderWithExtractedValues(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<object>, TValues>> extractedValueBuilder)
 			{
 				if (segmentMatchers == null)
 					throw new ArgumentNullException("segmentMatchers");
@@ -111,7 +111,7 @@ namespace ProductiveRage.ReactRouting
 				if (parser == null)
 					throw new ArgumentNullException("parser");
 
-				Func<Set<NonBlankTrimmedString>, TValuesExpanded> extractedValueBuilderExpanded = matchedSegments =>
+				Func<Set<object>, TValuesExpanded> extractedValueBuilderExpanded = valuesExtractedFromMatchedVariables =>
 				{
 					// Every time that a variable URL segment is added to the route, we need to update the "value extractor" so that we can handle this additional variable segment
 					// - The first time that a variable segment is added, there will not be any value extractor from previous variable segments and so the new value extractor will
@@ -125,7 +125,7 @@ namespace ProductiveRage.ReactRouting
 					//   > The first value extractor only has to take a url segment and produce an "extracted value" while each subsequent value extractor has to take the previous
 					//     value AND a url segment and produce a new value from those two pieces of information
 					TValues previousValue;
-					if (matchedSegments.Count == 1)
+					if (valuesExtractedFromMatchedVariables.Count == 1)
 					{
 						// Note: When using anonymous types (which is how I expect the interim values to be represented), Bridge requires that the classes and methods specify
 						// [IgnoreGeneric] (since it doesn't generate classes for anonymous types and so will emit "Anonymous Type" as the type parameter, which means that the
@@ -139,17 +139,20 @@ namespace ProductiveRage.ReactRouting
 						// When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
 						// generates the JavaScript - so we need to copy the function reference (to "valueBuilderForPreviousSegments", here) and then execute that as a function
 						// - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
-						var previousSegments = matchedSegments.Take((int)matchedSegments.Count - 1);
+						var previousSegments = valuesExtractedFromMatchedVariables.Take((int)valuesExtractedFromMatchedVariables.Count - 1);
 						var valueBuilderForPreviousSegments = _extractedValueBuilder.Value;
 						previousValue = valueBuilderForPreviousSegments(previousSegments.ToSet());
 					}
-					var parsedValue = parser(matchedSegments.Last()); // TODO: Not ideal calling parser twice (once here and once.. elsewhere)
-					if (!parsedValue.IsDefined)
-					{
-						// TODO: This shouldn't happen because.. (and will definitely be impossible if only call parser once)
-						throw new Exception("FAIL");
-					}
-					return valueExtender(previousValue, parsedValue.Value);
+
+					// If this lambda is executed then we know that the last segment that was matched was a variable which was parsed using the current parser (since that is
+					// the point at which this lambda would be useful). However, valuesExtractedFromMatchedVariables is only a Set<object> and each value does not have any
+					// additional type information - so we need to perform a cast from object to TVariable (which, again, we are confident is safe since the only way that
+					// this code path should be executed is if the last parsed value was parsed using the parser in this scope). We can't use a regular cast since TVariable
+					// is not available at runtime (due to the use of [IgnoreGeneric]) but, since we know that the value is already of the correct type and that there is no
+					// cast logic that must be performed (there is no change that an implicit cast operator will be executed, for example, since the type is already correct),
+					// we can use Script.Write<T> to step around C#'s compile-time type checking even without having access to TVariable at runtime.
+					var finalValueExtractedFromMatchedVariables = valuesExtractedFromMatchedVariables.Last();
+					return valueExtender(previousValue, Script.Write<TVariable>("finalValueExtractedFromMatchedVariables"));
 				};
 
 				return new BuilderWithExtractedValues<TValuesExpanded>(
@@ -170,9 +173,9 @@ namespace ProductiveRage.ReactRouting
 			private sealed class VariableRouteDetails : IMatchRoutes
 			{
 				private readonly Set<IMatchSegments> _segmentMatchers;
-				private readonly Optional<Func<Set<NonBlankTrimmedString>, TValues>> _extractedValueBuilder;
+				private readonly Optional<Func<Set<object>, TValues>> _extractedValueBuilder;
 				private readonly Action<TValues> _ifMatched;
-				public VariableRouteDetails(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<NonBlankTrimmedString>, TValues>> extractedValueBuilder, Action<TValues> ifMatched)
+				public VariableRouteDetails(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<object>, TValues>> extractedValueBuilder, Action<TValues> ifMatched)
 				{
 					if (segmentMatchers == null)
 						throw new ArgumentNullException("segmentMatchers");
@@ -192,17 +195,17 @@ namespace ProductiveRage.ReactRouting
 					if (url.Segments.Count != _segmentMatchers.Count)
 						return false;
 
-					var matchedVariables = Set<NonBlankTrimmedString>.Empty;
+					var valuesExtractedFromMatchedVariables = Set<object>.Empty;
 					foreach (var segmentAndMatcher in url.Segments.Zip(_segmentMatchers, (segment, matcher) => new { Segment = segment, Matcher = matcher }))
 					{
 						var matchResult = segmentAndMatcher.Matcher.Match(segmentAndMatcher.Segment);
 						if (!matchResult.IsDefined)
 							return false;
 
-						if (matchResult.Value.IsVariableSegment)
-							matchedVariables = matchedVariables.Add(segmentAndMatcher.Segment);
+						if (matchResult.Value.ValueExtractedFromVariableSegment.IsDefined)
+							valuesExtractedFromMatchedVariables = valuesExtractedFromMatchedVariables.Add(matchResult.Value.ValueExtractedFromVariableSegment.Value);
 					}
-					if (!matchedVariables.Any())
+					if (!valuesExtractedFromMatchedVariables.Any())
 					{
 						// The VariableRouteDetails class should only be used if there is at least one variable url segment to match, otherwise the StaticRouteDetails would be
 						// more sensible. Since both VariableRouteDetails and StaticRouteDetails are private and may only be instantiated by the RouteBuilder, there is no way
@@ -220,7 +223,7 @@ namespace ProductiveRage.ReactRouting
 						// generates the JavaScript - so we need to copy the function reference (to "valueBuilder", here) and then execute that as a function
 						// - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
 						var valueBuilder = _extractedValueBuilder.Value;
-						extractedValue = valueBuilder(matchedVariables);
+						extractedValue = valueBuilder(valuesExtractedFromMatchedVariables);
 					}
 					else
 						extractedValue = null;
@@ -237,11 +240,11 @@ namespace ProductiveRage.ReactRouting
 
 		private sealed class SegmentMatchResult : IAmImmutable
 		{
-			public SegmentMatchResult(bool isVariableSegment)
+			public SegmentMatchResult(Optional<object> valueExtractedFromVariableSegment)
 			{
-				this.CtorSet(_ => _.IsVariableSegment, isVariableSegment);
+				this.CtorSet(_ => _.ValueExtractedFromVariableSegment, valueExtractedFromVariableSegment);
 			}
-			public bool IsVariableSegment { get; private set; }
+			public Optional<object> ValueExtractedFromVariableSegment { get; private set; }
 		}
 
 		[IgnoreGeneric]
@@ -260,7 +263,7 @@ namespace ProductiveRage.ReactRouting
 				if (segment == null)
 					throw new ArgumentNullException("segment");
 				return segment.Value.Equals(_segment.Value, StringComparison.OrdinalIgnoreCase)
-					? new SegmentMatchResult(isVariableSegment: false)
+					? new SegmentMatchResult(valueExtractedFromVariableSegment: null)
 					: null;
 			}
 		}
@@ -284,7 +287,7 @@ namespace ProductiveRage.ReactRouting
 
 				var parsedValue = _parser(segment);
 				return parsedValue.IsDefined
-					? new SegmentMatchResult(isVariableSegment: true)
+					? new SegmentMatchResult(valueExtractedFromVariableSegment: parsedValue.Value)
 					: null;
 			}
 		}
