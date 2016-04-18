@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="Support\AssertExtensions.cs" />
     <Compile Include="Support\UrlDetailsCreator.cs" />
-    <Compile Include="TestClasses\VariableMatches.cs" />
-    <Compile Include="TestClasses\StaticMatches.cs" />
+    <Compile Include="TestClasses\VariableMatchTests.cs" />
+    <Compile Include="TestClasses\StaticMatchTests.cs" />
     <Compile Include="Support\MockBrowserNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,7 +4,7 @@ using ProductiveRage.ReactRouting.Tests.Support;
 
 namespace ProductiveRage.ReactRouting.Tests.TestClasses
 {
-	public static class VariableMatches
+	public static class VariableMatchTests
 	{
 		[Ready]
 		public static void Go()
