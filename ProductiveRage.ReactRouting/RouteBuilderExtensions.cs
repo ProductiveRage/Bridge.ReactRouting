@@ -49,6 +49,15 @@ namespace ProductiveRage.ReactRouting
 		}
 
 		[IgnoreGeneric]
+		public static RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<NonBlankTrimmedString>> String(this RouteBuilder source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			return source.String(segment => Tuple.Create(segment));
+		}
+
+		[IgnoreGeneric]
 		public static RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> String<TValues>(
 			this RouteBuilder source,
 			Func<NonBlankTrimmedString, TValues> valueExtender) where TValues : class
@@ -72,6 +81,15 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException("valueExtender");
 
 			return source.Variable(valueExtender, segment => Optional.For(segment));
+		}
+
+		[IgnoreGeneric]
+		public static RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<int>> Int(this RouteBuilder source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			return source.Int(segment => Tuple.Create(segment));
 		}
 
 		[IgnoreGeneric]
