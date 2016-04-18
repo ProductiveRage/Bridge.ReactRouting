@@ -1,7 +1,8 @@
 ﻿using Bridge.Html5;
 using Bridge.QUnit;
+using ProductiveRage.ReactRouting.Tests.Support;
 
-namespace ProductiveRage.ReactRouting.Tests
+namespace ProductiveRage.ReactRouting.Tests.TestClasses
 {
 	public static class VariableMatches
 	{

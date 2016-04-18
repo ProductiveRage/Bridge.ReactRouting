@@ -1,7 +1,7 @@
 ﻿using System;
 using ProductiveRage.Immutable;
 
-namespace ProductiveRage.ReactRouting.Tests
+namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public sealed class MockBrowserNavigator : IInteractWithBrowserRouting
 	{

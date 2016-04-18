@@ -1,7 +1,7 @@
 ﻿using Bridge;
 using Bridge.QUnit;
 
-namespace ProductiveRage.ReactRouting.Tests
+namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public static class AssertExtensions
 	{

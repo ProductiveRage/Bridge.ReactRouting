@@ -50,11 +50,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertExtensions.cs" />
-    <Compile Include="UrlDetailsCreator.cs" />
-    <Compile Include="VariableMatches.cs" />
-    <Compile Include="StaticMatches.cs" />
-    <Compile Include="MockBrowserNavigator.cs" />
+    <Compile Include="Support\AssertExtensions.cs" />
+    <Compile Include="Support\UrlDetailsCreator.cs" />
+    <Compile Include="TestClasses\VariableMatches.cs" />
+    <Compile Include="TestClasses\StaticMatches.cs" />
+    <Compile Include="Support\MockBrowserNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
