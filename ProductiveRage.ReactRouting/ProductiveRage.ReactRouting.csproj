@@ -53,10 +53,12 @@
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Html5HistoryRouter.cs" />
     <Compile Include="IInteractWithBrowserRouting.cs" />
+    <Compile Include="Navigator.cs" />
     <Compile Include="IMatchRoutes.cs" />
     <Compile Include="NonBlankTrimmedString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TupleExtensions.cs" />
+    <Compile Include="RouteCombiner.cs" />
     <Compile Include="RouteBuilder.cs" />
     <Compile Include="RouteBuilderExtensions.cs" />
     <Compile Include="UrlDetails.cs" />
