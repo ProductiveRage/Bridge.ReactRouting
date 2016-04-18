@@ -1,4 +1,5 @@
-﻿using Bridge.Html5;
+﻿using System;
+using Bridge.Html5;
 using Bridge.QUnit;
 using ProductiveRage.ReactRouting.Tests.Support;
 
@@ -46,6 +47,16 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 					.Int((dataSoFar, key) => new { Type = dataSoFar.Type, Key = key });
 				var url = UrlDetailsCreator.New("product", "toy", "123");
 				assert.RouteMatched(routeInfo, url, new { Type = new NonBlankTrimmedString("toy"), Key = 123 });
+			});
+
+			QUnit.Test("Match '/product/toy/123' for route '/product/{type:string}/{key:Int}' using Tuples", assert =>
+			{
+				var routeInfo = RouteBuilder.Empty
+					.Fixed("product")
+					.String()
+					.Int((valuesSoFar, newValue) => valuesSoFar.Extend(newValue));
+				var url = UrlDetailsCreator.New("product", "toy", "123");
+				assert.RouteMatched(routeInfo, url, Tuple.Create(new NonBlankTrimmedString("toy"), 123));
 			});
 		}
 	}
