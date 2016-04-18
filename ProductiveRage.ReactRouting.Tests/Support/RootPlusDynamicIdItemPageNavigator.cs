@@ -5,28 +5,31 @@ using ProductiveRage.ReactRouting.Tests.Support.Actions;
 
 namespace ProductiveRage.ReactRouting.Tests.Support
 {
-	public sealed class RootPlusDynamicIdItemPageNavigator : Navigator
+	public sealed class RootPlusDynamicIdItemPagesNavigator<T> : Navigator
 	{
 		private readonly Action _navigateToRoot;
 		private readonly Action<NonBlankTrimmedString> _navigateToItem;
-		public RootPlusDynamicIdItemPageNavigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
-			: base(historyHandler, dispatcher)
+		public RootPlusDynamicIdItemPagesNavigator(Set<NonBlankTrimmedString> parentSegments, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
+			: base(parentSegments, historyHandler, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
 
 			AddRelativeRoute(
 				Set<string>.Empty,
-				new NavigateToRoot()
+				new NavigateToRoot<T>()
 			);
 			_navigateToRoot = () => NavigateTo();
 
 			AddRelativeRoute(
 				RouteBuilder.Empty.Fixed("item").String(),
-				matchedValue => new NavigateToItem(matchedValue.Item1)
+				matchedValue => new NavigateToItem<T>(matchedValue.Item1)
 			);
 			_navigateToItem = segment => NavigateTo("item", segment.Value);
 		}
+		public RootPlusDynamicIdItemPagesNavigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
+			: this(Set<NonBlankTrimmedString>.Empty, historyHandler, dispatcher)
+		{ }
 
 		public void Root() { _navigateToRoot(); }
 		public void Item(NonBlankTrimmedString name) { _navigateToItem(name); }

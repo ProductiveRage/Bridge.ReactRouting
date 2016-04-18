@@ -161,7 +161,7 @@ namespace ProductiveRage.ReactRouting
 				);
 			}
 
-			[IgnoreGeneric]	
+			[IgnoreGeneric]
 			public IMatchRoutes ToRoute(Action<TValues> ifMatched)
 			{
 				if (ifMatched == null)
@@ -230,6 +230,25 @@ namespace ProductiveRage.ReactRouting
 					_ifMatched(extractedValue);
 					return true;
 				}
+
+				public IMatchRoutes MakeRelativeTo(Set<NonBlankTrimmedString> parentSegments)
+				{
+					if (parentSegments == null)
+						throw new ArgumentNullException("parentSegments");
+
+					if (!parentSegments.Any())
+						return this;
+
+					var newSegmentMatchers = _segmentMatchers;
+					foreach (var segment in parentSegments.Reverse())
+						newSegmentMatchers = newSegmentMatchers.Insert(new FixedSegmentMatcher<TValues>(segment));
+					return new VariableRouteDetails(newSegmentMatchers, _extractedValueBuilder, _ifMatched);
+				}
+
+				public override string ToString()
+				{
+					return "/" + string.Join("/", _segmentMatchers);
+				}
 			}
 		}
 
@@ -257,6 +276,7 @@ namespace ProductiveRage.ReactRouting
 					throw new ArgumentNullException("segment");
 				_segment = segment;
 			}
+
 			[IgnoreGeneric]
 			public Optional<SegmentMatchResult> Match(NonBlankTrimmedString segment)
 			{
@@ -265,6 +285,11 @@ namespace ProductiveRage.ReactRouting
 				return segment.Value.Equals(_segment.Value, StringComparison.OrdinalIgnoreCase)
 					? new SegmentMatchResult(valueExtractedFromVariableSegment: null)
 					: null;
+			}
+
+			public override string ToString()
+			{
+				return _segment.Value;
 			}
 		}
 
@@ -289,6 +314,10 @@ namespace ProductiveRage.ReactRouting
 				return parsedValue.IsDefined
 					? new SegmentMatchResult(valueExtractedFromVariableSegment: parsedValue.Value)
 					: null;
+			}
+			public override string ToString()
+			{
+				return "{}";
 			}
 		}
 
@@ -320,6 +349,25 @@ namespace ProductiveRage.ReactRouting
 
 				_ifMatched();
 				return true;
+			}
+
+			public IMatchRoutes MakeRelativeTo(Set<NonBlankTrimmedString> parentSegments)
+			{
+				if (parentSegments == null)
+					throw new ArgumentNullException("parentSegments");
+
+				if (!parentSegments.Any())
+					return this;
+
+				var newSegments = _segments;
+				foreach (var segment in parentSegments.Reverse())
+					newSegments = newSegments.Insert(segment);
+				return new StaticRouteDetails(newSegments, _ifMatched);
+			}
+
+			public override string ToString()
+			{
+				return "/" + string.Join("/", _segments);
 			}
 		}
 	}

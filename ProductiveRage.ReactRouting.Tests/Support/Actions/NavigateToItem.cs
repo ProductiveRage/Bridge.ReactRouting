@@ -3,7 +3,7 @@ using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting.Tests.Support.Actions
 {
-	public sealed class NavigateToItem : IDispatcherAction, IAmImmutable
+	public sealed class NavigateToItem<T> : IDispatcherAction, IAmImmutable
 	{
 		public NavigateToItem(NonBlankTrimmedString id)
 		{
