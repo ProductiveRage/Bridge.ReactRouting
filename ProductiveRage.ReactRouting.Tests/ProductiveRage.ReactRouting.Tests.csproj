@@ -61,12 +61,12 @@
     <Compile Include="Support\Actions\NavigateToRoot.cs" />
     <Compile Include="Support\Actions\InvalidRoute.cs" />
     <Compile Include="Support\NavigatorTestingDetails.cs" />
-    <Compile Include="Support\RootPlusHotelAndRestaurantSectionsNavigator.cs" />
-    <Compile Include="Support\RootPlusDynamicIdItemPageNavigator.cs" />
+    <Compile Include="Support\RootPlusHotelAndProductSectionsNavigator.cs" />
+    <Compile Include="Support\RootPlusDynamicIdItemPagesNavigator.cs" />
     <Compile Include="Support\MockHistoryHandler.cs" />
     <Compile Include="Support\AssertExtensions.cs" />
-    <Compile Include="Support\RouteDataTypes\Hotel.cs" />
     <Compile Include="Support\RouteDataTypes\Restaurant.cs" />
+    <Compile Include="Support\RouteDataTypes\Hotel.cs" />
     <Compile Include="Support\UrlDetailsCreator.cs" />
     <Compile Include="TestClasses\NavigatorTests.cs" />
     <Compile Include="TestClasses\VariableMatchTests.cs" />
