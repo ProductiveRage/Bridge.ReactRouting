@@ -1,4 +1,5 @@
-﻿var gulp = require("gulp"),
+﻿/// <binding AfterBuild='RunUnitTests' />
+var gulp = require("gulp"),
     notifier = require('node-notifier'),
     chutzpah = require("gulp-chutzpah");
 
