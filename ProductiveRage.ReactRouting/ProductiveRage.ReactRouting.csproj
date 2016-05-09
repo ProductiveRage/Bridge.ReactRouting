@@ -58,7 +58,9 @@
     <Compile Include="IInteractWithBrowserRouting.cs" />
     <Compile Include="Navigator.cs" />
     <Compile Include="IMatchRoutes.cs" />
+    <Compile Include="Link.cs" />
     <Compile Include="NonBlankTrimmedString.cs" />
+    <Compile Include="OptionalNonBlankTrimmedStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TupleExtensions.cs" />
     <Compile Include="RouteCombiner.cs" />

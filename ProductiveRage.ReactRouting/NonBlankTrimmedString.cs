@@ -4,7 +4,7 @@ using Bridge.React;
 
 namespace ProductiveRage.ReactRouting
 {
-	public sealed class NonBlankTrimmedString
+	public sealed class NonBlankTrimmedString // TODO: Move into ProductiveRage.Immutable.Extensions NuGet packages
 	{
 		public NonBlankTrimmedString(string value)
 		{
