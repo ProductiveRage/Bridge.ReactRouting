@@ -1,6 +1,7 @@
 ﻿using System;
 using Bridge.React;
 using ProductiveRage.Immutable;
+using ProductiveRage.Immutable.Extensions;
 
 namespace ProductiveRage.ReactRouting
 {
@@ -10,6 +11,7 @@ namespace ProductiveRage.ReactRouting
 		private readonly IInteractWithBrowserRouting _historyHandler;
 		private readonly AppDispatcher _dispatcher;
 		private Set<IMatchRoutes> _routes;
+
 		protected Navigator(Set<NonBlankTrimmedString> parentSegments, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
 		{
 			if (parentSegments == null)

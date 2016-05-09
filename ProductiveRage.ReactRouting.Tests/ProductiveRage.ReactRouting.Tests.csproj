@@ -55,6 +55,10 @@
       <HintPath>..\packages\ProductiveRage.Immutable.1.7.1.0\lib\net40\ProductiveRage.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ProductiveRage.Immutable.Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ProductiveRage.Immutable.Extensions.1.0.0\lib\net40\ProductiveRage.Immutable.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Support\Actions\NavigateToItem.cs" />

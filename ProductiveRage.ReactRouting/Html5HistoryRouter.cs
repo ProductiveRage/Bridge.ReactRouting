@@ -2,6 +2,7 @@
 using System.Linq;
 using Bridge.Html5;
 using ProductiveRage.Immutable;
+using ProductiveRage.Immutable.Extensions;
 
 namespace ProductiveRage.ReactRouting
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Bridge.Html5;
 using Bridge.QUnit;
+using ProductiveRage.Immutable.Extensions;
 using ProductiveRage.ReactRouting.Tests.Support;
 
 namespace ProductiveRage.ReactRouting.Tests.TestClasses
