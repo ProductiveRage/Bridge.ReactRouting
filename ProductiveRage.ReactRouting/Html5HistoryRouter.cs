@@ -7,8 +7,10 @@ namespace ProductiveRage.ReactRouting
 {
 	public sealed class Html5HistoryRouter : IInteractWithBrowserRouting
 	{
+		public static readonly Html5HistoryRouter Instance = new Html5HistoryRouter();
+
 		private Set<Action<UrlDetails>> _navigatedCallbacks;
-		public Html5HistoryRouter()
+		private Html5HistoryRouter()
 		{
 			_navigatedCallbacks = Set<Action<UrlDetails>>.Empty;
 
