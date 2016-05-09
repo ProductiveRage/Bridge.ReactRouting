@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bridge\bridge.json" />
+    <None Include="package.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +85,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gulpfile.js" />
     <Content Include="Tests.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Bridge.React.1.5.2\analyzers\dotnet\cs\Bridge.React.Analyser.dll" />
