@@ -34,5 +34,7 @@ _ReSharper*/
 *.orig
 [Pp]ackages/
 .vs/
+node_modules/
 
 ProductiveRage.ReactRouting.Tests/Bridge/output/
+
