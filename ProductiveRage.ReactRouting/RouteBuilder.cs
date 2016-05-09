@@ -138,10 +138,8 @@ namespace ProductiveRage.ReactRouting
 					{
 						// When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
 						// generates the JavaScript - so we need to copy the function reference (to "valueBuilderForPreviousSegments", here) and then execute that as a function
-						// - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
 						var previousSegments = valuesExtractedFromMatchedVariables.Take((int)valuesExtractedFromMatchedVariables.Count - 1);
-						var valueBuilderForPreviousSegments = _extractedValueBuilder.Value;
-						previousValue = valueBuilderForPreviousSegments(previousSegments.ToSet());
+						previousValue = _extractedValueBuilder.Value(previousSegments.ToSet());
 					}
 
 					// If this lambda is executed then we know that the last segment that was matched was a variable which was parsed using the current parser (since that is
@@ -161,7 +159,7 @@ namespace ProductiveRage.ReactRouting
 				);
 			}
 
-			[IgnoreGeneric]
+			[IgnoreGeneric]	
 			public IMatchRoutes ToRoute(Action<TValues> ifMatched)
 			{
 				if (ifMatched == null)
@@ -221,9 +219,7 @@ namespace ProductiveRage.ReactRouting
 					{
 						// When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
 						// generates the JavaScript - so we need to copy the function reference (to "valueBuilder", here) and then execute that as a function
-						// - TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
-						var valueBuilder = _extractedValueBuilder.Value;
-						extractedValue = valueBuilder(valuesExtractedFromMatchedVariables);
+						extractedValue = _extractedValueBuilder.Value(valuesExtractedFromMatchedVariables);
 					}
 					else
 						extractedValue = null;

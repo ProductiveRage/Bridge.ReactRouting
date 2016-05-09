@@ -42,13 +42,8 @@ namespace ProductiveRage.ReactRouting
 				if (route.ExecuteCallbackIfUrlMatches(url))
 					return;
 			}
-
-			// TODO: Only required until http://forums.bridge.net/forum/bridge-net-pro/bugs/1993 is fixed
 			if (routeNotMatched.IsDefined)
-			{
-				var x = routeNotMatched.Value;
-				x(url);
-			}
+				routeNotMatched.Value(url);
 		}
 	}
 }
