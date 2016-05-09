@@ -43,11 +43,11 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 
 			// Explicitly navigate again to the same URL we're already on - even though the route hasn't changed, this action should result
 			// in the route being re-analysed and another action being recorded
-			navigatorTestWrapper.Navigator.Root();
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Root());
 			navigatorTestWrapper.AssertActionRecorded<NavigateToRoot<Hotel>>();
 
 			// Now navigate to a different route: /item/abc
-			navigatorTestWrapper.Navigator.Item(new NonBlankTrimmedString("abc"));
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Item(new NonBlankTrimmedString("abc")));
 			navigatorTestWrapper.AssertActionRecorded<NavigateToItem<Hotel>>(action => action.Id.Value == "abc");
 		}
 
@@ -71,23 +71,23 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 
 			// Explicitly navigate again to the same URL we're already on - even though the route hasn't changed, this action should result
 			// in the route being re-analysed and another action being recorded
-			navigatorTestWrapper.Navigator.Root();
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Root());
 			navigatorTestWrapper.AssertActionRecorded<NavigateToRoot>();
 
 			// Now navigate to the root of the "Hotels" section..
-			navigatorTestWrapper.Navigator.Hotels.Root();
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Hotels.Root());
 			navigatorTestWrapper.AssertActionRecorded<NavigateToRoot<Hotel>>();
 
 			// .. and then to an items within hotels
-			navigatorTestWrapper.Navigator.Hotels.Item(new NonBlankTrimmedString("abc"));
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Hotels.Item(new NonBlankTrimmedString("abc")));
 			navigatorTestWrapper.AssertActionRecorded<NavigateToItem<Hotel>>(action => action.Id.Value == "abc");
 
 			// Now navigate to the root of the "Restaurants" section..
-			navigatorTestWrapper.Navigator.Restaurants.Root();
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Restaurants.Root());
 			navigatorTestWrapper.AssertActionRecorded<NavigateToRoot<Restaurant>>();
 
 			// .. and then to an items within restaurants
-			navigatorTestWrapper.Navigator.Restaurants.Item(new NonBlankTrimmedString("xyz"));
+			navigatorTestWrapper.NavigateTo(navigatorTestWrapper.Navigator.Restaurants.Item(new NonBlankTrimmedString("xyz")));
 			navigatorTestWrapper.AssertActionRecorded<NavigateToItem<Restaurant>>(action => action.Id.Value == "xyz");
 		}
 

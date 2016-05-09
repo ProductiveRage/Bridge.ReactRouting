@@ -17,6 +17,8 @@ namespace ProductiveRage.ReactRouting
 			Window.AddEventListener(EventType.PopState, e => RaiseNavigateToForCurrentLocation());
 		}
 
+		public UrlDetails CurrentLocation { get { return GetCurrentLocation(); } }
+
 		public void RaiseNavigateToForCurrentLocation()
 		{
 			RaiseCallbacks(GetCurrentLocation());
