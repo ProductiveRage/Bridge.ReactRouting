@@ -3,7 +3,6 @@ using Bridge.Html5;
 using Bridge.QUnit;
 using Bridge.React;
 using ProductiveRage.Immutable;
-using ProductiveRage.Immutable.Extensions;
 using ProductiveRage.ReactRouting.Tests.Support;
 using ProductiveRage.ReactRouting.Tests.Support.Actions;
 using ProductiveRage.ReactRouting.Tests.Support.RouteDataTypes;

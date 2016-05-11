@@ -1,7 +1,6 @@
 ﻿using System;
 using Bridge.React;
 using ProductiveRage.Immutable;
-using ProductiveRage.Immutable.Extensions;
 using ProductiveRage.ReactRouting.Tests.Support.Actions;
 using ProductiveRage.ReactRouting.Tests.Support.RouteDataTypes;
 
