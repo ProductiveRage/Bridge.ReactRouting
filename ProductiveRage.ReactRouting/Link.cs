@@ -23,9 +23,9 @@ namespace ProductiveRage.ReactRouting
 			bool caseSensitiveUrlMatching = false,
 			Optional<NonBlankTrimmedString> name = new Optional<NonBlankTrimmedString>(),
 			Optional<NonBlankTrimmedString> target = new Optional<NonBlankTrimmedString>(),
-			Optional<NonBlankTrimmedString> className = new Optional<NonBlankTrimmedString>(),
-			Optional<NonBlankTrimmedString> ancestorClassName = new Optional<NonBlankTrimmedString>(),
-			Optional<NonBlankTrimmedString> selectedClassName = new Optional<NonBlankTrimmedString>(),
+			Optional<ClassName> className = new Optional<ClassName>(),
+			Optional<ClassName> ancestorClassName = new Optional<ClassName>(),
+			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
 			Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>>(),
 			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
 			: base(new Props(url, text, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
@@ -92,9 +92,9 @@ namespace ProductiveRage.ReactRouting
 				bool caseSensitiveUrlMatching,
 				Optional<NonBlankTrimmedString> name,
 				Optional<NonBlankTrimmedString> target,
-				Optional<NonBlankTrimmedString> className,
-				Optional<NonBlankTrimmedString> ancestorClassName,
-				Optional<NonBlankTrimmedString> selectedClassName,
+				Optional<ClassName> className,
+				Optional<ClassName> ancestorClassName,
+				Optional<ClassName> selectedClassName,
 				Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> onClick,
 				Optional<IInteractWithBrowserRouting> historyHandlerOverride)
 			{
@@ -114,9 +114,9 @@ namespace ProductiveRage.ReactRouting
 			public bool CaseSensitiveUrlMatching { get; private set; }
 			public Optional<NonBlankTrimmedString> Name { get; private set; }
 			public Optional<NonBlankTrimmedString> Target { get; private set; }
-			public Optional<NonBlankTrimmedString> ClassName { get; private set; }
-			public Optional<NonBlankTrimmedString> AncestorClassName { get; private set; }
-			public Optional<NonBlankTrimmedString> SelectedClassName { get; private set; }
+			public Optional<ClassName> ClassName { get; private set; }
+			public Optional<ClassName> AncestorClassName { get; private set; }
+			public Optional<ClassName> SelectedClassName { get; private set; }
 			public Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> OnClick { get; private set; }
 			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; private set; }
 		}
