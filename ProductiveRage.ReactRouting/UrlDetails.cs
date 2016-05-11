@@ -14,12 +14,9 @@ namespace ProductiveRage.ReactRouting
 		public Set<NonBlankTrimmedString> Segments { get; private set; }
 		public Optional<NonBlankTrimmedString> QueryString { get; private set; }
 
-		public static implicit operator UrlDetails(UrlPathDetails url)
+		public UrlPathDetails ToUrlPathDetails()
 		{
-			if (url == null)
-				throw new ArgumentNullException("url");
-
-			return new UrlDetails(url.Segments, Optional<NonBlankTrimmedString>.Missing);
+			return new UrlPathDetails(Segments);
 		}
 
 		public override string ToString()

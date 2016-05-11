@@ -40,7 +40,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");
-			_historyHandler.NavigateTo(url);
+			_historyHandler.NavigateTo(url.ToUrlDetails(Optional<NonBlankTrimmedString>.Missing));
 		}
 
 		public void AssertActionRecorded<TAction>(Predicate<TAction> optionalConditionThatActionMustMeet = null)

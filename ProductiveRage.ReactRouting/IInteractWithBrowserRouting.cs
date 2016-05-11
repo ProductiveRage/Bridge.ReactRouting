@@ -4,9 +4,9 @@ namespace ProductiveRage.ReactRouting
 {
 	public interface IInteractWithBrowserRouting
 	{
-		UrlPathDetails CurrentLocation { get; }
-		void RegisterForNavigatedCallback(Action<UrlPathDetails> callback);
-		void NavigateTo(UrlPathDetails url);
+		UrlDetails CurrentLocation { get; }
+		void RegisterForNavigatedCallback(Action<UrlDetails> callback);
+		void NavigateTo(UrlDetails url);
 		void RaiseNavigateToForCurrentLocation();
 	}
 }

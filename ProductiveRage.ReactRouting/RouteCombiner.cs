@@ -15,7 +15,7 @@ namespace ProductiveRage.ReactRouting
 			if (routes == null)
 				throw new ArgumentNullException("routes");
 
-			historyHandler.RegisterForNavigatedCallback(url => MatchRoute(url, routes, routeNotMatched));
+			historyHandler.RegisterForNavigatedCallback(url => MatchRoute(url.ToUrlPathDetails(), routes, routeNotMatched));
 		}
 
 		public static void StartListening(IInteractWithBrowserRouting historyHandler, Set<IMatchRoutes> routes, Action<UrlPathDetails> routeNotMatched)

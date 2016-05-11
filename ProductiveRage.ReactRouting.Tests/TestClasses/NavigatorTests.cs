@@ -176,7 +176,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("navigatorGenerator");
 
 			var dispatcher = new AppDispatcher();
-			var historyHandler = new MockHistoryHandler(initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty));
+			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty, Optional<NonBlankTrimmedString>.Missing));
 			var navigator = navigatorGenerator(historyHandler, dispatcher);
 			RouteCombiner.StartListening(
 				historyHandler,
