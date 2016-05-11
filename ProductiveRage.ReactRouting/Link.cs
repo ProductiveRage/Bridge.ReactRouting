@@ -45,10 +45,17 @@ namespace ProductiveRage.ReactRouting
 			}
 			else
 				isAncestor = false;
+			bool isSelected;
+			if (isAncestor && (historyHandler.CurrentLocation.Segments.Count == props.Url.Segments.Count))
+			{
+				isSelected = true;
+				isAncestor = false; // Don't identify a URL as "ancestor" AND "selected", "selected" should take precedent
+			}
+			else
+				isSelected = false;
 			var className = props.ClassName;
 			if (isAncestor)
 				className = className.Add(props.AncestorClassName);
-			var isSelected = isAncestor && (historyHandler.CurrentLocation.Segments.Count == props.Url.Segments.Count);
 			if (isSelected)
 				className = className.Add(props.SelectedClassName);
 			return DOM.A(
