@@ -1,22 +1,30 @@
-﻿using ProductiveRage.Immutable;
+﻿using System;
+using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting
 {
-	/// <summary>
-	/// This may contain QueryString and/or Hash content details in the future, if route matching based upon either or both are those (rather than
-	/// just the path) is supported. At this time, though, this is only the individual segments of the URL path.
-	/// </summary>
 	public sealed class UrlDetails : IAmImmutable
 	{
-		public UrlDetails(Set<NonBlankTrimmedString> segments)
+		public UrlDetails(Set<NonBlankTrimmedString> segments, Optional<NonBlankTrimmedString> queryString)
 		{
 			this.CtorSet(_ => _.Segments, segments);
+			this.CtorSet(_ => _.QueryString, queryString);
 		}
+
 		public Set<NonBlankTrimmedString> Segments { get; private set; }
+		public Optional<NonBlankTrimmedString> QueryString { get; private set; }
+
+		public static implicit operator UrlDetails(UrlPathDetails url)
+		{
+			if (url == null)
+				throw new ArgumentNullException("url");
+
+			return new UrlDetails(url.Segments, Optional<NonBlankTrimmedString>.Missing);
+		}
 
 		public override string ToString()
 		{
-			return "/" + string.Join("/", Segments);
+			return "/" + string.Join("/", Segments) + (QueryString.IsDefined ? ("?" + QueryString.Value) : "");
 		}
 	}
 }

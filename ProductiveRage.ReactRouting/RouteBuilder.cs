@@ -185,7 +185,7 @@ namespace ProductiveRage.ReactRouting
 					_ifMatched = ifMatched;
 				}
 
-				public bool ExecuteCallbackIfUrlMatches(UrlDetails url)
+				public bool ExecuteCallbackIfUrlMatches(UrlPathDetails url)
 				{
 					if (url == null)
 						throw new ArgumentNullException("url");
@@ -332,7 +332,7 @@ namespace ProductiveRage.ReactRouting
 				_ifMatched = ifMatched;
 			}
 
-			public bool ExecuteCallbackIfUrlMatches(UrlDetails url)
+			public bool ExecuteCallbackIfUrlMatches(UrlPathDetails url)
 			{
 				if (url == null)
 					throw new ArgumentNullException("url");

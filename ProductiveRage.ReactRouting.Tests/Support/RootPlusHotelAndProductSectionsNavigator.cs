@@ -8,7 +8,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public sealed class RootPlusHotelAndRestaurantSectionsNavigator : Navigator
 	{
-		private readonly Func<UrlDetails> _getRoot;
+		private readonly Func<UrlPathDetails> _getRoot;
 		public RootPlusHotelAndRestaurantSectionsNavigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
 			: base(Set<NonBlankTrimmedString>.Empty, historyHandler, dispatcher)
 		{
@@ -38,7 +38,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 				AddRelativeRoute(route);
 		}
 
-		public UrlDetails Root() { return _getRoot(); }
+		public UrlPathDetails Root() { return _getRoot(); }
 		public RootPlusDynamicIdItemPagesNavigator<Hotel> Hotels { get; private set; }
 		public RootPlusDynamicIdItemPagesNavigator<Restaurant> Restaurants { get; private set; }
 	}

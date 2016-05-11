@@ -5,10 +5,10 @@ namespace ProductiveRage.ReactRouting.Tests.Support.Actions
 {
 	public sealed class InvalidRoute : IDispatcherAction, IAmImmutable
 	{
-		public InvalidRoute(UrlDetails url)
+		public InvalidRoute(UrlPathDetails url)
 		{
 			this.CtorSet(_ => _.Url, url);
 		}
-		public UrlDetails Url { get; private set; }
+		public UrlPathDetails Url { get; private set; }
 	}
 }

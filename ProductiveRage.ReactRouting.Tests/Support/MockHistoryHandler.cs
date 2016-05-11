@@ -5,24 +5,24 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public sealed class MockHistoryHandler : IInteractWithBrowserRouting
 	{
-		private Set<Action<UrlDetails>> _navigatedCallbacks;
-		public MockHistoryHandler(UrlDetails initialUrl)
+		private Set<Action<UrlPathDetails>> _navigatedCallbacks;
+		public MockHistoryHandler(UrlPathDetails initialUrl)
 		{
 			if (initialUrl == null)
 				throw new ArgumentNullException("initialUrl");
 
-			_navigatedCallbacks = Set<Action<UrlDetails>>.Empty;
+			_navigatedCallbacks = Set<Action<UrlPathDetails>>.Empty;
 			CurrentLocation = initialUrl;
 		}
 
-		public UrlDetails CurrentLocation { get; private set; }
+		public UrlPathDetails CurrentLocation { get; private set; }
 
 		public void RaiseNavigateToForCurrentLocation()
 		{
 			RaiseCallbacks(CurrentLocation);
 		}
 
-		public void NavigateTo(UrlDetails url)
+		public void NavigateTo(UrlPathDetails url)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");
@@ -31,14 +31,14 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			RaiseCallbacks(url);
 		}
 
-		public void RegisterForNavigatedCallback(Action<UrlDetails> callback)
+		public void RegisterForNavigatedCallback(Action<UrlPathDetails> callback)
 		{
 			if (callback == null)
 				throw new ArgumentNullException("callback");
 			_navigatedCallbacks = _navigatedCallbacks.Add(callback);
 		}
 
-		private void RaiseCallbacks(UrlDetails url)
+		private void RaiseCallbacks(UrlPathDetails url)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");

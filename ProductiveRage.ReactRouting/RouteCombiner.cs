@@ -8,7 +8,7 @@ namespace ProductiveRage.ReactRouting
 		public static void StartListening(
 			IInteractWithBrowserRouting historyHandler,
 			Set<IMatchRoutes> routes,
-			Optional<Action<UrlDetails>> routeNotMatched = new Optional<Action<UrlDetails>>())
+			Optional<Action<UrlPathDetails>> routeNotMatched = new Optional<Action<UrlPathDetails>>())
 		{
 			if (historyHandler == null)
 				throw new ArgumentNullException("historyHandler");
@@ -18,7 +18,7 @@ namespace ProductiveRage.ReactRouting
 			historyHandler.RegisterForNavigatedCallback(url => MatchRoute(url, routes, routeNotMatched));
 		}
 
-		public static void StartListening(IInteractWithBrowserRouting historyHandler, Set<IMatchRoutes> routes, Action<UrlDetails> routeNotMatched)
+		public static void StartListening(IInteractWithBrowserRouting historyHandler, Set<IMatchRoutes> routes, Action<UrlPathDetails> routeNotMatched)
 		{
 			if (routeNotMatched == null)
 				throw new ArgumentNullException("routeNotMatched");
@@ -30,7 +30,7 @@ namespace ProductiveRage.ReactRouting
 			StartListening(historyHandler, routes, Optional.For(routeNotMatched));
 		}
 
-		private static void MatchRoute(UrlDetails url, Set<IMatchRoutes> routes, Optional<Action<UrlDetails>> routeNotMatched)
+		private static void MatchRoute(UrlPathDetails url, Set<IMatchRoutes> routes, Optional<Action<UrlPathDetails>> routeNotMatched)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");

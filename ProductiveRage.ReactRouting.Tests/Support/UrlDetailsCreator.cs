@@ -5,7 +5,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public static class UrlDetailsCreator
 	{
-		public static UrlDetails New(params string[] segments)
+		public static UrlPathDetails New(params string[] segments)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -17,7 +17,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 					throw new ArgumentException("Null/blank/whitespace-only value specified in values set");
 				nonBlankTrimmedStrings = nonBlankTrimmedStrings.Add(new NonBlankTrimmedString(value));
 			}
-			return new UrlDetails(nonBlankTrimmedStrings);
+			return new UrlPathDetails(nonBlankTrimmedStrings);
 		}
 	}
 }

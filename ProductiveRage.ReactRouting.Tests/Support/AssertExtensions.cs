@@ -5,7 +5,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public static class AssertExtensions
 	{
-		public static void RouteMatched(this Assert assert, RouteBuilder routeInfo, UrlDetails url)
+		public static void RouteMatched(this Assert assert, RouteBuilder routeInfo, UrlPathDetails url)
 		{
 			var routeMatched = false;
 			var route = routeInfo.ToRoute(() => routeMatched = true);
@@ -13,7 +13,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			assert.Ok(routeMatched);
 		}
 
-		public static void RouteNotMatched(this Assert assert, RouteBuilder routeInfo, UrlDetails url)
+		public static void RouteNotMatched(this Assert assert, RouteBuilder routeInfo, UrlPathDetails url)
 		{
 			var routeMatched = false;
 			var route = routeInfo.ToRoute(() => routeMatched = true);
@@ -25,7 +25,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		public static void RouteMatched<TValues>(
 			this Assert assert,
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> routeInfo,
-			UrlDetails url,
+			UrlPathDetails url,
 			TValues expectedValue) where TValues : class
 		{
 			var route = routeInfo.ToRoute(extractedValue => assert.DeepEqual(extractedValue, expectedValue));
@@ -36,7 +36,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		public static void RouteNotMatched<TValues>(
 			this Assert assert,
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> routeInfo,
-			UrlDetails url) where TValues : class
+			UrlPathDetails url) where TValues : class
 		{
 			var routeWasMatched = false;
 			var route = routeInfo.ToRoute(extractedValue => routeWasMatched = true);

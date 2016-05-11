@@ -110,7 +110,7 @@ namespace ProductiveRage.ReactRouting
 		/// and so any leading or trailing whitespace will be ignored. The values will be translated into a UrlDetails instance, which will
 		/// be passed to the history handler's NavigateTo method.
 		/// </summary>
-		protected UrlDetails GetPath(params string[] segments)
+		protected UrlPathDetails GetPath(params string[] segments)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segment");
@@ -124,7 +124,7 @@ namespace ProductiveRage.ReactRouting
 					throw new ArgumentException("Null/blank/whitespace-only string encountered in segments array");
 				nonBlankSegments = nonBlankSegments.Add(new NonBlankTrimmedString(segment));
 			}
-			return new UrlDetails(nonBlankSegments);
+			return new UrlPathDetails(nonBlankSegments);
 		}
 	}
 }

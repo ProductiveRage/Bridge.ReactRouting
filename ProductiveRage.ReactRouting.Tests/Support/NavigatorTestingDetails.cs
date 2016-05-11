@@ -36,7 +36,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 		public TNavigator Navigator { get; private set; }
 
-		public void NavigateTo(UrlDetails url)
+		public void NavigateTo(UrlPathDetails url)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");

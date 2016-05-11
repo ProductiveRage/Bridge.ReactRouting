@@ -68,6 +68,7 @@
     <Compile Include="RouteBuilder.cs" />
     <Compile Include="RouteBuilderExtensions.cs" />
     <Compile Include="UrlDetails.cs" />
+    <Compile Include="UrlPathDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

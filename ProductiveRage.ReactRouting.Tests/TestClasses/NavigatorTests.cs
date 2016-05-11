@@ -32,7 +32,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusDynamicIdItemPagesNavigator<Hotel>(historyHandler, dispatcher)
 			);
@@ -60,7 +60,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusHotelAndRestaurantSectionsNavigator(historyHandler, dispatcher)
 			);
@@ -100,7 +100,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusHotelAndRestaurantSectionsNavigator(historyHandler, dispatcher)
 			);
@@ -143,7 +143,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusDynamicIdItemPagesNavigator<Hotel>(historyHandler, dispatcher)
 			);
@@ -163,7 +163,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 		}
 
 		private static NavigatorTestingDetails<TNavigator> GetNavigatorToTest<TNavigator>(
-			UrlDetails initialUrl,
+			UrlPathDetails initialUrl,
 			Assert assert,
 			Func<IInteractWithBrowserRouting, AppDispatcher, TNavigator> navigatorGenerator)
 				where TNavigator : Navigator
@@ -176,7 +176,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("navigatorGenerator");
 
 			var dispatcher = new AppDispatcher();
-			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty));
+			var historyHandler = new MockHistoryHandler(initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty));
 			var navigator = navigatorGenerator(historyHandler, dispatcher);
 			RouteCombiner.StartListening(
 				historyHandler,

@@ -4,7 +4,7 @@ namespace ProductiveRage.ReactRouting
 {
 	public interface IMatchRoutes
 	{
-		bool ExecuteCallbackIfUrlMatches(UrlDetails url);
+		bool ExecuteCallbackIfUrlMatches(UrlPathDetails url);
 		IMatchRoutes MakeRelativeTo(Set<NonBlankTrimmedString> parentSegments);
 	}
 }

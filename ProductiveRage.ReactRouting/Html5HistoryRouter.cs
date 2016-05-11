@@ -9,22 +9,22 @@ namespace ProductiveRage.ReactRouting
 	{
 		public static readonly Html5HistoryRouter Instance = new Html5HistoryRouter();
 
-		private Set<Action<UrlDetails>> _navigatedCallbacks;
+		private Set<Action<UrlPathDetails>> _navigatedCallbacks;
 		private Html5HistoryRouter()
 		{
-			_navigatedCallbacks = Set<Action<UrlDetails>>.Empty;
+			_navigatedCallbacks = Set<Action<UrlPathDetails>>.Empty;
 
 			Window.AddEventListener(EventType.PopState, e => RaiseNavigateToForCurrentLocation());
 		}
 
-		public UrlDetails CurrentLocation { get { return GetCurrentLocation(); } }
+		public UrlPathDetails CurrentLocation { get { return GetCurrentLocation(); } }
 
 		public void RaiseNavigateToForCurrentLocation()
 		{
 			RaiseCallbacks(GetCurrentLocation());
 		}
 
-		public void NavigateTo(UrlDetails url)
+		public void NavigateTo(UrlPathDetails url)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");
@@ -33,14 +33,14 @@ namespace ProductiveRage.ReactRouting
 			RaiseCallbacks(url);
 		}
 
-		public void RegisterForNavigatedCallback(Action<UrlDetails> callback)
+		public void RegisterForNavigatedCallback(Action<UrlPathDetails> callback)
 		{
 			if (callback == null)
 				throw new ArgumentNullException("callback");
 			_navigatedCallbacks = _navigatedCallbacks.Add(callback);
 		}
 
-		private void RaiseCallbacks(UrlDetails url)
+		private void RaiseCallbacks(UrlPathDetails url)
 		{
 			if (url == null)
 				throw new ArgumentNullException("url");
@@ -49,11 +49,11 @@ namespace ProductiveRage.ReactRouting
 				callback(url);
 		}
 
-		private static UrlDetails GetCurrentLocation()
+		private static UrlPathDetails GetCurrentLocation()
 		{
 			// Can't use Window.Location.PathName directly until http://forums.bridge.net/forum/bridge-net-pro/bugs/2016 is fixed
 			string currentLocationPathName = ((dynamic)Window.Location).pathname;
-			return new UrlDetails(
+			return new UrlPathDetails(
 				currentLocationPathName
 					.Split('/')
 					.Where(segment => !string.IsNullOrWhiteSpace(segment))
