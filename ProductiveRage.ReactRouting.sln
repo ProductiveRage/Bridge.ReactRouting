@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductiveRage.ReactRouting", "ProductiveRage.ReactRouting\ProductiveRage.ReactRouting.csproj", "{88CFD726-44A8-4009-881E-3597472312A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductiveRage.ReactRouting.Tests", "ProductiveRage.ReactRouting.Tests\ProductiveRage.ReactRouting.Tests.csproj", "{134CBE84-89D5-44CD-A780-BC0ADAA7A016}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{B775C160-52B8-4414-8F9A-2F44318A0CB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host-Bridge", "Host-Bridge\Host-Bridge.csproj", "{C520FA14-4BF9-4213-BBAC-549C2DB773C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{134CBE84-89D5-44CD-A780-BC0ADAA7A016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{134CBE84-89D5-44CD-A780-BC0ADAA7A016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{134CBE84-89D5-44CD-A780-BC0ADAA7A016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B775C160-52B8-4414-8F9A-2F44318A0CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B775C160-52B8-4414-8F9A-2F44318A0CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B775C160-52B8-4414-8F9A-2F44318A0CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B775C160-52B8-4414-8F9A-2F44318A0CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C520FA14-4BF9-4213-BBAC-549C2DB773C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C520FA14-4BF9-4213-BBAC-549C2DB773C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C520FA14-4BF9-4213-BBAC-549C2DB773C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C520FA14-4BF9-4213-BBAC-549C2DB773C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
