@@ -1,5 +1,6 @@
 ﻿using Bridge;
 using Bridge.QUnit;
+using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting.Tests.Support
 {
@@ -42,6 +43,16 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			var route = routeInfo.ToRoute(extractedValue => routeWasMatched = true);
 			route.ExecuteCallbackIfUrlMatches(url);
 			assert.NotOk(routeWasMatched);
+		}
+
+		/// <summary>
+		/// Unfortunately, naming this Equal will not get it used when assert.Equal is called - for some reason, the Equals(object, object) method
+		/// on the Assert base class is considered to be more specified
+		/// </summary>
+		public static void OptionalEqual<T>(this Assert assert, Optional<T> actual, Optional<T> expected)
+		{
+			assert.Equal(actual.IsDefined, expected.IsDefined);
+			assert.Equal(actual.Value, expected.Value);
 		}
 	}
 }

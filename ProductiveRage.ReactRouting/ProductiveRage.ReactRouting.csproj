@@ -69,6 +69,7 @@
     <Compile Include="RouteCombiner.cs" />
     <Compile Include="RouteBuilder.cs" />
     <Compile Include="RouteBuilderExtensions.cs" />
+    <Compile Include="QueryString.cs" />
     <Compile Include="UrlDetails.cs" />
     <Compile Include="UrlPathDetails.cs" />
   </ItemGroup>

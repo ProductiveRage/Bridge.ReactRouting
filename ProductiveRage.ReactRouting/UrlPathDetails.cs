@@ -16,7 +16,7 @@ namespace ProductiveRage.ReactRouting
 		}
 		public Set<NonBlankTrimmedString> Segments { get; private set; }
 
-		public UrlDetails ToUrlDetails(Optional<NonBlankTrimmedString> queryString)
+		public UrlDetails ToUrlDetails(Optional<QueryString> queryString)
 		{
 			return new UrlDetails(Segments, queryString);
 		}

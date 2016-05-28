@@ -58,7 +58,7 @@ namespace ProductiveRage.ReactRouting
 					.Where(segment => !string.IsNullOrWhiteSpace(segment))
 					.Select(segment => new NonBlankTrimmedString(segment))
 					.ToSet(),
-				(rawQueryStringContent == "") ? Optional<NonBlankTrimmedString>.Missing : new NonBlankTrimmedString(rawQueryStringContent)
+				(rawQueryStringContent == "") ? Optional<QueryString>.Missing : QueryString.Parse(rawQueryStringContent)
 			);
 		}
 	}
