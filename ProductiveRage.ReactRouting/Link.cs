@@ -26,7 +26,7 @@ namespace ProductiveRage.ReactRouting
 			Optional<ClassName> className = new Optional<ClassName>(),
 			Optional<ClassName> ancestorClassName = new Optional<ClassName>(),
 			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
-			Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>>(),
+			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
 			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
 			: base(new Props(url, text, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
 		{ }
@@ -95,7 +95,7 @@ namespace ProductiveRage.ReactRouting
 				Optional<ClassName> className,
 				Optional<ClassName> ancestorClassName,
 				Optional<ClassName> selectedClassName,
-				Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> onClick,
+				Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick,
 				Optional<IInteractWithBrowserRouting> historyHandlerOverride)
 			{
 				this.CtorSet(_ => _.Url, url);
@@ -117,7 +117,7 @@ namespace ProductiveRage.ReactRouting
 			public Optional<ClassName> ClassName { get; private set; }
 			public Optional<ClassName> AncestorClassName { get; private set; }
 			public Optional<ClassName> SelectedClassName { get; private set; }
-			public Optional<Action<MouseEvent<Bridge.Html5.AnchorElement>>> OnClick { get; private set; }
+			public Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> OnClick { get; private set; }
 			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; private set; }
 		}
 	}
