@@ -1,5 +1,4 @@
-﻿using System;
-using ProductiveRage.Immutable;
+﻿using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting
 {

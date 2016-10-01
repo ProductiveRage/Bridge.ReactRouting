@@ -46,7 +46,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		public void AssertActionRecorded<TAction>(Predicate<TAction> optionalConditionThatActionMustMeet = null)
 		{
 			_assert.Equal(_receivedActions.Count, _actionsConfirmedSoFar + 1);
-			_assert.Ok(_receivedActions.Last().Is<TAction>(), "Expected the last-recorded action to be of type " + typeof(TAction).GetClassName());
+			_assert.Ok(_receivedActions.Last().Is<TAction>(), "Expected the last-recorded action to be of type " + typeof(TAction).Name);
 			if (optionalConditionThatActionMustMeet != null)
 				_assert.Ok(optionalConditionThatActionMustMeet((TAction)_receivedActions.Last()), "The last-recorded action was of the expected type but did not meet the other condition(s)");
 			_actionsConfirmedSoFar++;
