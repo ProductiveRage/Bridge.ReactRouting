@@ -34,7 +34,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 			var navigatorTestWrapper = GetNavigatorToTest(
 				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
-				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusDynamicIdItemPagesNavigator<Hotel>(historyHandler, dispatcher)
+				navigatorGenerator: dispatcher => new RootPlusDynamicIdItemPagesNavigator<Hotel>(dispatcher)
 			);
 
 			// The navigator initialisation will have executed match-current-route logic, so there should be a single action already present
@@ -62,7 +62,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 			var navigatorTestWrapper = GetNavigatorToTest(
 				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
-				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusHotelAndRestaurantSectionsNavigator(historyHandler, dispatcher)
+				navigatorGenerator: dispatcher => new RootPlusHotelAndRestaurantSectionsNavigator(dispatcher)
 			);
 
 			// The navigator initialisation will have executed match-current-route logic, so there should be a single action already present
@@ -102,7 +102,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 			var navigatorTestWrapper = GetNavigatorToTest(
 				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
-				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusHotelAndRestaurantSectionsNavigator(historyHandler, dispatcher)
+				navigatorGenerator: dispatcher => new RootPlusHotelAndRestaurantSectionsNavigator(dispatcher)
 			);
 
 			// The navigator initialisation will have executed match-current-route logic, so there should be a single action already present
@@ -145,7 +145,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 			var navigatorTestWrapper = GetNavigatorToTest(
 				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
 				assert: assert,
-				navigatorGenerator: (historyHandler, dispatcher) => new RootPlusDynamicIdItemPagesNavigator<Hotel>(historyHandler, dispatcher)
+				navigatorGenerator: dispatcher => new RootPlusDynamicIdItemPagesNavigator<Hotel>(dispatcher)
 			);
 
 			// The navigator initialisation will have executed match-current-route logic, so there should be a single action already present
@@ -165,7 +165,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 		private static NavigatorTestingDetails<TNavigator> GetNavigatorToTest<TNavigator>(
 			UrlPathDetails initialUrl,
 			Assert assert,
-			Func<IInteractWithBrowserRouting, AppDispatcher, TNavigator> navigatorGenerator)
+			Func<AppDispatcher, TNavigator> navigatorGenerator)
 				where TNavigator : Navigator
 		{
 			if (initialUrl == null)
@@ -177,7 +177,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 
 			var dispatcher = new AppDispatcher();
 			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty, Optional<QueryString>.Missing));
-			var navigator = navigatorGenerator(historyHandler, dispatcher);
+			var navigator = navigatorGenerator(dispatcher);
 			RouteCombiner.StartListening(
 				historyHandler,
 				navigator.Routes,

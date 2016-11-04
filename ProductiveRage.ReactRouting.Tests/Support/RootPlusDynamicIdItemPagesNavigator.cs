@@ -9,8 +9,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	{
 		private readonly Func<UrlPathDetails> _getRoot;
 		private readonly Func<NonBlankTrimmedString, UrlPathDetails> _getItem;
-		public RootPlusDynamicIdItemPagesNavigator(Set<NonBlankTrimmedString> parentSegments, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
-			: base(parentSegments, historyHandler, dispatcher)
+		public RootPlusDynamicIdItemPagesNavigator(Set<NonBlankTrimmedString> parentSegments, AppDispatcher dispatcher) : base(parentSegments, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
@@ -27,8 +26,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			);
 			_getItem = segment => GetPath("item", segment.Value);
 		}
-		public RootPlusDynamicIdItemPagesNavigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
-			: this(Set<NonBlankTrimmedString>.Empty, historyHandler, dispatcher) { }
+		public RootPlusDynamicIdItemPagesNavigator(AppDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
 
 		public UrlPathDetails Root() { return _getRoot(); }
 		public UrlPathDetails Item(NonBlankTrimmedString name) { return _getItem(name); }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Bridge;
 using Bridge.React;
 using ProductiveRage.Immutable;
 
@@ -8,26 +7,21 @@ namespace ProductiveRage.ReactRouting
 	public abstract class Navigator
 	{
 		private readonly Set<NonBlankTrimmedString> _parentSegments;
-		private readonly IInteractWithBrowserRouting _historyHandler;
 		private readonly AppDispatcher _dispatcher;
 		private Set<IMatchRoutes> _routes;
 
-		protected Navigator(Set<NonBlankTrimmedString> parentSegments, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
+		protected Navigator(Set<NonBlankTrimmedString> parentSegments, AppDispatcher dispatcher)
 		{
 			if (parentSegments == null)
 				throw new ArgumentNullException("parentSegments");
-			if (historyHandler == null)
-				throw new ArgumentNullException("historyHandler");
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
 
 			_parentSegments = parentSegments;
-			_historyHandler = historyHandler;
 			_dispatcher = dispatcher;
 			_routes = Set<IMatchRoutes>.Empty;
 		}
-		protected Navigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
-			: this(Set<NonBlankTrimmedString>.Empty, historyHandler, dispatcher) { }
+		protected Navigator(AppDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
 
 		public Set<IMatchRoutes> Routes { get { return _routes; } }
 

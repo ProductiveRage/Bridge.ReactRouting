@@ -9,8 +9,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	public sealed class RootPlusHotelAndRestaurantSectionsNavigator : Navigator
 	{
 		private readonly Func<UrlPathDetails> _getRoot;
-		public RootPlusHotelAndRestaurantSectionsNavigator(IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher)
-			: base(Set<NonBlankTrimmedString>.Empty, historyHandler, dispatcher)
+		public RootPlusHotelAndRestaurantSectionsNavigator(AppDispatcher dispatcher) : base(Set<NonBlankTrimmedString>.Empty, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
@@ -23,7 +22,6 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 			Hotels = new RootPlusDynamicIdItemPagesNavigator<Hotel>(
 				Set.Of(new NonBlankTrimmedString("hotel")),
-				historyHandler,
 				dispatcher
 			);
 			foreach (var route in Hotels.Routes)
@@ -31,7 +29,6 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 			Restaurants = new RootPlusDynamicIdItemPagesNavigator<Restaurant>(
 				Set.Of(new NonBlankTrimmedString("restaurant")),
-				historyHandler,
 				dispatcher
 			);
 			foreach (var route in Restaurants.Routes)
