@@ -165,7 +165,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 		private static NavigatorTestingDetails<TNavigator> GetNavigatorToTest<TNavigator>(
 			UrlPathDetails initialUrl,
 			Assert assert,
-			Func<AppDispatcher, TNavigator> navigatorGenerator)
+			Func<IDispatcher, TNavigator> navigatorGenerator)
 				where TNavigator : Navigator
 		{
 			if (initialUrl == null)

@@ -12,7 +12,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		private readonly Assert _assert;
 		private Set<INavigationDispatcherAction> _receivedNavigationActions;
 		private int _actionsConfirmedSoFar;
-		public NavigatorTestingDetails(TNavigator navigator, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher, Assert assert)
+		public NavigatorTestingDetails(TNavigator navigator, IInteractWithBrowserRouting historyHandler, IDispatcher dispatcher, Assert assert)
 		{
 			if (navigator == null)
 				throw new ArgumentNullException("navigator");

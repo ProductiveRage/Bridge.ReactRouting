@@ -7,10 +7,10 @@ namespace ProductiveRage.ReactRouting
 	public abstract class Navigator
 	{
 		private readonly Set<NonBlankTrimmedString> _parentSegments;
-		private readonly AppDispatcher _dispatcher;
+		private readonly IDispatcher _dispatcher;
 		private Set<IMatchRoutes> _routes;
 
-		protected Navigator(Set<NonBlankTrimmedString> parentSegments, AppDispatcher dispatcher)
+		protected Navigator(Set<NonBlankTrimmedString> parentSegments, IDispatcher dispatcher)
 		{
 			if (parentSegments == null)
 				throw new ArgumentNullException("parentSegments");
@@ -21,7 +21,7 @@ namespace ProductiveRage.ReactRouting
 			_dispatcher = dispatcher;
 			_routes = Set<IMatchRoutes>.Empty;
 		}
-		protected Navigator(AppDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
+		protected Navigator(IDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
 
 		public Set<IMatchRoutes> Routes { get { return _routes; } }
 

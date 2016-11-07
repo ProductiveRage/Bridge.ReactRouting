@@ -11,7 +11,7 @@ namespace ProductiveRage.ReactRouting.Helpers
 	/// </summary>
 	public sealed class RoutingStoreActivatorContainer : Component<RoutingStoreActivatorContainer.Props, RoutingStoreActivatorContainer.State>
 	{
-		public RoutingStoreActivatorContainer(AppDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher)
+		public RoutingStoreActivatorContainer(IDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher)
 			: base(new Props(dispatcher, navigateActionMatcher)) { }
 
 		protected override State GetInitialState()
@@ -40,12 +40,12 @@ namespace ProductiveRage.ReactRouting.Helpers
 
 		public sealed class Props : IAmImmutable
 		{
-			public Props(AppDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher)
+			public Props(IDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher)
 			{
 				this.CtorSet(_ => _.Dispatcher, dispatcher);
 				this.CtorSet(_ => _.NavigateActionMatcher, navigateActionMatcher);
 			}
-			public AppDispatcher Dispatcher { get; private set; }
+			public IDispatcher Dispatcher { get; private set; }
 			public NavigateActionMatcher NavigateActionMatcher { get; private set; }
 		}
 

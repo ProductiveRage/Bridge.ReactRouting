@@ -9,7 +9,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	public sealed class RootPlusHotelAndRestaurantSectionsNavigator : Navigator
 	{
 		private readonly Func<UrlPathDetails> _getRoot;
-		public RootPlusHotelAndRestaurantSectionsNavigator(AppDispatcher dispatcher) : base(Set<NonBlankTrimmedString>.Empty, dispatcher)
+		public RootPlusHotelAndRestaurantSectionsNavigator(IDispatcher dispatcher) : base(Set<NonBlankTrimmedString>.Empty, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");

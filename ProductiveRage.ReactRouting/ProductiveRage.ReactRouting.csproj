@@ -66,8 +66,8 @@
       <HintPath>..\packages\Bridge.Html5.15.3.0\lib\net40\Bridge.Html5.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Bridge.React, Version=1.8.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bridge.React.1.8.8\lib\net40\Bridge.React.dll</HintPath>
+    <Reference Include="Bridge.React, Version=1.8.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.React.1.8.9\lib\net40\Bridge.React.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ProductiveRage.Immutable, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -80,7 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Bridge.React.1.8.8\analyzers\dotnet\cs\Bridge.React.Analyser.dll" />
+    <Analyzer Include="..\packages\Bridge.React.1.8.9\analyzers\dotnet\cs\Bridge.React.Analyser.dll" />
     <Analyzer Include="..\packages\ProductiveRage.Immutable.1.10.0.0\analyzers\dotnet\cs\ProductiveRage.Immutable.Analyser.dll" />
   </ItemGroup>
   <ItemGroup />
