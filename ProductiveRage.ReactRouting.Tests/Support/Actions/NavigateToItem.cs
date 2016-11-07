@@ -1,9 +1,8 @@
-﻿using Bridge.React;
-using ProductiveRage.Immutable;
+﻿using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting.Tests.Support.Actions
 {
-	public sealed class NavigateToItem<T> : IDispatcherAction, IAmImmutable
+	public sealed class NavigateToItem<T> : INavigationDispatcherAction, IAmImmutable
 	{
 		public NavigateToItem(NonBlankTrimmedString id)
 		{

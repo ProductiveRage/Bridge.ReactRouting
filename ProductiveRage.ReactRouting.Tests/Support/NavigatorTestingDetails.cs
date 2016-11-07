@@ -10,7 +10,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	{
 		private readonly IInteractWithBrowserRouting _historyHandler;
 		private readonly Assert _assert;
-		private Set<IDispatcherAction> _receivedActions;
+		private Set<INavigationDispatcherAction> _receivedNavigationActions;
 		private int _actionsConfirmedSoFar;
 		public NavigatorTestingDetails(TNavigator navigator, IInteractWithBrowserRouting historyHandler, AppDispatcher dispatcher, Assert assert)
 		{
@@ -23,10 +23,12 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			if (assert == null)
 				throw new ArgumentNullException("assert");
 
-			_receivedActions = Set<IDispatcherAction>.Empty;
-			dispatcher.Register(
-				message => _receivedActions = _receivedActions.Add(message.Action)
-			);
+			_receivedNavigationActions = Set<INavigationDispatcherAction>.Empty;
+			dispatcher.Register(message => {
+				var navigationDispatcherAction = message.Action as INavigationDispatcherAction;
+				if (navigationDispatcherAction != null)
+					_receivedNavigationActions = _receivedNavigationActions.Add(navigationDispatcherAction);
+			});
 
 			_historyHandler = historyHandler;
 			_assert = assert;
@@ -45,10 +47,10 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 		public void AssertActionRecorded<TAction>(Predicate<TAction> optionalConditionThatActionMustMeet = null)
 		{
-			_assert.Equal(_receivedActions.Count, _actionsConfirmedSoFar + 1);
-			_assert.Ok(_receivedActions.Last().Is<TAction>(), "Expected the last-recorded action to be of type " + typeof(TAction).Name);
+			_assert.Equal(_receivedNavigationActions.Count, _actionsConfirmedSoFar + 1);
+			_assert.Ok(_receivedNavigationActions.Last().Is<TAction>(), "Expected the last-recorded action to be of type " + typeof(TAction).Name);
 			if (optionalConditionThatActionMustMeet != null)
-				_assert.Ok(optionalConditionThatActionMustMeet((TAction)_receivedActions.Last()), "The last-recorded action was of the expected type but did not meet the other condition(s)");
+				_assert.Ok(optionalConditionThatActionMustMeet((TAction)_receivedNavigationActions.Last()), "The last-recorded action was of the expected type but did not meet the other condition(s)");
 			_actionsConfirmedSoFar++;
 		}
 	}

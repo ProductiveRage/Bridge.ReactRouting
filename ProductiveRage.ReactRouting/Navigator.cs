@@ -32,7 +32,7 @@ namespace ProductiveRage.ReactRouting
 		/// will be ignored. If any parent segments were passed to the constructor of this instance, they will automatically be injected before
 		/// the segment specified here.
 		/// </summary>
-		protected void AddRelativeRoute(string segment, IDispatcherAction routeAction)
+		protected void AddRelativeRoute(string segment, INavigationDispatcherAction routeAction)
 		{
 			if (string.IsNullOrWhiteSpace(segment))
 				throw new ArgumentException("Null, blank or whitespace-only segment specified");
@@ -49,7 +49,7 @@ namespace ProductiveRage.ReactRouting
 		/// will be ignored. If any parent segments were passed to the constructor of this instance, they will automatically be injected before
 		/// the segments specified here.
 		/// </summary>
-		protected void AddRelativeRoute(Set<string> segments, IDispatcherAction routeAction)
+		protected void AddRelativeRoute(Set<string> segments, INavigationDispatcherAction routeAction)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -76,7 +76,7 @@ namespace ProductiveRage.ReactRouting
 		/// </summary>
 		protected void AddRelativeRoute<TMatchedValue>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TMatchedValue> routeDetails,
-			Func<TMatchedValue, IDispatcherAction> routeActionGenerator) where TMatchedValue : class
+			Func<TMatchedValue, INavigationDispatcherAction> routeActionGenerator) where TMatchedValue : class
 		{
 			if (routeDetails == null)
 				throw new ArgumentNullException("routeDetails");

@@ -1,7 +1,5 @@
-﻿using Bridge.React;
-
-namespace ProductiveRage.ReactRouting.Tests.Support.Actions
+﻿namespace ProductiveRage.ReactRouting.Tests.Support.Actions
 {
-	public sealed class NavigateToRoot : IDispatcherAction { }
-	public sealed class NavigateToRoot<T> : IDispatcherAction { }
+	public sealed class NavigateToRoot : INavigationDispatcherAction { }
+	public sealed class NavigateToRoot<T> : INavigationDispatcherAction { }
 }
