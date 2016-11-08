@@ -4,7 +4,7 @@ namespace ProductiveRage.ReactRouting
 {
 	public sealed class UrlDetails : IAmImmutable
 	{
-		public UrlDetails(Set<NonBlankTrimmedString> segments, Optional<QueryString> queryString)
+		public UrlDetails(Set<NonBlankTrimmedString> segments, Optional<QueryString> queryString = new Optional<QueryString>())
 		{
 			this.CtorSet(_ => _.Segments, segments);
 			this.CtorSet(_ => _.QueryString, queryString);
