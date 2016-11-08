@@ -36,6 +36,7 @@ _ReSharper*/
 .vs/
 node_modules/
 
+ExampleHost/Generated/
 ProductiveRage.ReactRouting.Tests/Bridge/output/
 
 BuildNuGetPackage/
