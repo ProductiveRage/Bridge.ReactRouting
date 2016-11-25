@@ -30,7 +30,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			_getItemSomething = AddRelativeRoute(
 				routeDetails: RouteBuilder.Empty.Fixed("item").String().Int(),
 				routeActionGenerator: match => new NavigateToItem<T>(match.Item1),
-				urlGenerator: (name, index) => GetPath("item", name, index.ToString())
+				urlGenerator: (name, index) => GetPath("item", name, index)
 			);
 		}
 		public RootPlusDynamicIdItemPagesNavigator(IDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
