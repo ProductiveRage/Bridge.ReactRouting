@@ -9,14 +9,14 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	public sealed class RootPlusHotelAndRestaurantSectionsNavigator : Navigator
 	{
 		private readonly Func<UrlPathDetails> _getRoot;
-		public RootPlusHotelAndRestaurantSectionsNavigator(IDispatcher dispatcher) : base(Set<NonBlankTrimmedString>.Empty, dispatcher)
+		public RootPlusHotelAndRestaurantSectionsNavigator(IDispatcher dispatcher) : base(NonNullList<NonBlankTrimmedString>.Empty, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
 
 			// This is the only route that this class directly creates..
 			_getRoot = AddRelativeRoute(
-				segments: Set<string>.Empty,
+				segments: NonNullList<string>.Empty,
 				routeAction: new NavigateToRoot(),
 				urlGenerator: () => GetPath()
 			);
@@ -24,11 +24,11 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			// .. however it does also create some other navigators that will declare routes under the "hotel" section and the "restaurant" section
 			// (and we'll need to add the routes that these navigators declare to this instance's total set of known routes()
 			Hotels = new RootPlusDynamicIdItemPagesNavigator<Hotel>(
-				parentSegments: Set.Of(new NonBlankTrimmedString("hotel")),
+				parentSegments: NonNullList.Of(new NonBlankTrimmedString("hotel")),
 				dispatcher: dispatcher
 			);
 			Restaurants = new RootPlusDynamicIdItemPagesNavigator<Restaurant>(
-				parentSegments: Set.Of(new NonBlankTrimmedString("restaurant")),
+				parentSegments: NonNullList.Of(new NonBlankTrimmedString("restaurant")),
 				dispatcher: dispatcher
 			);
 			PullInRoutesFrom(Hotels);

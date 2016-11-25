@@ -9,10 +9,10 @@ namespace ProductiveRage.ReactRouting
 	{
 		public static readonly Html5HistoryRouter Instance = new Html5HistoryRouter();
 
-		private Set<Action<UrlDetails>> _navigatedCallbacks;
+		private NonNullList<Action<UrlDetails>> _navigatedCallbacks;
 		private Html5HistoryRouter()
 		{
-			_navigatedCallbacks = Set<Action<UrlDetails>>.Empty;
+			_navigatedCallbacks = NonNullList<Action<UrlDetails>>.Empty;
 
 			Window.AddEventListener(EventType.PopState, e => RaiseNavigateToForCurrentLocation());
 		}

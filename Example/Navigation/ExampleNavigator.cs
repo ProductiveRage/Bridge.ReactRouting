@@ -31,7 +31,7 @@ namespace Example.Navigation
 
 			// Register home
 			_getHome = AddRelativeRoute(
-				segments: Set<string>.Empty,
+				segments: NonNullList<string>.Empty,
 				routeAction: new NavigateToHome(),
 				urlGenerator: () => GetPath()
 			);

@@ -10,13 +10,13 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		private readonly Func<UrlPathDetails> _getRoot;
 		private readonly Func<NonBlankTrimmedString, UrlPathDetails> _getItem;
 		private readonly Func<NonBlankTrimmedString, int, UrlPathDetails> _getItemSomething;
-		public RootPlusDynamicIdItemPagesNavigator(Set<NonBlankTrimmedString> parentSegments, IDispatcher dispatcher) : base(parentSegments, dispatcher)
+		public RootPlusDynamicIdItemPagesNavigator(NonNullList<NonBlankTrimmedString> parentSegments, IDispatcher dispatcher) : base(parentSegments, dispatcher)
 		{
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
 
 			_getRoot = AddRelativeRoute(
-				segments: Set<string>.Empty,
+				segments: NonNullList<string>.Empty,
 				routeAction: new NavigateToRoot<T>(),
 				urlGenerator: () => GetPath()
 			);
@@ -33,7 +33,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 				urlGenerator: (name, index) => GetPath("item", name, index)
 			);
 		}
-		public RootPlusDynamicIdItemPagesNavigator(IDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
+		public RootPlusDynamicIdItemPagesNavigator(IDispatcher dispatcher) : this(NonNullList<NonBlankTrimmedString>.Empty, dispatcher) { }
 
 		public UrlPathDetails Root() { return _getRoot(); }
 		public UrlPathDetails Item(NonBlankTrimmedString name) { return _getItem(name); }

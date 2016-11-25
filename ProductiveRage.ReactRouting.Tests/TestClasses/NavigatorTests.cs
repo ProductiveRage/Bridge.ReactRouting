@@ -32,7 +32,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(NonNullList<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: dispatcher => new RootPlusDynamicIdItemPagesNavigator<Hotel>(dispatcher)
 			);
@@ -60,7 +60,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(NonNullList<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: dispatcher => new RootPlusHotelAndRestaurantSectionsNavigator(dispatcher)
 			);
@@ -100,7 +100,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(NonNullList<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: dispatcher => new RootPlusHotelAndRestaurantSectionsNavigator(dispatcher)
 			);
@@ -143,7 +143,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("assert");
 
 			var navigatorTestWrapper = GetNavigatorToTest(
-				initialUrl: new UrlPathDetails(Set<NonBlankTrimmedString>.Empty),
+				initialUrl: new UrlPathDetails(NonNullList<NonBlankTrimmedString>.Empty),
 				assert: assert,
 				navigatorGenerator: dispatcher => new RootPlusDynamicIdItemPagesNavigator<Hotel>(dispatcher)
 			);
@@ -176,7 +176,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				throw new ArgumentNullException("navigatorGenerator");
 
 			var dispatcher = new AppDispatcher();
-			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(Set<NonBlankTrimmedString>.Empty, Optional<QueryString>.Missing));
+			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(NonNullList<NonBlankTrimmedString>.Empty, Optional<QueryString>.Missing));
 			var navigator = navigatorGenerator(dispatcher);
 			RouteCombiner.StartListening(
 				historyHandler,

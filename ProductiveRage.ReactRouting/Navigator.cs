@@ -6,11 +6,11 @@ namespace ProductiveRage.ReactRouting
 {
 	public abstract class Navigator
 	{
-		private readonly Set<NonBlankTrimmedString> _parentSegments;
+		private readonly NonNullList<NonBlankTrimmedString> _parentSegments;
 		private readonly IDispatcher _dispatcher;
-		private Set<IMatchRoutes> _routes;
+		private NonNullList<IMatchRoutes> _routes;
 
-		protected Navigator(Set<NonBlankTrimmedString> parentSegments, IDispatcher dispatcher)
+		protected Navigator(NonNullList<NonBlankTrimmedString> parentSegments, IDispatcher dispatcher)
 		{
 			if (parentSegments == null)
 				throw new ArgumentNullException("parentSegments");
@@ -19,11 +19,11 @@ namespace ProductiveRage.ReactRouting
 
 			_parentSegments = parentSegments;
 			_dispatcher = dispatcher;
-			_routes = Set<IMatchRoutes>.Empty;
+			_routes = NonNullList<IMatchRoutes>.Empty;
 		}
-		protected Navigator(IDispatcher dispatcher) : this(Set<NonBlankTrimmedString>.Empty, dispatcher) { }
+		protected Navigator(IDispatcher dispatcher) : this(NonNullList<NonBlankTrimmedString>.Empty, dispatcher) { }
 
-		public Set<IMatchRoutes> Routes { get { return _routes; } }
+		public NonNullList<IMatchRoutes> Routes { get { return _routes; } }
 
 		/// <summary>
 		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
@@ -41,7 +41,7 @@ namespace ProductiveRage.ReactRouting
 			if (urlGenerator == null)
 				throw new ArgumentNullException(nameof(urlGenerator));
 
-			return AddRelativeRoute(Set.Of(segment), routeAction, urlGenerator);
+			return AddRelativeRoute(NonNullList.Of(segment), routeAction, urlGenerator);
 		}
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace ProductiveRage.ReactRouting
 		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
 		/// defines a fixed route with zero, one or multiple segments (the urlGenerator delegate has zero arguments because there are zero variable segments in the route).
 		/// </summary>
-		protected Func<UrlPathDetails> AddRelativeRoute(Set<string> segments, INavigationDispatcherAction routeAction, Func<UrlPathDetails> urlGenerator)
+		protected Func<UrlPathDetails> AddRelativeRoute(NonNullList<string> segments, INavigationDispatcherAction routeAction, Func<UrlPathDetails> urlGenerator)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -283,7 +283,7 @@ namespace ProductiveRage.ReactRouting
 			if (segments == null)
 				throw new ArgumentNullException("segment");
 
-			var nonBlankSegments = Set<NonBlankTrimmedString>.Empty;
+			var nonBlankSegments = NonNullList<NonBlankTrimmedString>.Empty;
 			foreach (var segment in _parentSegments)
 				nonBlankSegments = nonBlankSegments.Add(new NonBlankTrimmedString(segment));
 			foreach (var segment in segments)

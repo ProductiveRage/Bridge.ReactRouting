@@ -7,11 +7,11 @@ namespace ProductiveRage.ReactRouting
 {
 	public sealed class RouteBuilder
 	{
-		private static RouteBuilder _empty = new RouteBuilder(Set<NonBlankTrimmedString>.Empty);
+		private static RouteBuilder _empty = new RouteBuilder(NonNullList<NonBlankTrimmedString>.Empty);
 		public static RouteBuilder Empty { get { return _empty; } }
 
-		private readonly Set<NonBlankTrimmedString> _segments;
-		private RouteBuilder(Set<NonBlankTrimmedString> segments)
+		private readonly NonNullList<NonBlankTrimmedString> _segments;
+		private RouteBuilder(NonNullList<NonBlankTrimmedString> segments)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -27,7 +27,7 @@ namespace ProductiveRage.ReactRouting
 			return new RouteBuilder(_segments.Add(segment));
 		}
 
-		public RouteBuilder Fixed(Set<NonBlankTrimmedString> segments)
+		public RouteBuilder Fixed(NonNullList<NonBlankTrimmedString> segments)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -77,9 +77,9 @@ namespace ProductiveRage.ReactRouting
 		[IgnoreGeneric]
 		private sealed class BuilderWithExtractedValues<TValues> : IBuildRoutesWithVariablesToMatch<TValues>
 		{
-			private readonly Set<IMatchSegments> _segmentMatchers;
-			private readonly Optional<Func<Set<object>, TValues>> _extractedValueBuilder;
-			private BuilderWithExtractedValues(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<object>, TValues>> extractedValueBuilder)
+			private readonly NonNullList<IMatchSegments> _segmentMatchers;
+			private readonly Optional<Func<NonNullList<object>, TValues>> _extractedValueBuilder;
+			private BuilderWithExtractedValues(NonNullList<IMatchSegments> segmentMatchers, Optional<Func<NonNullList<object>, TValues>> extractedValueBuilder)
 			{
 				if (segmentMatchers == null)
 					throw new ArgumentNullException("segmentMatchers");
@@ -87,7 +87,7 @@ namespace ProductiveRage.ReactRouting
 				_segmentMatchers = segmentMatchers;
 				_extractedValueBuilder = extractedValueBuilder;
 			}
-			public BuilderWithExtractedValues() : this(Set<IMatchSegments>.Empty, null) { }
+			public BuilderWithExtractedValues() : this(NonNullList<IMatchSegments>.Empty, null) { }
 
 			[IgnoreGeneric]
 			public IBuildRoutesWithVariablesToMatch<TValues> Fixed(NonBlankTrimmedString segment)
@@ -111,7 +111,7 @@ namespace ProductiveRage.ReactRouting
 				if (parser == null)
 					throw new ArgumentNullException("parser");
 
-				Func<Set<object>, TValuesExpanded> extractedValueBuilderExpanded = valuesExtractedFromMatchedVariables =>
+				Func<NonNullList<object>, TValuesExpanded> extractedValueBuilderExpanded = valuesExtractedFromMatchedVariables =>
 				{
 					// Every time that a variable URL segment is added to the route, we need to update the "value extractor" so that we can handle this additional variable segment
 					// - The first time that a variable segment is added, there will not be any value extractor from previous variable segments and so the new value extractor will
@@ -145,7 +145,7 @@ namespace ProductiveRage.ReactRouting
 					}
 
 					// If this lambda is executed then we know that the last segment that was matched was a variable which was parsed using the current parser (since that is
-					// the point at which this lambda would be useful). However, valuesExtractedFromMatchedVariables is only a Set<object> and each value does not have any
+					// the point at which this lambda would be useful). However, valuesExtractedFromMatchedVariables is only a NonNullList<object> and each value does not have any
 					// additional type information - so we need to perform a cast from object to TVariable (which, again, we are confident is safe since the only way that
 					// this code path should be executed is if the last parsed value was parsed using the parser in this scope). We can't use a regular cast since TVariable
 					// is not available at runtime (due to the use of [IgnoreGeneric]) but, since we know that the value is already of the correct type and that there is no
@@ -172,10 +172,10 @@ namespace ProductiveRage.ReactRouting
 			[IgnoreGeneric]
 			private sealed class VariableRouteDetails : IMatchRoutes
 			{
-				private readonly Set<IMatchSegments> _segmentMatchers;
-				private readonly Optional<Func<Set<object>, TValues>> _extractedValueBuilder;
+				private readonly NonNullList<IMatchSegments> _segmentMatchers;
+				private readonly Optional<Func<NonNullList<object>, TValues>> _extractedValueBuilder;
 				private readonly Action<TValues> _ifMatched;
-				public VariableRouteDetails(Set<IMatchSegments> segmentMatchers, Optional<Func<Set<object>, TValues>> extractedValueBuilder, Action<TValues> ifMatched)
+				public VariableRouteDetails(NonNullList<IMatchSegments> segmentMatchers, Optional<Func<NonNullList<object>, TValues>> extractedValueBuilder, Action<TValues> ifMatched)
 				{
 					if (segmentMatchers == null)
 						throw new ArgumentNullException("segmentMatchers");
@@ -195,7 +195,7 @@ namespace ProductiveRage.ReactRouting
 					if (url.Segments.Count != _segmentMatchers.Count)
 						return false;
 
-					var valuesExtractedFromMatchedVariables = Set<object>.Empty;
+					var valuesExtractedFromMatchedVariables = NonNullList<object>.Empty;
 					foreach (var segmentAndMatcher in url.Segments.Zip(_segmentMatchers, (segment, matcher) => new { Segment = segment, Matcher = matcher }))
 					{
 						var matchResult = segmentAndMatcher.Matcher.Match(segmentAndMatcher.Segment);
@@ -230,7 +230,7 @@ namespace ProductiveRage.ReactRouting
 					return true;
 				}
 
-				public IMatchRoutes MakeRelativeTo(Set<NonBlankTrimmedString> parentSegments)
+				public IMatchRoutes MakeRelativeTo(NonNullList<NonBlankTrimmedString> parentSegments)
 				{
 					if (parentSegments == null)
 						throw new ArgumentNullException("parentSegments");
@@ -322,9 +322,9 @@ namespace ProductiveRage.ReactRouting
 
 		private sealed class StaticRouteDetails : IMatchRoutes
 		{
-			private readonly Set<NonBlankTrimmedString> _segments;
+			private readonly NonNullList<NonBlankTrimmedString> _segments;
 			private readonly Action _ifMatched;
-			public StaticRouteDetails(Set<NonBlankTrimmedString> segments, Action ifMatched)
+			public StaticRouteDetails(NonNullList<NonBlankTrimmedString> segments, Action ifMatched)
 			{
 				if (segments == null)
 					throw new ArgumentNullException("segments");
@@ -350,7 +350,7 @@ namespace ProductiveRage.ReactRouting
 				return true;
 			}
 
-			public IMatchRoutes MakeRelativeTo(Set<NonBlankTrimmedString> parentSegments)
+			public IMatchRoutes MakeRelativeTo(NonNullList<NonBlankTrimmedString> parentSegments)
 			{
 				if (parentSegments == null)
 					throw new ArgumentNullException("parentSegments");

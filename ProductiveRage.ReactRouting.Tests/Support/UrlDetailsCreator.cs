@@ -10,7 +10,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			if (segments == null)
 				throw new ArgumentNullException("segments");
 
-			var nonBlankTrimmedStrings = Set<NonBlankTrimmedString>.Empty;
+			var nonBlankTrimmedStrings = NonNullList<NonBlankTrimmedString>.Empty;
 			foreach (var value in segments)
 			{
 				if (string.IsNullOrWhiteSpace(value))

@@ -5,13 +5,13 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 {
 	public sealed class MockHistoryHandler : IInteractWithBrowserRouting
 	{
-		private Set<Action<UrlDetails>> _navigatedCallbacks;
+		private NonNullList<Action<UrlDetails>> _navigatedCallbacks;
 		public MockHistoryHandler(UrlDetails initialUrl)
 		{
 			if (initialUrl == null)
 				throw new ArgumentNullException("initialUrl");
 
-			_navigatedCallbacks = Set<Action<UrlDetails>>.Empty;
+			_navigatedCallbacks = NonNullList<Action<UrlDetails>>.Empty;
 			CurrentLocation = initialUrl;
 		}
 

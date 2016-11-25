@@ -13,7 +13,7 @@ namespace ProductiveRage.ReactRouting.Helpers
 	/// </summary>
 	public sealed class NavigateActionMatcher
 	{
-		public static readonly NavigateActionMatcher Empty = new NavigateActionMatcher(Set<Matcher>.Empty);
+		public static readonly NavigateActionMatcher Empty = new NavigateActionMatcher(NonNullList<Matcher>.Empty);
 
 		/// <summary>
 		/// Because ReactElement is External, we can't have a property that is Optional of ReactElement because of how Bridge works (it needs a real
@@ -21,8 +21,8 @@ namespace ProductiveRage.ReactRouting.Helpers
 		/// </summary>
 		private delegate Optional<Func<ReactElement>> Matcher(INavigationDispatcherAction action);
 
-		private readonly Set<Matcher> _navigateActionMatchers;
-		private NavigateActionMatcher(Set<Matcher> navigateActionMatchers)
+		private readonly NonNullList<Matcher> _navigateActionMatchers;
+		private NavigateActionMatcher(NonNullList<Matcher> navigateActionMatchers)
 		{
 			if (navigateActionMatchers == null)
 				throw new ArgumentNullException("navigateActionMatchers");

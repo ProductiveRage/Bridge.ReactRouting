@@ -10,7 +10,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 	{
 		private readonly IInteractWithBrowserRouting _historyHandler;
 		private readonly Assert _assert;
-		private Set<INavigationDispatcherAction> _receivedNavigationActions;
+		private NonNullList<INavigationDispatcherAction> _receivedNavigationActions;
 		private int _actionsConfirmedSoFar;
 		public NavigatorTestingDetails(TNavigator navigator, IInteractWithBrowserRouting historyHandler, IDispatcher dispatcher, Assert assert)
 		{
@@ -23,7 +23,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			if (assert == null)
 				throw new ArgumentNullException("assert");
 
-			_receivedNavigationActions = Set<INavigationDispatcherAction>.Empty;
+			_receivedNavigationActions = NonNullList<INavigationDispatcherAction>.Empty;
 			dispatcher.Register(message => {
 				var navigationDispatcherAction = message.Action as INavigationDispatcherAction;
 				if (navigationDispatcherAction != null)

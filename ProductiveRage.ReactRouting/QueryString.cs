@@ -33,8 +33,8 @@ namespace ProductiveRage.ReactRouting
 			);
 		}
 
-		private readonly Set<Segment> _segments;
-		public QueryString(Set<Segment> segments)
+		private readonly NonNullList<Segment> _segments;
+		public QueryString(NonNullList<Segment> segments)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
@@ -42,7 +42,7 @@ namespace ProductiveRage.ReactRouting
 			_segments = segments;
 		}
 
-		public new Set<Optional<string>> this[string name]
+		public new NonNullList<Optional<string>> this[string name]
 		{
 			get
 			{

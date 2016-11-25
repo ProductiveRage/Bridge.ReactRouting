@@ -10,11 +10,11 @@ namespace ProductiveRage.ReactRouting
 	/// </summary>
 	public sealed class UrlPathDetails : IAmImmutable
 	{
-		public UrlPathDetails(Set<NonBlankTrimmedString> segments)
+		public UrlPathDetails(NonNullList<NonBlankTrimmedString> segments)
 		{
 			this.CtorSet(_ => _.Segments, segments);
 		}
-		public Set<NonBlankTrimmedString> Segments { get; private set; }
+		public NonNullList<NonBlankTrimmedString> Segments { get; private set; }
 
 		public UrlDetails ToUrlDetails(Optional<QueryString> queryString)
 		{

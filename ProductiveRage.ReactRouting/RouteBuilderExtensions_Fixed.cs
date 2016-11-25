@@ -25,7 +25,7 @@ namespace ProductiveRage.ReactRouting
 			if (segments == null)
 				throw new ArgumentNullException("segments");
 
-			var validatedSegments = Set<NonBlankTrimmedString>.Empty;
+			var validatedSegments = NonNullList<NonBlankTrimmedString>.Empty;
 			foreach (var segment in ((IEnumerable<string>)segments).Reverse())
 			{
 				if (string.IsNullOrWhiteSpace(segment))
