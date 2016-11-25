@@ -14,25 +14,25 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			if (dispatcher == null)
 				throw new ArgumentNullException("dispatcher");
 
-			AddRelativeRoute(
-				Set<string>.Empty,
-				new NavigateToRoot()
+			// This is the only route that this class directly creates..
+			_getRoot = AddRelativeRoute(
+				segments: Set<string>.Empty,
+				routeAction: new NavigateToRoot(),
+				urlGenerator: () => GetPath()
 			);
-			_getRoot = () => GetPath();
 
+			// .. however it does also create some other navigators that will declare routes under the "hotel" section and the "restaurant" section
+			// (and we'll need to add the routes that these navigators declare to this instance's total set of known routes()
 			Hotels = new RootPlusDynamicIdItemPagesNavigator<Hotel>(
-				Set.Of(new NonBlankTrimmedString("hotel")),
-				dispatcher
+				parentSegments: Set.Of(new NonBlankTrimmedString("hotel")),
+				dispatcher: dispatcher
 			);
-			foreach (var route in Hotels.Routes)
-				AddRelativeRoute(route);
-
 			Restaurants = new RootPlusDynamicIdItemPagesNavigator<Restaurant>(
-				Set.Of(new NonBlankTrimmedString("restaurant")),
-				dispatcher
+				parentSegments: Set.Of(new NonBlankTrimmedString("restaurant")),
+				dispatcher: dispatcher
 			);
-			foreach (var route in Restaurants.Routes)
-				AddRelativeRoute(route);
+			PullInRoutesFrom(Hotels);
+			PullInRoutesFrom(Restaurants);
 		}
 
 		public UrlPathDetails Root() { return _getRoot(); }

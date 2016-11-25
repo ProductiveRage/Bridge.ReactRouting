@@ -55,7 +55,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				var routeInfo = RouteBuilder.Empty
 					.Fixed("product")
 					.String()
-					.Int((valuesSoFar, newValue) => valuesSoFar.Extend(newValue));
+					.Int();
 				var url = UrlDetailsCreator.New("product", "toy", "123");
 				assert.RouteMatched(routeInfo, url, Tuple.Create(new NonBlankTrimmedString("toy"), 123));
 			});

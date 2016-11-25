@@ -30,25 +30,25 @@ namespace Example.Navigation
 			// caught until runtime).
 
 			// Register home
-			AddRelativeRoute(
-				Set<string>.Empty,
-				new NavigateToHome()
+			_getHome = AddRelativeRoute(
+				segments: Set<string>.Empty,
+				routeAction: new NavigateToHome(),
+				urlGenerator: () => GetPath()
 			);
-			_getHome = () => GetPath();
 
 			// Register "/Accommodation"
-			AddRelativeRoute(
-				"Accommodation",
-				new NavigateToAccommodation(Optional<NonBlankTrimmedString>.Missing)
+			_getAccommodation = AddRelativeRoute(
+				segment: "Accommodation",
+				routeAction: new NavigateToAccommodation(Optional<NonBlankTrimmedString>.Missing),
+				urlGenerator: () => GetPath("Accommodation")
 			);
-			_getAccommodation = () => GetPath("Accommodation");
 
 			// Register "/Accommodation/{string}"
-			AddRelativeRoute(
-				RouteBuilder.Empty.Fixed("Accommodation").String(),
-				matchedValue => new NavigateToAccommodation(matchedValue.Item1)
+			_getAccommodationWithSegment = AddRelativeRoute(
+				routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String(),
+				routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue),
+				urlGenerator: segment => GetPath("Accommodation", segment)
 			);
-			_getAccommodationWithSegment = segment => GetPath("Accommodation", segment.Value);
 		}
 
 		public UrlPathDetails Home() { return _getHome(); }

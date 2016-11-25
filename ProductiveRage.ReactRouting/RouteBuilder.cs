@@ -41,7 +41,7 @@ namespace ProductiveRage.ReactRouting
 		[IgnoreGeneric]
 		public IBuildRoutesWithVariablesToMatch<TValues> Variable<TValues, TVariable>(
 			Func<TVariable, TValues> valueExtender,
-			Func<NonBlankTrimmedString, Optional<TVariable>> parser) where TValues : class
+			Func<NonBlankTrimmedString, Optional<TVariable>> parser)
 		{
 			if (valueExtender == null)
 				throw new ArgumentNullException("valueExtender");
@@ -62,7 +62,7 @@ namespace ProductiveRage.ReactRouting
 		}
 
 		[IgnoreGeneric]
-		public interface IBuildRoutesWithVariablesToMatch<TValues> where TValues : class
+		public interface IBuildRoutesWithVariablesToMatch<TValues>
 		{
 			[IgnoreGeneric]
 			IBuildRoutesWithVariablesToMatch<TValues> Fixed(NonBlankTrimmedString segment);
@@ -71,11 +71,11 @@ namespace ProductiveRage.ReactRouting
 			[IgnoreGeneric]
 			IBuildRoutesWithVariablesToMatch<TValuesExpanded> Variable<TValuesExpanded, TVariable>(
 				Func<TValues, TVariable, TValuesExpanded> valueExtender,
-				Func<NonBlankTrimmedString, Optional<TVariable>> parser) where TValuesExpanded : class;
+				Func<NonBlankTrimmedString, Optional<TVariable>> parser);
 		}
 
 		[IgnoreGeneric]
-		private sealed class BuilderWithExtractedValues<TValues> : IBuildRoutesWithVariablesToMatch<TValues> where TValues : class
+		private sealed class BuilderWithExtractedValues<TValues> : IBuildRoutesWithVariablesToMatch<TValues>
 		{
 			private readonly Set<IMatchSegments> _segmentMatchers;
 			private readonly Optional<Func<Set<object>, TValues>> _extractedValueBuilder;
@@ -104,7 +104,7 @@ namespace ProductiveRage.ReactRouting
 			[IgnoreGeneric]
 			public IBuildRoutesWithVariablesToMatch<TValuesExpanded> Variable<TValuesExpanded, TVariable>(
 				Func<TValues, TVariable, TValuesExpanded> valueExtender,
-				Func<NonBlankTrimmedString, Optional<TVariable>> parser) where TValuesExpanded : class
+				Func<NonBlankTrimmedString, Optional<TVariable>> parser)
 			{
 				if (valueExtender == null)
 					throw new ArgumentNullException("valueExtender");
@@ -127,12 +127,14 @@ namespace ProductiveRage.ReactRouting
 					TValues previousValue;
 					if (valuesExtractedFromMatchedVariables.Count == 1)
 					{
-						// Note: When using anonymous types (which is how I expect the interim values to be represented), Bridge requires that the classes and methods specify
-						// [IgnoreGeneric] (since it doesn't generate classes for anonymous types and so will emit "Anonymous Type" as the type parameter, which means that the
-						// JavaScript will be invalid). The problem with this is that we can't use "default(TValues)" since the JavaScript won't know what "TValues" is, as that
-						// type information is excluded due to [IgnoreGeneric] - so we have to resort to using null. However, we can only do THAT if TValues is a reference type,
-						// which necessitates the "where TValuesExpanded : class" type constraint.
-						previousValue = null;
+						// Historically, when using anonymous types (which is how I expected the interim values to be represented), Bridge required that the classes and methods
+						// specify [IgnoreGeneric] since it didn't generate classes for anonymous types and so would emit "Anonymous Type" as the type parameter, which meant that
+						// the JavaScript would be invalid. However, this meant that "previousValue" could not be set to default(TValues) since "TValues" would not be known at
+						// runtime and so "previousValue" would be set to null if it had no value, which required that "TValues" be a reference type (otherwise the C# compiler
+						// would report an error: "Cannot convert null to type parameter 'TValues' because it could be a non-nullable value type. Consider using 'default(TValues)'
+						// instead". A different workaround is to set "previousValue" to null using Script.Write, which means that there is no need for a "TValues : class" type
+						// constraint. The fact that a value type may be set to null will have no impact because it only gets set to null if it won't be used.
+						previousValue = Script.Write<TValues>("null");
 					}
 					else
 					{
@@ -216,13 +218,14 @@ namespace ProductiveRage.ReactRouting
 					// class and may not be instantiated by anything other than the RouteBuilder)
 					TValues extractedValue;
 					if (_extractedValueBuilder.IsDefined)
-					{
-						// When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
-						// generates the JavaScript - so we need to copy the function reference (to "valueBuilder", here) and then execute that as a function
 						extractedValue = _extractedValueBuilder.Value(valuesExtractedFromMatchedVariables);
-					}
 					else
-						extractedValue = null;
+					{
+						// If there's no _extractedValueBuilder then no-one cares about what's matched here, so we can set extractedValue to null (we have to use Script.Write
+						// because we can't be sure that TValues is not a value type and we can't set it to default(TValues) because we don't have access to the TValues type
+						// at runtime because this class is decorated with [IgnoreGeneric]
+						extractedValue = Script.Write<TValues>("null");
+					}
 					_ifMatched(extractedValue);
 					return true;
 				}

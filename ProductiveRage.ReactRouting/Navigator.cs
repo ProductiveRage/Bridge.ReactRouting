@@ -26,35 +26,39 @@ namespace ProductiveRage.ReactRouting
 		public Set<IMatchRoutes> Routes { get { return _routes; } }
 
 		/// <summary>
-		/// The single segment must be a non-null, non-blank and non-whitespace-only value. The method signature only allows string rather than
-		/// NonBlankTrimmedString to make the route-declaring code in derived classes as clean as possible (at the cost of a less descriptive
-		/// method signature). Since the segment value will be wrapped in a NonBlankTrimmedString instance, any leading or trailing whitespace
-		/// will be ignored. If any parent segments were passed to the constructor of this instance, they will automatically be injected before
-		/// the segment specified here.
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
+		/// defines a fixed route with a single segment (and so the urlGenerator delegate has zero arguments).
 		/// </summary>
-		protected void AddRelativeRoute(string segment, INavigationDispatcherAction routeAction)
+		protected Func<UrlPathDetails> AddRelativeRoute(string segment, INavigationDispatcherAction routeAction, Func<UrlPathDetails> urlGenerator)
 		{
 			if (string.IsNullOrWhiteSpace(segment))
 				throw new ArgumentException("Null, blank or whitespace-only segment specified");
 			if (routeAction == null)
 				throw new ArgumentNullException("routeAction");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
 
-			AddRelativeRoute(Set.Of(segment), routeAction);
+			return AddRelativeRoute(Set.Of(segment), routeAction, urlGenerator);
 		}
 
 		/// <summary>
-		/// All of the segments must be non-blank and non-whitespace-only values. The method signature only allows strings rather than
-		/// NonBlankTrimmedStrings to make the route-declaring code in derived classes as clean as possible (at the cost of a less descriptive
-		/// method signature). Since the segment values will be wrapped in NonBlankTrimmedString instances, any leading or trailing whitespace
-		/// will be ignored. If any parent segments were passed to the constructor of this instance, they will automatically be injected before
-		/// the segments specified here.
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
+		/// defines a fixed route with zero, one or multiple segments (the urlGenerator delegate has zero arguments because there are zero variable segments in the route).
 		/// </summary>
-		protected void AddRelativeRoute(Set<string> segments, INavigationDispatcherAction routeAction)
+		protected Func<UrlPathDetails> AddRelativeRoute(Set<string> segments, INavigationDispatcherAction routeAction, Func<UrlPathDetails> urlGenerator)
 		{
 			if (segments == null)
 				throw new ArgumentNullException("segments");
 			if (routeAction == null)
 				throw new ArgumentNullException("routeAction");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
 
 			var relativeRouteSegments = RouteBuilder.Empty;
 			foreach (var segment in segments)
@@ -63,40 +67,209 @@ namespace ProductiveRage.ReactRouting
 					throw new ArgumentException("Blank or whitespace-only segment specified in fixed route");
 				relativeRouteSegments = relativeRouteSegments.Fixed(new NonBlankTrimmedString(segment));
 			}
-			AddRelativeRoute(
+			AddRelativeRouteOnly(
 				relativeRouteSegments.ToRoute(() => _dispatcher.HandleViewAction(routeAction))
 			);
+			return urlGenerator;
 		}
 
 		/// <summary>
-		/// This is a convenience method so that the derived class may declare variable routes in a structure that is similar to the way way in
-		/// which the fixed routes may be declared through the alternate AddRelativeRoute signatures - where the details of the route are specified
-		/// by the first argument and the Dispatcher action to raise if the route is matched is defined using the second argument. If any parent
-		/// segments were passed to the constructor of this instance, they will automatically be injected into the route described here.
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
+		/// defines a route whose variables may all be fulfilled by a TMatchedValue instance (the urlGenerator delegate has a single argument since a single TMatchedValue may
+		/// fully populate a route).
 		/// </summary>
-		protected void AddRelativeRoute<TMatchedValue>(
+		protected Func<TMatchedValue, UrlPathDetails> AddRelativeRoute<TMatchedValue>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TMatchedValue> routeDetails,
-			Func<TMatchedValue, INavigationDispatcherAction> routeActionGenerator) where TMatchedValue : class
+			Func<TMatchedValue, INavigationDispatcherAction> routeActionGenerator,
+			Func<TMatchedValue, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
 				throw new ArgumentNullException("routeDetails");
 			if (routeActionGenerator == null)
 				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
 
-			AddRelativeRoute(
+			AddRelativeRouteOnly(
 				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
 			);
+			return urlGenerator;
 		}
 
 		/// <summary>
-		/// If any parent segments were passed to the constructor of this instance, they will automatically be injected into the route provided here
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with two elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
 		/// </summary>
-		protected void AddRelativeRoute(IMatchRoutes route)
+		protected Func<T1, T2, UrlPathDetails> AddRelativeRoute<T1, T2>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2>> routeDetails,
+			Func<Tuple<T1, T2>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, UrlPathDetails> urlGenerator)
 		{
-			if (route == null)
-				throw new ArgumentNullException("route");
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
 
-			_routes = _routes.Add(route.MakeRelativeTo(_parentSegments));
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// <summary>
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with three elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		/// </summary>
+		protected Func<T1, T2, T3, UrlPathDetails> AddRelativeRoute<T1, T2, T3>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3>> routeDetails,
+			Func<Tuple<T1, T2, T3>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with four elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		/// </summary>
+		protected Func<T1, T2, T3, T4, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4>> routeDetails,
+			Func<Tuple<T1, T2, T3, T4>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with five elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		protected Func<T1, T2, T3, T4, T5, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5>> routeDetails,
+			Func<Tuple<T1, T2, T3, T4, T5>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with six elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		protected Func<T1, T2, T3, T4, T5, T6, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6>> routeDetails,
+			Func<Tuple<T1, T2, T3, T4, T5, T6>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with seven elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		protected Func<T1, T2, T3, T4, T5, T6, T7, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6, T7>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6, T7>> routeDetails,
+			Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, T7, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
+		}
+
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with eight elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		protected Func<T1, T2, T3, T4, T5, T6, T7, T8, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6, T7, T8>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>> routeDetails,
+			Func<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, T7, T8, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+			);
+			return urlGenerator;
 		}
 
 		/// <summary>
@@ -116,10 +289,30 @@ namespace ProductiveRage.ReactRouting
 			foreach (var segment in segments)
 			{
 				if (string.IsNullOrWhiteSpace(segment))
-					throw new ArgumentException("Null/blank/whitespace-only string encountered in segments array");
+					throw new ArgumentException("Null/blank/whitespace-only value encountered in segments array");
 				nonBlankSegments = nonBlankSegments.Add(new NonBlankTrimmedString(segment));
 			}
 			return new UrlPathDetails(nonBlankSegments);
+		}
+
+		/// <summary>
+		/// If any parent segments were passed to the constructor of this instance, they will automatically be injected into the route provided here
+		/// </summary>
+		private void AddRelativeRouteOnly(IMatchRoutes route)
+		{
+			if (route == null)
+				throw new ArgumentNullException("route");
+
+			_routes = _routes.Add(route.MakeRelativeTo(_parentSegments));
+		}
+
+		protected void PullInRoutesFrom(Navigator otherNavigator)
+		{
+			if (otherNavigator == null)
+				throw new ArgumentNullException(nameof(otherNavigator));
+
+			foreach (var route in otherNavigator.Routes)
+				AddRelativeRouteOnly(route);
 		}
 	}
 }

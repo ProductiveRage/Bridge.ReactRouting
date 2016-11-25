@@ -27,7 +27,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			this Assert assert,
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> routeInfo,
 			UrlPathDetails url,
-			TValues expectedValue) where TValues : class
+			TValues expectedValue)
 		{
 			var route = routeInfo.ToRoute(extractedValue => assert.DeepEqual(extractedValue, expectedValue));
 			route.ExecuteCallbackIfUrlMatches(url);
@@ -37,7 +37,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		public static void RouteNotMatched<TValues>(
 			this Assert assert,
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> routeInfo,
-			UrlPathDetails url) where TValues : class
+			UrlPathDetails url)
 		{
 			var routeWasMatched = false;
 			var route = routeInfo.ToRoute(extractedValue => routeWasMatched = true);
