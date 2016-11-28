@@ -109,7 +109,7 @@ namespace ProductiveRage.ReactRouting
 		/// </summary>
 		protected Func<T1, T2, UrlPathDetails> AddRelativeRoute<T1, T2>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2>> routeDetails,
-			Func<Tuple<T1, T2>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -120,7 +120,10 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2
+				)))
 			);
 			return urlGenerator;
 		}
@@ -135,7 +138,7 @@ namespace ProductiveRage.ReactRouting
 		/// </summary>
 		protected Func<T1, T2, T3, UrlPathDetails> AddRelativeRoute<T1, T2, T3>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3>> routeDetails,
-			Func<Tuple<T1, T2, T3>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -146,7 +149,11 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3
+				)))
 			);
 			return urlGenerator;
 		}
@@ -161,7 +168,7 @@ namespace ProductiveRage.ReactRouting
 		/// </summary>
 		protected Func<T1, T2, T3, T4, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4>> routeDetails,
-			Func<Tuple<T1, T2, T3, T4>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, T4, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -172,7 +179,12 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3,
+					matchedValues.Item4
+				)))
 			);
 			return urlGenerator;
 		}
@@ -185,7 +197,7 @@ namespace ProductiveRage.ReactRouting
 		/// a Tuple is used (with five elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
 		protected Func<T1, T2, T3, T4, T5, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5>> routeDetails,
-			Func<Tuple<T1, T2, T3, T4, T5>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, T4, T5, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -196,7 +208,13 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3,
+					matchedValues.Item4,
+					matchedValues.Item5
+				)))
 			);
 			return urlGenerator;
 		}
@@ -209,7 +227,7 @@ namespace ProductiveRage.ReactRouting
 		/// a Tuple is used (with six elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
 		protected Func<T1, T2, T3, T4, T5, T6, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6>> routeDetails,
-			Func<Tuple<T1, T2, T3, T4, T5, T6>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, T4, T5, T6, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -220,7 +238,14 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3,
+					matchedValues.Item4,
+					matchedValues.Item5,
+					matchedValues.Item6
+				)))
 			);
 			return urlGenerator;
 		}
@@ -233,7 +258,7 @@ namespace ProductiveRage.ReactRouting
 		/// a Tuple is used (with seven elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
 		protected Func<T1, T2, T3, T4, T5, T6, T7, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6, T7>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6, T7>> routeDetails,
-			Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, T7, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, T4, T5, T6, T7, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -244,7 +269,15 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3,
+					matchedValues.Item4,
+					matchedValues.Item5,
+					matchedValues.Item6,
+					matchedValues.Item7
+				)))
 			);
 			return urlGenerator;
 		}
@@ -257,7 +290,7 @@ namespace ProductiveRage.ReactRouting
 		/// a Tuple is used (with eight elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
 		protected Func<T1, T2, T3, T4, T5, T6, T7, T8, UrlPathDetails> AddRelativeRoute<T1, T2, T3, T4, T5, T6, T7, T8>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>> routeDetails,
-			Func<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, T2, T3, T4, T5, T6, T7, T8, INavigationDispatcherAction> routeActionGenerator,
 			Func<T1, T2, T3, T4, T5, T6, T7, T8, UrlPathDetails> urlGenerator)
 		{
 			if (routeDetails == null)
@@ -268,7 +301,16 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues)))
+				routeDetails.ToRoute(matchedValues => _dispatcher.HandleViewAction(routeActionGenerator(
+					matchedValues.Item1,
+					matchedValues.Item2,
+					matchedValues.Item3,
+					matchedValues.Item4,
+					matchedValues.Item5,
+					matchedValues.Item6,
+					matchedValues.Item7,
+					matchedValues.Rest
+				)))
 			);
 			return urlGenerator;
 		}

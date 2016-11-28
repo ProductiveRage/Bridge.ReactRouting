@@ -29,7 +29,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 			_getItemSomething = AddRelativeRoute(
 				routeDetails: RouteBuilder.Empty.Fixed("item").String().Int(),
-				routeActionGenerator: match => new NavigateToItem<T>(match.Item1),
+				routeActionGenerator: (name, index) => new NavigateToItem<T>(name, index),
 				urlGenerator: (name, index) => GetPath("item", name, index)
 			);
 		}
