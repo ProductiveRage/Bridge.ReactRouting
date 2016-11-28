@@ -79,7 +79,7 @@ The ExampleNavigator class would be integrated into an application with code suc
 	  .AddFor<NavigateToAccommodation>(new AccommodationContentContainer(navigator))
 	  .AddFor<InvalidRoute>(new NotFoundContainer(navigator));
 	
-	// Render the application state (since no navigiation events have been raised yet, this will not display anything -
+	// Render the application state (since no navigiation events have been raised yet, this will not display anything
 	// but the RoutingStoreActivatorContainer will be waiting to receive navigation actions so that the appropriate
 	// content for the URL can be displayed in a moment)
 	React.Render(
@@ -176,7 +176,7 @@ I suspect that Tuples will offer the most convenient and succinct code in many c
 
 ## Nesting routes
 
-When segregating code, it may be desirable that has one "module" that is responsible for handling routes within a section of an application but which doesn't know what route into that section is. For example, instead of the ExampleNavigator defining routes for home and for the root of the Accommodation section and for the single-variable route within Accommodation, it may be make sense to move the Accommodation routes into its own Navigator class. Like this:
+When segregating code, it may be desirable to have one "module" that is responsible for handling routes within a section of an application but which doesn't know what the route into that section is. For example, instead of the ExampleNavigator defining routes for home *and* for the root of the Accommodation section *and* for the single-variable route within Accommodation, it may be make sense to move the Accommodation routes into its own Navigator class -
 
 	public sealed class AccommodationNavigator : Navigator
 	{
@@ -208,7 +208,7 @@ When segregating code, it may be desirable that has one "module" that is respons
 
 Note that the routes are defined as if they start from the root of the site (there is no mention of the fixed "Accommodation" segment) and, instead, a "parentSegments" list is passed into the constructor.
 
-The ExampleNavigator now becomes:
+The ExampleNavigator becomes:
 
 	public sealed class ExampleNavigator : Navigator
 	{
