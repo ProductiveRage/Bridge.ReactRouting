@@ -57,7 +57,10 @@ namespace Example
 			//   rendered to whatever container is specified, see below..)
 			var navigateActionMatchers = NavigateActionMatcher.Empty
 				.AddFor<NavigateToHome>(new HomeContainer(navigator))
-				.AddFor<NavigateToAccommodation>(action => action.Segment.IsDefined, action => new AccommodationListContainer(navigator, action.Segment.Value))
+				.AddFor<NavigateToAccommodation>(
+					condition: action => action.Segment.IsDefined,
+					elementGenerator: action => new AccommodationListContainer(navigator, action.Segment.Value)
+				)
 				.AddFor<NavigateToAccommodation>(new AccommodationContentContainer(navigator))
 				.AddFor<InvalidRoute>(new NotFoundContainer(navigator));
 
