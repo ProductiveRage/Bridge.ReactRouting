@@ -23,16 +23,14 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 			// .. however it does also create some other navigators that will declare routes under the "hotel" section and the "restaurant" section
 			// (and we'll need to add the routes that these navigators declare to this instance's total set of known routes()
-			Hotels = new RootPlusDynamicIdItemPagesNavigator<Hotel>(
+			PullInRoutesFrom(Hotels = new RootPlusDynamicIdItemPagesNavigator<Hotel>(
 				parentSegments: NonNullList.Of(new NonBlankTrimmedString("hotel")),
 				dispatcher: dispatcher
-			);
-			Restaurants = new RootPlusDynamicIdItemPagesNavigator<Restaurant>(
+			));
+			PullInRoutesFrom(Restaurants = new RootPlusDynamicIdItemPagesNavigator<Restaurant>(
 				parentSegments: NonNullList.Of(new NonBlankTrimmedString("restaurant")),
 				dispatcher: dispatcher
-			);
-			PullInRoutesFrom(Hotels);
-			PullInRoutesFrom(Restaurants);
+			));
 		}
 
 		public UrlPathDetails Root() { return _getRoot(); }

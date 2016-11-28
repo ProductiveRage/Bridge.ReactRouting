@@ -173,3 +173,66 @@ The "/Accommodation/{string}" route definition from the ExampleNavigator above c
 This is also more verbose than the Tuple approach but it has the anonymous-type-approach's advantage of not limiting how many segments may be matches and it doesn't have the *disadvantage* around the duplication of property names within each variable route segment's matching logic,.
 
 I suspect that Tuples will offer the most convenient and succinct code in many cases but there are alternatives to consider for when you want to be more expressive.
+
+## Nesting routes
+
+When segregating code, it may be desirable that has one "module" that is responsible for handling routes within a section of an application but which doesn't know what route into that section is. For example, instead of the ExampleNavigator defining routes for home and for the root of the Accommodation section and for the single-variable route within Accommodation, it may be make sense to move the Accommodation routes into its own Navigator class. Like this:
+
+	public sealed class AccommodationNavigator : Navigator
+	{
+		private readonly Func<UrlPathDetails> _getRoot;
+		private readonly Func<NonBlankTrimmedString, UrlPathDetails> _getWithSegment;
+		private readonly Func<NonBlankTrimmedString, int, UrlPathDetails> _getWithSegmentAndIndex;
+		public AccommodationNavigator(NonNullList<NonBlankTrimmedString> parentSegments, AppDispatcher dispatcher)
+            : base(parentSegments, dispatcher)
+		{
+			_getRoot = AddRelativeRoute(
+				segments: NonNullList<string>.Empty,
+				routeAction: new NavigateToAccommodation(),
+				urlGenerator: () => GetPath("")
+			);
+
+			_getWithSegment = AddRelativeRoute(
+				routeDetails: RouteBuilder.Empty.String(),
+				routeActionGenerator: segment => new NavigateToAccommodation(segment),
+				urlGenerator: segment => GetPath("Accommodation", segment)
+			);
+		}
+
+		public UrlPathDetails Root() { return _getRoot(); }
+		public UrlPathDetails Segment(NonBlankTrimmedString segment)
+		{
+			return _getWithSegment(segment);
+		}
+	}
+
+Note that the routes are defined as if they start from the root of the site (there is no mention of the fixed "Accommodation" segment) and, instead, a "parentSegments" list is passed into the constructor.
+
+The ExampleNavigator now becomes:
+
+	public sealed class ExampleNavigator : Navigator
+	{
+		private readonly Func<UrlPathDetails> _getHome;
+		public ExampleNavigator(AppDispatcher dispatcher) : base(dispatcher)
+		{
+			_getHome = AddRelativeRoute(
+				segments: NonNullList<string>.Empty,
+				routeAction: new NavigateToHome(),
+				urlGenerator: () => GetPath()
+			);
+
+			PullInRoutesFrom(Accommodation = new AccommodationNavigator(
+				parentSegments: NonNullList.Of(new NonBlankTrimmedString("Accommodation")),
+				dispatcher: dispatcher
+			));
+		}
+
+		public UrlPathDetails Home() { return _getHome(); }
+		public AccommodationNavigator Accommodation { get; }
+	}
+
+Now, given a reference "navigator" to an ExampleNavigator instance, to get to "/Accommodation/Hotels" you would call the method
+
+    var hotelsUrl = navigator.Accommodation.Segment(new NonBlankTrimmedString("Hotels"));
+
+**Important:** You need to be sure to pass all "child navigators" through the "PullInRoutesFrom" method because a Navigator implementation neesd to be able to declare all of the results that it (and any child navigators) are responsible for and "PullInRoutesFrom" adds all of the routes from the child navigator to the internal list maintained by the parent navigator.
