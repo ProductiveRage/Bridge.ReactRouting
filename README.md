@@ -6,19 +6,9 @@ The intentions of this library are twofold:
 
 **2. To decouple the aspects of the routing library to make it easy to configure and easy to test** -
 
-* This requires a "Navigator" which defines routes and maps them on to actions (actions in the context of a Flux-like architecture that will
-be passed through a dispatcher). This will also expose properties and/or methods for generating URLs that correspond to those routes so
-that other code may request URLs from this "one authoritative source of routes" instead of URLs having to be hand coded. In this project,
-this is implemented by the ExampleNavigator.
-* It also requires a navigation-to-action matcher" whose role is to map the navigation actions to React elements - the premise being that when
-a navigation action is received, a different area of the application will be displayed (or a different page within the same area). This may
-be implemented in any way that you see fit but the ReactRouting library includes a NavigateActionMatcher class that is helpful for constructing
-mappings from actions to components and it includes a RoutingStoreActivatorContainer that will take a NavigateActionMatcher instance and ensure
-that the appropriate component is rendered within it, depending upon the last navigation action.
-* Finally, something is required to listen to navigation events - in this example that is the ReactRouting's Html5HistoryRouter, which means that
-navigation events are published and subscribed to/from the browser's HTML5 history (pushState) API but it could be any implementation of the
-IInteractWithBrowserRouting interface (for example, the unit tests use a "MockHistoryHandler" that allow navigation events to be raised and
-received without having to try to read/change the URL of the browser hosting the tests).
+* This requires a "Navigator" which defines routes and maps them on to actions (actions in the context of a Flux-like architecture that will be passed through a dispatcher). This will also expose properties and/or methods for generating URLs that correspond to those routes so that other code may request URLs from this "one authoritative source of routes" instead of URLs having to be hand coded. In this project, this is implemented by the ExampleNavigator.
+* It also requires a navigation-to-action matcher" whose role is to map the navigation actions to React elements - the premise being that when a navigation action is received, a different area of the application will be displayed (or a different page within the same area). This may be implemented in any way that you see fit but the ReactRouting library includes a NavigateActionMatcher class that is helpful for constructing mappings from actions to components and it includes a RoutingStoreActivatorContainer that will take a NavigateActionMatcher instance and ensure that the appropriate component is rendered within it, depending upon the last navigation action.
+* Finally, something is required to listen to navigation events - in this example that is the ReactRouting's Html5HistoryRouter, which means that navigation events are published and subscribed to/from the browser's HTML5 history (pushState) API but it could be any implementation of the IInteractWithBrowserRouting interface (for example, the unit tests use a "MockHistoryHandler" that allow navigation events to be raised and received without having to try to read/change the URL of the browser hosting the tests).
 
 *(Note: Routes are only matched against the URL path, there is no support for QueryString-based routing)*
 
@@ -121,15 +111,17 @@ In the above example code, there are only two types of route matched - fixed rou
 
 	RouteBuilder.Empty.Fixed("Accommodation").String().Int()
   
-This will match routes such as "/Accommodation/Hotels/123" and the "matchedValue" will be a Tuple where Item1 is a NonBlankTrimmedString and Item2 is an integer. If the ExampleNavigator was to be updated to handle this route then it would generate a new Func<NonBlankTrimmedString, int, UrlPathDetails> using the following:
+This will match routes such as "/Accommodation/Hotels/123" and the variable segments will be tracked internally by the route builder using a Tuple (where the Item1 is a NonBlankTrimmedString and Item2 is an int). If the ExampleNavigator (from above) was updated to handle this route then it would generate a new Func<NonBlankTrimmedString, int, UrlPathDetails> using the following:
 
 	_getAccommodationWithSegmentAndId = AddRelativeRoute(
 		routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String().Int(),
-		routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue.Item1, matchedValue.Item2),
+		routeActionGenerator: (segment, index) => new NavigateToAccommodation(segment, index),
 		urlGenerator: (segment, index) => GetPath("Accommodation", segment, index)
 	);
+    
+Note that the "routeActionGenerator" and "urlGenerator" delegates unwrap the Tuple's values so that it's possible to name the individual values with something more descriptive than Item1 and Item2 - this is because the library has some special behaviour for Tuple-based routes since they're so convenient to use.
 
-This is very simple and type-safe but it does have two limitations. Firstly, the maximum number of variable URL segments that may be matched is eight because that's as many type arguments as the Tuple class will accept. Secondly, although each "Item1", "Item2", etc.. property will be strongly-typed, the names "Item1" and "Item2" are still vague - which may increase the chances of errors creeping into code.
+This is very simple and type-safe but it does have a limitation - namely that the maximum number of variable URL segments that may be matched is eight because that's as many type arguments as the Tuple class will accept.
 
 One alternative is to build route match data using anonymous types. There overloads for the variable segment matching methods that take a Func that maps from the current match data (if any) to a new value that incorporates the current segment's content - eg.
 
@@ -138,7 +130,7 @@ One alternative is to build route match data using anonymous types. There overlo
 		.String(category => new { Category = category })
 		.Int((matchSoFar, index) => new { Category = matchSoFar.Category, Index = index })
     
-This approach avoids both disadvantages of the Tuple approach since there is no limit to how many variables may be matched and each property of the match data is specifically-named (rather than Item1, Item2, etc..) but at the cost of having to write more code and having to repeat the property names each time another variable segment is matched.
+This approach avoids the disadvantage of the Tuple approach since there is no limit to how many variables may be matched but at the cost of having to write more code and having to repeat the property names each time another variable segment is matched.
 
 A third alternative is to define a type that will contain the route match data that implements IAmImmutable (part of the [ProductiveRage.Immutable](https://github.com/ProductiveRage/Bridge.Immutable/) library, which this route depends upon) and to build this up from each matched segment. Something like:
 
@@ -178,6 +170,6 @@ The "/Accommodation/{string}" route definition from the ExampleNavigator above c
 		urlGenerator: routeInfo => GetPath("Accommodation", routeInfo.Segment, routeInfo.Index)
 	);
 
-This is also more verbose than the Tuple approach but it doesn't have the anonymous-type-approach's disadvantage around the duplication of property names within each variable route segment.
+This is also more verbose than the Tuple approach but it has the anonymous-type-approach's advantage of not limiting how many segments may be matches and it doesn't have the *disadvantage* around the duplication of property names within each variable route segment's matching logic,.
 
 I suspect that Tuples will offer the most convenient and succinct code in many cases but there are alternatives to consider for when you want to be more expressive.
