@@ -96,6 +96,8 @@ The ExampleNavigator class would be integrated into an application with code suc
 	  url => dispatcher.HandleViewAction(new InvalidRoute(url)) // This happens if the current URL isn't matched
 	);
 	browserHistoryHandler.RaiseNavigateToForCurrentLocation();
+    
+*(Note: The action classes and container components would be defined within the application code, though the InvalidRoute is part of the ReactRouting library)*
 
 ## Rendering links
 

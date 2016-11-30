@@ -74,11 +74,7 @@ namespace Example
 			// Start handling routes (calling RaiseNavigateToForCurrentLocation will result in an action being raised for the current URL, so the RoutingStoreActivatorContainer
 			// component can mount the appropriate container component)
 			var browserHistoryHandler = Html5HistoryRouter.Instance;
-			RouteCombiner.StartListening(
-				browserHistoryHandler,
-				navigator.Routes,
-				url => dispatcher.HandleViewAction(new InvalidRoute(url)) // If the current URL doesn't match any routes then this will happen
-			);
+			RouteCombiner.StartListening(browserHistoryHandler, navigator.Routes, dispatcher);
 			browserHistoryHandler.RaiseNavigateToForCurrentLocation();
 		}
 	}

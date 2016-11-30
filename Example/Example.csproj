@@ -34,7 +34,6 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Actions\InvalidRoute.cs" />
     <Compile Include="Actions\NavigateToAccommodation.cs" />
     <Compile Include="Actions\NavigateToHome.cs" />
     <Compile Include="App.cs" />

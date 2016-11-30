@@ -37,7 +37,6 @@
   <ItemGroup>
     <Compile Include="Support\Actions\NavigateToItem.cs" />
     <Compile Include="Support\Actions\NavigateToRoot.cs" />
-    <Compile Include="Support\Actions\InvalidRoute.cs" />
     <Compile Include="Support\NavigatorTestingDetails.cs" />
     <Compile Include="Support\RootPlusHotelAndProductSectionsNavigator.cs" />
     <Compile Include="Support\RootPlusDynamicIdItemPagesNavigator.cs" />
