@@ -88,13 +88,11 @@ The ExampleNavigator class would be integrated into an application with code suc
 	);
 	
 	// Start handling routes (calling RaiseNavigateToForCurrentLocation will result in an action being raised for the
-	current URL, so the RoutingStoreActivatorContainer component can mount the appropriate container component)
+	// current URL, so the RoutingStoreActivatorContainer component can mount the appropriate container component)
+    // - Note: an InvalidRoute action will be sent through the dispatcher if a URL is encountered that does not
+    //   match any routes
 	var browserHistoryHandler = Html5HistoryRouter.Instance;
-	RouteCombiner.StartListening(
-	  browserHistoryHandler,
-	  navigator.Routes,
-	  url => dispatcher.HandleViewAction(new InvalidRoute(url)) // This happens if the current URL isn't matched
-	);
+	RouteCombiner.StartListening(browserHistoryHandler, navigator.Routes, dispatcher);
 	browserHistoryHandler.RaiseNavigateToForCurrentLocation();
     
 *(Note: The action classes and container components would be defined within the application code, though the InvalidRoute is part of the ReactRouting library)*
