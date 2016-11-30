@@ -178,11 +178,8 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 			var dispatcher = new AppDispatcher();
 			var historyHandler = new MockHistoryHandler(initialUrl: new UrlDetails(NonNullList<NonBlankTrimmedString>.Empty, Optional<QueryString>.Missing));
 			var navigator = navigatorGenerator(dispatcher);
-			RouteCombiner.StartListening(
-				historyHandler,
-				navigator.Routes,
-				url => dispatcher.HandleViewAction(new InvalidRoute(url))
-			);
+			RouteCombiner.StartListening(historyHandler, navigator.Routes, dispatcher);
+
 			var navigatorTestingDetails = new NavigatorTestingDetails<TNavigator>(navigator, historyHandler, dispatcher, assert);
 			historyHandler.RaiseNavigateToForCurrentLocation();
 			return navigatorTestingDetails;
