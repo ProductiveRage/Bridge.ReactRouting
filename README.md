@@ -190,7 +190,7 @@ When segregating code, it may be desirable to have one "module" that is responsi
 			_getRoot = AddRelativeRoute(
 				segments: NonNullList<string>.Empty,
 				routeAction: new NavigateToAccommodation(),
-				urlGenerator: () => GetPath("")
+				urlGenerator: () => GetPath()
 			);
 
 			_getWithSegment = AddRelativeRoute(
