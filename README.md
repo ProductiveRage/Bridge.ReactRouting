@@ -124,7 +124,7 @@ Note that the "routeActionGenerator" and "urlGenerator" delegates unwrap the Tup
 
 This is very simple and type-safe but it does have a limitation - namely that the maximum number of variable URL segments that may be matched is eight because that's as many type arguments as the Tuple class will accept.
 
-One alternative is to build route match data using anonymous types. There overloads for the variable segment matching methods that take a Func that maps from the current match data (if any) to a new value that incorporates the current segment's content - eg.
+One alternative is to build route match data using anonymous types. There are overloads for the variable segment matching methods that take a Func that maps from the current match data (if any) to a new value that incorporates the current segment's content - eg.
 
 	RouteBuilder.Empty
 		.Fixed("Accommodation")
