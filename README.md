@@ -28,17 +28,18 @@ Below is an example of a "Navigator" class that defines three routes and exposes
 			);
 
 			// Register "/Accommodation"
+            const string accommodationSegment = "Accommodation";
 			_getAccommodation = AddRelativeRoute(
-				segment: "Accommodation",
+				segment: accommodationSegment,
 				routeAction: new NavigateToAccommodation(Optional<NonBlankTrimmedString>.Missing),
-				urlGenerator: () => GetPath("Accommodation")
+				urlGenerator: () => GetPath(accommodationSegment)
 			);
 
 			// Register "/Accommodation/{string}"
 			_getAccommodationWithSegment = AddRelativeRoute(
-				routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String(),
+				routeDetails: RouteBuilder.Empty.Fixed(accommodationSegment).String(),
 				routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue),
-				urlGenerator: segment => GetPath("Accommodation", segment)
+				urlGenerator: segment => GetPath(accommodationSegment, segment)
 			);
 		}
 
@@ -152,10 +153,10 @@ The "/Accommodation/{string}" route definition from the ExampleNavigator above c
 	// Register "/Accommodation/{string}"
 	_getAccommodationWithSegment = AddRelativeRoute(
 		routeDetails: RouteBuilder.Empty
-			.Fixed("Accommodation")
+			.Fixed(accommodationSegment)
 			.String(),
 		routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue),
-		urlGenerator: segment => GetPath("Accommodation", segment)
+		urlGenerator: segment => GetPath(accommodationSegment, segment)
 	);
   
  And defining another route for "/Accommodation/{string}/{int}" would look like this:
@@ -163,11 +164,11 @@ The "/Accommodation/{string}" route definition from the ExampleNavigator above c
 	// Register "/Accommodation/{string}/{int}"
 	_getAccommodationWithSegmentAndIndex = AddRelativeRoute(
 		routeDetails: RouteBuilder.Empty
-			.Fixed("Accommodation")
+			.Fixed(accommodationSegment)
 			.String(segment => new AccommodationRouteInfo(segment))
 			.Int((matchSoFar, index) => matchSoFar.With(_ => _.Index, index)),
 		routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue.Segment, matchedValue.Index),
-		urlGenerator: routeInfo => GetPath("Accommodation", routeInfo.Segment, routeInfo.Index)
+		urlGenerator: routeInfo => GetPath(accommodationSegment, routeInfo.Segment, routeInfo.Index)
 	);
 
 This is also more verbose than the Tuple approach but it has the anonymous-type-approach's advantage of not limiting how many segments may be matches and it doesn't have the *disadvantage* around the duplication of property names within each variable route segment's matching logic,.
