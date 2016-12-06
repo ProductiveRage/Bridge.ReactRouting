@@ -2,7 +2,7 @@
 
 The intentions of this library are twofold:
 
-**1. To handle routing in a "strongly-typed" way that ensures that routes are only defined in one placed and that this information is used to generate links to those routes in the application** (for example, if a route is configured to map "/accommodation" to an AccommodationContainer component and then, one day in the future, the route is changed to "/where-to-stay", there should only be one place that needs to be updated, there should be worry that there may be many anchor tags throughout the application with hard-coded URLs that all need changing from the old "/accommodation" URL to the new "/where-to-stay" format)
+**1. To handle routing in a "strongly-typed" way that ensures that routes are only defined in one placed and that this information is used to generate links to those routes in the application** (for example, if a route is configured to map "/accommodation" to an AccommodationContainer component and then, one day in the future, the route is changed to "/where-to-stay", there should only be one place that needs to be updated, there should be no worry that there may be many anchor tags throughout the application with hard-coded URLs that all need changing from the old "/accommodation" URL to the new "/where-to-stay" format)
 
 **2. To decouple the aspects of the routing library to make it easy to configure and easy to test** -
 
