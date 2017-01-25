@@ -12,7 +12,7 @@ namespace ProductiveRage.ReactRouting.Helpers
 	/// </summary>
 	public sealed class RoutingStoreActivatorContainer : Component<RoutingStoreActivatorContainer.Props, RoutingStoreActivatorContainer.State>
 	{
-		public RoutingStoreActivatorContainer(IDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher, bool redispatchNavigationMessagesAfterStateAsynchronouslyUpdated = true)
+		public RoutingStoreActivatorContainer(IDispatcher dispatcher, NavigateActionMatcher navigateActionMatcher, bool redispatchNavigationMessagesAfterStateAsynchronouslyUpdated = false)
 			: base(new RoutingStoreActivatorContainer.Props(dispatcher, navigateActionMatcher, redispatchNavigationMessagesAfterStateAsynchronouslyUpdated)) { }
 
 		protected override State GetInitialState()
@@ -51,10 +51,14 @@ namespace ProductiveRage.ReactRouting.Helpers
 							// could issue a subsequent dispatcher message (which would also be a hack because one action - the navigation action in this case - should not
 							// directly result in another dispatcher message being issued). Alternatively, the container could have a way to query the store and request that
 							// it update its data to the latest (which would be hack because the stores should instruct the containers when data has changed, rather than
-							// containers poking stores to update their content). So it seems like the least of all evils is to re-issue the navigation message here (which
-							// is also not ideal because it means that the handling of one dispatcher message is resulting in another dispatch-message call and it might
-							// seem odd to anyone watching the queue; "why are these messages appearing twice?") - it's optional, though, so if the consumer disagrees
-							// then they can set redispatchNavigationMessagesAfterStateAsynchronouslyUpdated to false.
+							// containers poking stores to update their content). So it seems like the least of all evils is to support re-issuing the navigation message here
+							// (which is also not ideal because it means that the handling of one dispatcher message is resulting in another dispatch-message call and it might
+							// seem odd to anyone watching the queue; "why are these messages appearing twice?"). This behaviour must be opted into, though, so it shouldn#'t
+							// bother anyone that isn't having problems with the async SetState (2017-01-25 DWR: I considered having this behaviour be opt OUT but it only
+							// works well if the "Do nothing if there is no change to the current container component" condition is hit in the state updating code above and
+							// this only works if container component references are reused (the example project in this solution creates new container component instances
+							// in each routeActionGenerator callback and so enabling redispatchNavigationMessagesAfterStateAsynchronouslyUpdated would result in the navigation
+							// message being issue over and over again, which would not be good).
 							if (props.RedispatchNavigationMessagesAfterStateAsynchronouslyUpdated)
 							{
 								// In some cases, SetState will be performed SYNCHRONOUSLY and so we need to re-dispatch the message using a SetTimeout call to ensure that
