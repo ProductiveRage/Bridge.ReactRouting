@@ -86,8 +86,8 @@
       <HintPath>..\packages\Bridge.React.1.12.2\lib\net40\Bridge.React.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ProductiveRage.Immutable, Version=1.11.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ProductiveRage.Immutable.1.11.1.0\lib\net40\ProductiveRage.Immutable.dll</HintPath>
+    <Reference Include="ProductiveRage.Immutable, Version=1.11.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ProductiveRage.Immutable.1.11.2.0\lib\net40\ProductiveRage.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ProductiveRage.Immutable.Extensions, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -97,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Bridge.React.1.12.2\analyzers\dotnet\cs\Bridge.React.Analyser.dll" />
-    <Analyzer Include="..\packages\ProductiveRage.Immutable.1.11.1.0\analyzers\dotnet\cs\ProductiveRage.Immutable.Analyser.dll" />
+    <Analyzer Include="..\packages\ProductiveRage.Immutable.1.11.2.0\analyzers\dotnet\cs\ProductiveRage.Immutable.Analyser.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets')" />
