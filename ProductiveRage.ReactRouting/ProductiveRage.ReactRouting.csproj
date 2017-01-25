@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Helpers\RoutingStoreActivatorContainer.cs" />
     <Compile Include="Html5HistoryRouter.cs" />
+    <Compile Include="IInitiateNavigations.cs" />
     <Compile Include="IInteractWithBrowserRouting.cs" />
     <Compile Include="Helpers\NavigateActionMatcher.cs" />
     <Compile Include="INavigationDispatcherAction.cs" />

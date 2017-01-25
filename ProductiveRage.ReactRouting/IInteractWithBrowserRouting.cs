@@ -2,11 +2,10 @@
 
 namespace ProductiveRage.ReactRouting
 {
-	public interface IInteractWithBrowserRouting
+	public interface IInteractWithBrowserRouting : IInitiateNavigations
 	{
 		UrlDetails CurrentLocation { get; }
 		void RegisterForNavigatedCallback(Action<UrlDetails> callback);
-		void NavigateTo(UrlDetails url);
 		void RaiseNavigateToForCurrentLocation();
 	}
 }
