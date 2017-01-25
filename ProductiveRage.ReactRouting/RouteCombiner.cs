@@ -24,7 +24,7 @@ namespace ProductiveRage.ReactRouting
 
 		/// <summary>
 		/// This method overload will execute the specified action if a URL is encountered that does not match any of the provided route (for cases where custom behaviour is desired, other than firing
-		/// an InvalidRoute action at the dispatcher if an non-matching URL is found
+		/// an InvalidRoute action at the dispatcher if an non-matching URL is found)
 		/// </summary>
 		public static void StartListening(IInteractWithBrowserRouting historyHandler, NonNullList<IMatchRoutes> routes, Action<UrlPathDetails> routeNotMatched)
 		{
@@ -48,10 +48,10 @@ namespace ProductiveRage.ReactRouting
 			if (routes == null)
 				throw new ArgumentNullException(nameof(routes));
 
-			historyHandler.RegisterForNavigatedCallback(url => MatchRoute(url.ToUrlPathDetails(), routes, routeNotMatched));
+			historyHandler.RegisterForNavigatedCallback(url => MatchRoute(url, routes, routeNotMatched));
 		}
 
-		private static void MatchRoute(UrlPathDetails url, NonNullList<IMatchRoutes> routes, Optional<Action<UrlPathDetails>> routeNotMatched)
+		private static void MatchRoute(UrlDetails url, NonNullList<IMatchRoutes> routes, Optional<Action<UrlPathDetails>> routeNotMatched)
 		{
 			if (url == null)
 				throw new ArgumentNullException(nameof(url));

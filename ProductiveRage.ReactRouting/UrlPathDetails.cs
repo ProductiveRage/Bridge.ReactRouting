@@ -21,6 +21,18 @@ namespace ProductiveRage.ReactRouting
 			return new UrlDetails(Segments, queryString);
 		}
 
+		// It's probably taking a little bit of a liberty allowing a UrlPathDetails to be accepted anywhere that a UrlDetails is required but I'm
+		// making changes (Jan 2017) to IMatchRoutes such that ExecuteCallbackIfUrlMatches now gets a UrlDetails where previously it accepted a
+		// UrlPathDetails and having implicit conversions should mean that older code (that expects just UrlPathDetails) continues to work.
+		public static implicit operator UrlDetails(UrlPathDetails urlPath)
+		{
+			return (urlPath == null) ? null : urlPath.ToUrlDetails(Optional<QueryString>.Missing);
+		}
+		public static implicit operator UrlPathDetails(UrlDetails url)
+		{
+			return (url == null) ? null : url.ToUrlPathDetails();
+		}
+
 		public override string ToString()
 		{
 			return "/" + string.Join("/", Segments);

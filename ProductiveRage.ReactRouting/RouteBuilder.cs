@@ -54,7 +54,7 @@ namespace ProductiveRage.ReactRouting
 			return routeBuilder.Variable((noMatchedValues, value) => valueExtender(value), parser);
 		}
 
-		public IMatchRoutes ToRoute(Action ifMatched)
+		public IMatchRoutes ToRoute(Action<Optional<QueryString>> ifMatched)
 		{
 			if (ifMatched == null)
 				throw new ArgumentNullException("ifMatched");
@@ -67,7 +67,7 @@ namespace ProductiveRage.ReactRouting
 			[IgnoreGeneric]
 			IBuildRoutesWithVariablesToMatch<TValues> Fixed(NonBlankTrimmedString segment);
 			[IgnoreGeneric]
-			IMatchRoutes ToRoute(Action<TValues> ifMatched);
+			IMatchRoutes ToRoute(Action<TValues, Optional<QueryString>> ifMatched);
 			[IgnoreGeneric]
 			IBuildRoutesWithVariablesToMatch<TValuesExpanded> Variable<TValuesExpanded, TVariable>(
 				Func<TValues, TVariable, TValuesExpanded> valueExtender,
@@ -162,7 +162,7 @@ namespace ProductiveRage.ReactRouting
 			}
 
 			[IgnoreGeneric]	
-			public IMatchRoutes ToRoute(Action<TValues> ifMatched)
+			public IMatchRoutes ToRoute(Action<TValues, Optional<QueryString>> ifMatched)
 			{
 				if (ifMatched == null)
 					throw new ArgumentNullException("ifMatched");
@@ -174,8 +174,8 @@ namespace ProductiveRage.ReactRouting
 			{
 				private readonly NonNullList<IMatchSegments> _segmentMatchers;
 				private readonly Optional<Func<NonNullList<object>, TValues>> _extractedValueBuilder;
-				private readonly Action<TValues> _ifMatched;
-				public VariableRouteDetails(NonNullList<IMatchSegments> segmentMatchers, Optional<Func<NonNullList<object>, TValues>> extractedValueBuilder, Action<TValues> ifMatched)
+				private readonly Action<TValues, Optional<QueryString>> _ifMatched;
+				public VariableRouteDetails(NonNullList<IMatchSegments> segmentMatchers, Optional<Func<NonNullList<object>, TValues>> extractedValueBuilder, Action<TValues, Optional<QueryString>> ifMatched)
 				{
 					if (segmentMatchers == null)
 						throw new ArgumentNullException("segmentMatchers");
@@ -187,7 +187,7 @@ namespace ProductiveRage.ReactRouting
 					_ifMatched = ifMatched;
 				}
 
-				public bool ExecuteCallbackIfUrlMatches(UrlPathDetails url)
+				public bool ExecuteCallbackIfUrlMatches(UrlDetails url)
 				{
 					if (url == null)
 						throw new ArgumentNullException("url");
@@ -226,7 +226,7 @@ namespace ProductiveRage.ReactRouting
 						// at runtime because this class is decorated with [IgnoreGeneric]
 						extractedValue = Script.Write<TValues>("null");
 					}
-					_ifMatched(extractedValue);
+					_ifMatched(extractedValue, url.QueryString);
 					return true;
 				}
 
@@ -323,8 +323,8 @@ namespace ProductiveRage.ReactRouting
 		private sealed class StaticRouteDetails : IMatchRoutes
 		{
 			private readonly NonNullList<NonBlankTrimmedString> _segments;
-			private readonly Action _ifMatched;
-			public StaticRouteDetails(NonNullList<NonBlankTrimmedString> segments, Action ifMatched)
+			private readonly Action<Optional<QueryString>> _ifMatched;
+			public StaticRouteDetails(NonNullList<NonBlankTrimmedString> segments, Action<Optional<QueryString>> ifMatched)
 			{
 				if (segments == null)
 					throw new ArgumentNullException("segments");
@@ -335,7 +335,7 @@ namespace ProductiveRage.ReactRouting
 				_ifMatched = ifMatched;
 			}
 
-			public bool ExecuteCallbackIfUrlMatches(UrlPathDetails url)
+			public bool ExecuteCallbackIfUrlMatches(UrlDetails url)
 			{
 				if (url == null)
 					throw new ArgumentNullException("url");
@@ -346,7 +346,7 @@ namespace ProductiveRage.ReactRouting
 				if (url.Segments.Zip(_segments, (x, y) => x.Value.Equals(y.Value, StringComparison.OrdinalIgnoreCase)).Any(isMatch => !isMatch))
 					return false;
 
-				_ifMatched();
+				_ifMatched(url.QueryString);
 				return true;
 			}
 

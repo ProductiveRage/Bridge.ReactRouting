@@ -48,6 +48,7 @@
     <Compile Include="IMatchRoutes.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteBuilderExtensions.cs" />
     <Compile Include="RouteBuilderExtensions_Fixed.cs" />
     <Compile Include="RouteBuilderExtensions_Int_Tuples.cs" />
     <Compile Include="RouteBuilderExtensions_String_Tuples.cs" />
