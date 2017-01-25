@@ -43,6 +43,24 @@ namespace ProductiveRage.ReactRouting
 
 			return AddRelativeRoute(NonNullList.Of(segment), routeAction, urlGenerator);
 		}
+		/// <summary>
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
+		/// defines a fixed route with a single segment (and so the urlGenerator delegate has zero arguments).
+		/// </summary>
+		protected Func<UrlPathDetails> AddRelativeRoute(string segment, Func<Optional<QueryString>, INavigationDispatcherAction> routeActionGenerator, Func<UrlPathDetails> urlGenerator)
+		{
+			if (string.IsNullOrWhiteSpace(segment))
+				throw new ArgumentException("Null, blank or whitespace-only segment specified");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			return AddRelativeRoute(NonNullList.Of(segment), routeActionGenerator, urlGenerator);
+		}
 
 		/// <summary>
 		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
@@ -69,6 +87,34 @@ namespace ProductiveRage.ReactRouting
 			}
 			AddRelativeRouteOnly(
 				relativeRouteSegments.ToRoute(() => _dispatcher.HandleViewAction(routeAction))
+			);
+			return urlGenerator;
+		}
+		/// <summary>
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). This method overload
+		/// defines a fixed route with zero, one or multiple segments (the urlGenerator delegate has zero arguments because there are zero variable segments in the route).
+		/// </summary>
+		protected Func<UrlPathDetails> AddRelativeRoute(NonNullList<string> segments, Func<Optional<QueryString>, INavigationDispatcherAction> routeActionGenerator, Func<UrlPathDetails> urlGenerator)
+		{
+			if (segments == null)
+				throw new ArgumentNullException("segments");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			var relativeRouteSegments = RouteBuilder.Empty;
+			foreach (var segment in segments)
+			{
+				if (segment.Trim() == "") // No need to check for null, a Set never contains null references
+					throw new ArgumentException("Blank or whitespace-only segment specified in fixed route");
+				relativeRouteSegments = relativeRouteSegments.Fixed(new NonBlankTrimmedString(segment));
+			}
+			AddRelativeRouteOnly(
+				relativeRouteSegments.ToRoute(queryString => _dispatcher.HandleViewAction(routeActionGenerator(queryString)))
 			);
 			return urlGenerator;
 		}
