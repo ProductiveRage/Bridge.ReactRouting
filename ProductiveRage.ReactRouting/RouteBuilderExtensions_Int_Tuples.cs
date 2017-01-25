@@ -3,8 +3,6 @@ using Bridge;
 
 namespace ProductiveRage.ReactRouting
 {
-	// TODO: Most of these methods could be simplified down to just "return source.Int(TupleExtensions.Extend);" but there is a Bridge bug that needs fixing that is currently preventing this
-	// (see http://forums.bridge.net/forum/bridge-net-pro/bugs/3096)
 	public static class RouteBuilderExtensions_Int_Tuples
 	{
 		/// <summary>
@@ -30,7 +28,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 
 		/// <summary>
@@ -43,7 +41,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 
 		/// <summary>
@@ -56,7 +54,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 
 		/// <summary>
@@ -69,7 +67,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 
 		/// <summary>
@@ -82,7 +80,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 
 		/// <summary>
@@ -95,7 +93,7 @@ namespace ProductiveRage.ReactRouting
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			return source.Int((matchSoFar, intValue) => TupleExtensions.Extend(matchSoFar, intValue));
+			return source.Int(TupleExtensions.Extend);
 		}
 	}
 }
