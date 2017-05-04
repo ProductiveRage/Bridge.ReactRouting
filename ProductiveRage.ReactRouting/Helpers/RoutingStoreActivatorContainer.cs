@@ -22,9 +22,9 @@ namespace ProductiveRage.ReactRouting.Helpers
 
 		protected override void ComponentWillMount()
 		{
-			props.Dispatcher.Register(message =>
+			props.Dispatcher.Receive(action =>
 			{
-				var navigationAction = message.Action as INavigationDispatcherAction;
+				var navigationAction = action as INavigationDispatcherAction;
 				if (navigationAction == null)
 					return;
 
@@ -63,13 +63,7 @@ namespace ProductiveRage.ReactRouting.Helpers
 							{
 								// In some cases, SetState will be performed SYNCHRONOUSLY and so we need to re-dispatch the message using a SetTimeout call to ensure that
 								// the Dispatcher doesn't realise that the handler for a message is also dispatching a message
-								Window.SetTimeout(() =>
-								{
-									if (message.Source == MessageSourceOptions.Server)
-										props.Dispatcher.HandleServerAction(message.Action);
-									else
-										props.Dispatcher.HandleViewAction(message.Action);
-								});
+								Window.SetTimeout(() => props.Dispatcher.Dispatch(action));
 							}
 						}
 					);

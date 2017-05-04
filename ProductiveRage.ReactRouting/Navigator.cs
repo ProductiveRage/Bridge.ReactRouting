@@ -86,7 +86,7 @@ namespace ProductiveRage.ReactRouting
 				relativeRouteSegments = relativeRouteSegments.Fixed(new NonBlankTrimmedString(segment));
 			}
 			AddRelativeRouteOnly(
-				relativeRouteSegments.ToRoute(() => _dispatcher.HandleViewAction(routeAction))
+				relativeRouteSegments.ToRoute(() => _dispatcher.Dispatch(routeAction))
 			);
 			return urlGenerator;
 		}
@@ -114,7 +114,7 @@ namespace ProductiveRage.ReactRouting
 				relativeRouteSegments = relativeRouteSegments.Fixed(new NonBlankTrimmedString(segment));
 			}
 			AddRelativeRouteOnly(
-				relativeRouteSegments.ToRoute(queryString => _dispatcher.HandleViewAction(routeActionGenerator(queryString)))
+				relativeRouteSegments.ToRoute(queryString => _dispatcher.Dispatch(routeActionGenerator(queryString)))
 			);
 			return urlGenerator;
 		}
@@ -162,7 +162,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(matchedValues, queryString)))
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(matchedValues, queryString)))
 			);
 			return urlGenerator;
 		}
@@ -190,7 +190,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					queryString
@@ -244,7 +244,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,
@@ -299,7 +299,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,
@@ -355,7 +355,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,
@@ -412,7 +412,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,
@@ -470,7 +470,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,
@@ -529,7 +529,7 @@ namespace ProductiveRage.ReactRouting
 				throw new ArgumentNullException(nameof(urlGenerator));
 
 			AddRelativeRouteOnly(
-				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.HandleViewAction(routeActionGenerator(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
 					matchedValues.Item1,
 					matchedValues.Item2,
 					matchedValues.Item3,

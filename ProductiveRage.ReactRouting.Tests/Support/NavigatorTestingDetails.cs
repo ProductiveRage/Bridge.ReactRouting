@@ -24,8 +24,8 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 				throw new ArgumentNullException("assert");
 
 			_receivedNavigationActions = NonNullList<INavigationDispatcherAction>.Empty;
-			dispatcher.Register(message => {
-				var navigationDispatcherAction = message.Action as INavigationDispatcherAction;
+			dispatcher.Receive(action => {
+				var navigationDispatcherAction = action as INavigationDispatcherAction;
 				if (navigationDispatcherAction != null)
 					_receivedNavigationActions = _receivedNavigationActions.Add(navigationDispatcherAction);
 			});

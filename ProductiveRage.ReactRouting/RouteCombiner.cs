@@ -19,7 +19,7 @@ namespace ProductiveRage.ReactRouting
 			if (dispatcherForInvalidRouteActions == null)
 				throw new ArgumentNullException(nameof(dispatcherForInvalidRouteActions));
 
-			StartListening(historyHandler, routes, url => dispatcherForInvalidRouteActions.HandleViewAction(new InvalidRoute(url)));
+			StartListening(historyHandler, routes, url => dispatcherForInvalidRouteActions.Dispatch(new InvalidRoute(url)));
 		}
 
 		/// <summary>

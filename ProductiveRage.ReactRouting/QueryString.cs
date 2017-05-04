@@ -29,7 +29,7 @@ namespace ProductiveRage.ReactRouting
 						return new Segment(Global.DecodeURIComponent(entry), null);
 					return new Segment(Global.DecodeURIComponent(elements[0]), Global.DecodeURIComponent(elements[1]));
 				})
-				.ToSet()
+				.ToNonNullList()
 			);
 		}
 
@@ -52,7 +52,7 @@ namespace ProductiveRage.ReactRouting
 				return _segments
 					.Where(segment => segment.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
 					.Select(segment => segment.Value)
-					.ToSet();
+					.ToNonNullList();
 			}
 		}
 

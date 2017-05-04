@@ -141,7 +141,7 @@ namespace ProductiveRage.ReactRouting
 						// When accessing the "Value" property on an Optional, where that property value is a function, we can't execute it directly due to the way that Bridge
 						// generates the JavaScript - so we need to copy the function reference (to "valueBuilderForPreviousSegments", here) and then execute that as a function
 						var previousSegments = valuesExtractedFromMatchedVariables.Take((int)valuesExtractedFromMatchedVariables.Count - 1);
-						previousValue = _extractedValueBuilder.Value(previousSegments.ToSet());
+						previousValue = _extractedValueBuilder.Value(previousSegments.ToNonNullList());
 					}
 
 					// If this lambda is executed then we know that the last segment that was matched was a variable which was parsed using the current parser (since that is
