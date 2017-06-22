@@ -3,7 +3,7 @@
   <metadata>
     <id>ProductiveRage.ReactRouting</id>
     <title>ProductiveRage.ReactRouting</title>
-    <version>4.1.0-beta</version>
+    <version>4.1.1-beta</version>
     <authors>ProductiveRage</authors>
     <owners>ProductiveRage</owners>
     <licenseUrl>https://github.com/ProductiveRage/Bridge.ReactRouting/blob/master/LICENSE</licenseUrl>
@@ -14,11 +14,11 @@
     <copyright>Copyright 2017 ProductiveRage</copyright>
     <tags>C# bridge bridge.net react react-js router</tags>
     <dependencies>
-      <dependency id="Bridge.Core" version="16.0.0-beta2" />
-      <dependency id="Bridge.Html5" version="16.0.0-beta2" />
+      <dependency id="Bridge.Core" version="16.0.0-beta3" />
+      <dependency id="Bridge.Html5" version="16.0.0-beta3" />
       <dependency id="Bridge.React" version="2.6.2-beta" />
-      <dependency id="ProductiveRage.Immutable" version="2.4.0-beta" />
-      <dependency id="ProductiveRage.Immutable.Extensions" version="2.3.0-beta" />
+      <dependency id="ProductiveRage.Immutable" version="2.5.1-beta" />
+      <dependency id="ProductiveRage.Immutable.Extensions" version="2.3.1-beta" />
     </dependencies>
   </metadata>
   <files>
