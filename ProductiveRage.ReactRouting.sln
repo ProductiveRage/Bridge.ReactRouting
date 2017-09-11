@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductiveRage.ReactRouting", "ProductiveRage.ReactRouting\ProductiveRage.ReactRouting.csproj", "{88CFD726-44A8-4009-881E-3597472312A8}"
 EndProject
@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{947265BC-D12F-4CFB-9795-BB0483A1E463}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleHost (Set as Startup Project)", "ExampleHost\ExampleHost (Set as Startup Project).csproj", "{2E7975B9-6FEB-4D2F-B761-5DA05CD8C5FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{947265BC-D12F-4CFB-9795-BB0483A1E463} = {947265BC-D12F-4CFB-9795-BB0483A1E463}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +39,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57CC977C-B0A5-44FE-A9BB-38EDFAC7D666}
 	EndGlobalSection
 EndGlobal
