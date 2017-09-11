@@ -29,11 +29,12 @@ namespace ProductiveRage.ReactRouting
 			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
 			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
 			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
-			: this(url, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride, text)
+			: base(new Props(url, text, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
 		{ }
 
 		public Link(
 			UrlDetails url,
+			ReactElement content,
 			bool caseSensitiveUrlMatching = false,
 			Optional<NonBlankTrimmedString> name = new Optional<NonBlankTrimmedString>(),
 			Optional<NonBlankTrimmedString> target = new Optional<NonBlankTrimmedString>(),
@@ -41,9 +42,8 @@ namespace ProductiveRage.ReactRouting
 			Optional<ClassName> ancestorClassName = new Optional<ClassName>(),
 			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
 			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
-			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>(),
-			params Union<ReactElement, string>[] children)
-			: base(new Props(url, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride, children))
+			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
+			: base(new Props(url, content, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
 		{ }
 
 		public override ReactElement Render()
@@ -95,9 +95,7 @@ namespace ProductiveRage.ReactRouting
 						e.PreventDefault();
 					}
 				},
-#pragma warning disable BridgeReact // 2017-09-11 Dion: Assume caller is passing a static list of children in
-				props.Children
-#pragma warning restore BridgeReact
+				props.Content
 			);
 		}
 
@@ -105,6 +103,7 @@ namespace ProductiveRage.ReactRouting
 		{
 			public Props(
 				UrlDetails url,
+				Union<ReactElement, string> content,
 				bool caseSensitiveUrlMatching,
 				Optional<NonBlankTrimmedString> name,
 				Optional<NonBlankTrimmedString> target,
@@ -112,10 +111,10 @@ namespace ProductiveRage.ReactRouting
 				Optional<ClassName> ancestorClassName,
 				Optional<ClassName> selectedClassName,
 				Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick,
-				Optional<IInteractWithBrowserRouting> historyHandlerOverride,
-				params Union<ReactElement, string>[] children)
+				Optional<IInteractWithBrowserRouting> historyHandlerOverride)
 			{
 				this.CtorSet(_ => _.Url, url);
+				this.CtorSet(_ => _.Content, content);
 				this.CtorSet(_ => _.CaseSensitiveUrlMatching, caseSensitiveUrlMatching);
 				this.CtorSet(_ => _.Name, name);
 				this.CtorSet(_ => _.Target, target);
@@ -124,9 +123,9 @@ namespace ProductiveRage.ReactRouting
 				this.CtorSet(_ => _.SelectedClassName, selectedClassName);
 				this.CtorSet(_ => _.OnClick, onClick);
 				this.CtorSet(_ => _.HistoryHandlerOverride, historyHandlerOverride);
-				this.CtorSet(_ => _.Children, children);
 			}
 			public UrlDetails Url { get; private set; }
+			public Union<ReactElement, string> Content { get; private set; }
 			public bool CaseSensitiveUrlMatching { get; private set; }
 			public Optional<NonBlankTrimmedString> Name { get; private set; }
 			public Optional<NonBlankTrimmedString> Target { get; private set; }
@@ -135,7 +134,6 @@ namespace ProductiveRage.ReactRouting
 			public Optional<ClassName> SelectedClassName { get; private set; }
 			public Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> OnClick { get; private set; }
 			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; private set; }
-			public Union<ReactElement, string>[] Children { get; private set; }
 		}
 	}
 }
