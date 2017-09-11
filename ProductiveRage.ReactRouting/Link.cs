@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Bridge;
 using Bridge.React;
 using ProductiveRage.Immutable;
 
@@ -28,7 +29,21 @@ namespace ProductiveRage.ReactRouting
 			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
 			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
 			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
-			: base(new Props(url, text, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
+			: this(url, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride, text)
+		{ }
+
+		public Link(
+			UrlDetails url,
+			bool caseSensitiveUrlMatching = false,
+			Optional<NonBlankTrimmedString> name = new Optional<NonBlankTrimmedString>(),
+			Optional<NonBlankTrimmedString> target = new Optional<NonBlankTrimmedString>(),
+			Optional<ClassName> className = new Optional<ClassName>(),
+			Optional<ClassName> ancestorClassName = new Optional<ClassName>(),
+			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
+			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
+			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>(),
+			params Union<ReactElement, string>[] children)
+			: base(new Props(url, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride, children))
 		{ }
 
 		public override ReactElement Render()
@@ -80,7 +95,9 @@ namespace ProductiveRage.ReactRouting
 						e.PreventDefault();
 					}
 				},
-				props.Text
+#pragma warning disable BridgeReact // 2017-09-11 Dion: Assume caller is passing a static list of children in
+				props.Children
+#pragma warning restore BridgeReact
 			);
 		}
 
@@ -88,7 +105,6 @@ namespace ProductiveRage.ReactRouting
 		{
 			public Props(
 				UrlDetails url,
-				NonBlankTrimmedString text,
 				bool caseSensitiveUrlMatching,
 				Optional<NonBlankTrimmedString> name,
 				Optional<NonBlankTrimmedString> target,
@@ -96,10 +112,10 @@ namespace ProductiveRage.ReactRouting
 				Optional<ClassName> ancestorClassName,
 				Optional<ClassName> selectedClassName,
 				Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick,
-				Optional<IInteractWithBrowserRouting> historyHandlerOverride)
+				Optional<IInteractWithBrowserRouting> historyHandlerOverride,
+				params Union<ReactElement, string>[] children)
 			{
 				this.CtorSet(_ => _.Url, url);
-				this.CtorSet(_ => _.Text, text);
 				this.CtorSet(_ => _.CaseSensitiveUrlMatching, caseSensitiveUrlMatching);
 				this.CtorSet(_ => _.Name, name);
 				this.CtorSet(_ => _.Target, target);
@@ -108,9 +124,9 @@ namespace ProductiveRage.ReactRouting
 				this.CtorSet(_ => _.SelectedClassName, selectedClassName);
 				this.CtorSet(_ => _.OnClick, onClick);
 				this.CtorSet(_ => _.HistoryHandlerOverride, historyHandlerOverride);
+				this.CtorSet(_ => _.Children, children);
 			}
 			public UrlDetails Url { get; private set; }
-			public NonBlankTrimmedString Text { get; private set; }
 			public bool CaseSensitiveUrlMatching { get; private set; }
 			public Optional<NonBlankTrimmedString> Name { get; private set; }
 			public Optional<NonBlankTrimmedString> Target { get; private set; }
@@ -119,6 +135,7 @@ namespace ProductiveRage.ReactRouting
 			public Optional<ClassName> SelectedClassName { get; private set; }
 			public Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> OnClick { get; private set; }
 			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; private set; }
+			public Union<ReactElement, string>[] Children { get; private set; }
 		}
 	}
 }
