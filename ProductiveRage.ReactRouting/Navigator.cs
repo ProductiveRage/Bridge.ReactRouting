@@ -177,6 +177,59 @@ namespace ProductiveRage.ReactRouting
 		/// Some routeActionGenerators want to know what the QueryString was of the URL that was matched (despite the QueryString never being of the route; the route
 		/// is defined by the URL path only) - this method signature includes the QueryString reference in the routeActionGenerator delegate.
 		/// </summary>
+		protected Func<T1, UrlPathDetails> AddRelativeRoute<T1>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1>> routeDetails,
+			Func<T1, Optional<QueryString>, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, UrlPathDetails> urlGenerator)
+		{
+			if (routeDetails == null)
+				throw new ArgumentNullException("routeDetails");
+			if (routeActionGenerator == null)
+				throw new ArgumentNullException("routeActionGenerator");
+			if (urlGenerator == null)
+				throw new ArgumentNullException(nameof(urlGenerator));
+
+			AddRelativeRouteOnly(
+				routeDetails.ToRoute((matchedValues, queryString) => _dispatcher.Dispatch(routeActionGenerator(
+					matchedValues.Item1,
+					queryString
+				)))
+			);
+			return urlGenerator;
+		}
+
+		/// <summary>
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with two elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		/// Some routeActionGenerators want to know what the QueryString was of the URL that was matched (despite the QueryString never being of the route; the route
+		/// is defined by the URL path only) - this method signature does not pass the QueryString to the routeActionGenerator.
+		/// </summary>
+		protected Func<T1, UrlPathDetails> AddRelativeRoute<T1>(
+			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1>> routeDetails,
+			Func<T1, INavigationDispatcherAction> routeActionGenerator,
+			Func<T1, UrlPathDetails> urlGenerator)
+		{
+			return AddRelativeRoute(
+				routeDetails,
+				(v1, queryString) => routeActionGenerator(v1),
+				urlGenerator
+			);
+		}
+
+		/// <summary>
+		/// For each of a Navigator's routes, it must define the route, map that route onto a dispatcher action and expose a method that will take values for any variables in a route
+		/// and that will return a UrlPathDetails instance. The AddRelativeRoute methods require all of these things. It records the route details and the dispatcher action mapping
+		/// logic and it takes a delegate for the route-variable-to-UrlPathDetails mapping - this delegate is passed back out, it is not recorded anywhere by the AddRelativeRoute
+		/// call, it is only provided so that static analysis can ensure that it is of the correct form (and that its arguments match the route variables). Some routes may be
+		/// configured to record all of the route variables in a single type instance while some may record each variable in a Tuple - this overload supports the case where
+		/// a Tuple is used (with two elements). For convenience, the urlGenerator takes the unwrapped elements, rather than taking a single Tuple that wraps each value.
+		/// Some routeActionGenerators want to know what the QueryString was of the URL that was matched (despite the QueryString never being of the route; the route
+		/// is defined by the URL path only) - this method signature includes the QueryString reference in the routeActionGenerator delegate.
+		/// </summary>
 		protected Func<T1, T2, UrlPathDetails> AddRelativeRoute<T1, T2>(
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<Tuple<T1, T2>> routeDetails,
 			Func<T1, T2, Optional<QueryString>, INavigationDispatcherAction> routeActionGenerator,
