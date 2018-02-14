@@ -34,7 +34,7 @@ namespace ProductiveRage.ReactRouting
 
 		public Link(
 			UrlDetails url,
-			ReactElement content,
+			ReactElement text,
 			bool caseSensitiveUrlMatching = false,
 			Optional<NonBlankTrimmedString> name = new Optional<NonBlankTrimmedString>(),
 			Optional<NonBlankTrimmedString> target = new Optional<NonBlankTrimmedString>(),
@@ -43,7 +43,7 @@ namespace ProductiveRage.ReactRouting
 			Optional<ClassName> selectedClassName = new Optional<ClassName>(),
 			Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> onClick = new Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>>(),
 			Optional<IInteractWithBrowserRouting> historyHandlerOverride = new Optional<IInteractWithBrowserRouting>())
-			: base(new Props(url, content, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
+			: base(new Props(url, text, caseSensitiveUrlMatching, name, target, className, ancestorClassName, selectedClassName, onClick, historyHandlerOverride))
 		{ }
 
 		public override ReactElement Render()
@@ -103,7 +103,7 @@ namespace ProductiveRage.ReactRouting
 		{
 			public Props(
 				UrlDetails url,
-				Union<ReactElement, string> content,
+				Union<ReactElement, string> text,
 				bool caseSensitiveUrlMatching,
 				Optional<NonBlankTrimmedString> name,
 				Optional<NonBlankTrimmedString> target,
@@ -124,16 +124,16 @@ namespace ProductiveRage.ReactRouting
 				this.CtorSet(_ => _.OnClick, onClick);
 				this.CtorSet(_ => _.HistoryHandlerOverride, historyHandlerOverride);
 			}
-			public UrlDetails Url { get; private set; }
-			public Union<ReactElement, string> Content { get; private set; }
-			public bool CaseSensitiveUrlMatching { get; private set; }
-			public Optional<NonBlankTrimmedString> Name { get; private set; }
-			public Optional<NonBlankTrimmedString> Target { get; private set; }
-			public Optional<ClassName> ClassName { get; private set; }
-			public Optional<ClassName> AncestorClassName { get; private set; }
-			public Optional<ClassName> SelectedClassName { get; private set; }
-			public Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> OnClick { get; private set; }
-			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; private set; }
+			public UrlDetails Url { get; }
+			public Union<ReactElement, string> Text { get; }
+			public bool CaseSensitiveUrlMatching { get; }
+			public Optional<NonBlankTrimmedString> Name { get; }
+			public Optional<NonBlankTrimmedString> Target { get; }
+			public Optional<ClassName> ClassName { get; }
+			public Optional<ClassName> AncestorClassName { get; }
+			public Optional<ClassName> SelectedClassName { get; }
+			public Optional<Action<MouseEvent<Bridge.Html5.HTMLAnchorElement>>> OnClick { get; }
+			public Optional<IInteractWithBrowserRouting> HistoryHandlerOverride { get; }
 		}
 	}
 }
