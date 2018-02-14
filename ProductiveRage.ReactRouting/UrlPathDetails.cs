@@ -26,11 +26,11 @@ namespace ProductiveRage.ReactRouting
 		// UrlPathDetails and having implicit conversions should mean that older code (that expects just UrlPathDetails) continues to work.
 		public static implicit operator UrlDetails(UrlPathDetails urlPath)
 		{
-			return (urlPath == null) ? null : urlPath.ToUrlDetails(Optional<QueryString>.Missing);
+			return urlPath?.ToUrlDetails(Optional<QueryString>.Missing);
 		}
 		public static implicit operator UrlPathDetails(UrlDetails url)
 		{
-			return (url == null) ? null : url.ToUrlPathDetails();
+			return url?.ToUrlPathDetails();
 		}
 
 		public override string ToString()
