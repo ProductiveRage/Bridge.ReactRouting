@@ -28,7 +28,7 @@ Below is an example of a "Navigator" class that defines three routes and exposes
 			);
 
 			// Register "/Accommodation"
-            const string accommodationSegment = "Accommodation";
+			const string accommodationSegment = "Accommodation";
 			_getAccommodation = AddRelativeRoute(
 				segment: accommodationSegment,
 				routeAction: new NavigateToAccommodation(Optional<NonBlankTrimmedString>.Missing),
