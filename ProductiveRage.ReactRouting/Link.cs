@@ -89,13 +89,11 @@ namespace ProductiveRage.ReactRouting
 						// open in a new tab, window, etc.. Note that the button values are reversed for left-handed mice, so button 0 is always the primary
 						// click button (except on IE8 and earlier, where it's a different value, but we don't care about those browsers). For more details,
 						// see http://www.w3schools.com/jsref/event_button.asp.
-
-						// If a target has been specified and it's not "_self" (i.e. "_blank", "_parent", "_top" or "{TARGET NAME}") then we also want to allow 
-						// the default browser behaviour to take over and open in a new frame.
-						// For more details, see https://www.w3.org/TR/html4/types.html#type-frame-target
-						var openInNewTarget = props.Target.IsDefined && !props.Target.Value.Value.Equals("_self", StringComparison.OrdinalIgnoreCase);
-
-						if ((e.Button != 0) || e.AltKey || e.CtrlKey || e.MetaKey || e.ShiftKey || openInNewTarget)
+						// - Only do this if target has not been specified or if it has been explicitly set to the default "_self" value because we don't
+						//   want to get in the way of the browser doing its thing if it needs to open in a new window or similar (if the target is "_blank",
+						//   "_parent", "_top" or "{TARGET NAME}" - see https://www.w3.org/TR/html4/types.html#type-frame-target for more details)
+						var overrideBrowserBehaviour = !props.Target.IsDefined || props.Target.Value.Value.Equals("_self", StringComparison.OrdinalIgnoreCase);
+						if ((e.Button != 0) || e.AltKey || e.CtrlKey || e.MetaKey || e.ShiftKey || !overrideBrowserBehaviour)
 							return;
 						historyHandler.NavigateTo(props.Url);
 						e.PreventDefault();
