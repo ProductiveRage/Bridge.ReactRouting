@@ -14,11 +14,11 @@
     <copyright>Copyright 2017 ProductiveRage</copyright>
     <tags>C# bridge bridge.net react react-js router</tags>
     <dependencies>
-      <dependency id="Bridge.Core" version="16.2.1" />
-      <dependency id="Bridge.Html5" version="16.2.1" />
-      <dependency id="Bridge.React" version="3.1.6" />
-      <dependency id="ProductiveRage.Immutable" version="2.9.2" />
-      <dependency id="ProductiveRage.Immutable.Extensions" version="2.5.3" />
+      <dependency id="Bridge.Core" version="16.7.1" />
+      <dependency id="Bridge.Html5" version="16.7.1" />
+      <dependency id="Bridge.React" version="3.1.7" />
+      <dependency id="ProductiveRage.Immutable" version="2.9.5" />
+      <dependency id="ProductiveRage.Immutable.Extensions" version="2.5.5" />
     </dependencies>
   </metadata>
   <files>
