@@ -48,6 +48,7 @@
     <Compile Include="Navigator.cs" />
     <Compile Include="IMatchRoutes.cs" />
     <Compile Include="Link.cs" />
+    <Compile Include="OptionalQueryStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteBuilderExtensions.cs" />
     <Compile Include="RouteBuilderExtensions_Fixed.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="RouteBuilderExtensions_Int.cs" />
     <Compile Include="QueryString.cs" />
     <Compile Include="UrlDetails.cs" />
+    <Compile Include="UrlDetailsExtensions.cs" />
     <Compile Include="UrlPathDetails.cs" />
   </ItemGroup>
   <ItemGroup>
