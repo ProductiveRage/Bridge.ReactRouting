@@ -45,7 +45,7 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				var routeInfo = RouteBuilder.Empty
 					.Fixed("product")
 					.String(type => new { Type = type })
-					.Int((dataSoFar, key) => new { Type = dataSoFar.Type, Key = key });
+					.Int((dataSoFar, key) => new { dataSoFar.Type, Key = key });
 				var url = UrlDetailsCreator.New("product", "toy", "123");
 				assert.RouteMatched(routeInfo, url, new { Type = new NonBlankTrimmedString("toy"), Key = 123 });
 			});
