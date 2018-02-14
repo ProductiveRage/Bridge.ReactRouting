@@ -95,7 +95,7 @@ namespace ProductiveRage.ReactRouting
 						e.PreventDefault();
 					}
 				},
-				props.Text
+				props.Content
 			);
 		}
 
@@ -114,7 +114,7 @@ namespace ProductiveRage.ReactRouting
 				Optional<IInteractWithBrowserRouting> historyHandlerOverride)
 			{
 				this.CtorSet(_ => _.Url, url);
-				this.CtorSet(_ => _.Text, text);
+				this.CtorSet(_ => _.Content, content);
 				this.CtorSet(_ => _.CaseSensitiveUrlMatching, caseSensitiveUrlMatching);
 				this.CtorSet(_ => _.Name, name);
 				this.CtorSet(_ => _.Target, target);

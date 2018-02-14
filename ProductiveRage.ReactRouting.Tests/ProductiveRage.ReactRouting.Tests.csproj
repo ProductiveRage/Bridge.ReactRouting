@@ -77,8 +77,7 @@
       <HintPath>..\packages\Bridge.Html5.16.1.0\lib\net40\Bridge.Html5.dll</HintPath>
     </Reference>
     <Reference Include="Bridge.QUnit, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bridge.QUnit.1.8.4-beta3\lib\net40\Bridge.QUnit.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Bridge.QUnit.1.8.4\lib\net40\Bridge.QUnit.dll</HintPath>
     </Reference>
     <Reference Include="Bridge.React, Version=3.1.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bridge.React.3.1.6\lib\net40\Bridge.React.dll</HintPath>
