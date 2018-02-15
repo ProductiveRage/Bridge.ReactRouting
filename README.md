@@ -10,7 +10,7 @@ The intentions of this library are twofold:
 * It also requires a navigation-to-action matcher" whose role is to map the navigation actions to React elements - the premise being that when a navigation action is received, a different area of the application will be displayed (or a different page within the same area). This may be implemented in any way that you see fit but the ReactRouting library includes a NavigateActionMatcher class that is helpful for constructing mappings from actions to components and it includes a RoutingStoreActivatorContainer that will take a NavigateActionMatcher instance and ensure that the appropriate component is rendered within it, depending upon the last navigation action.
 * Finally, something is required to listen to navigation events - in this example that is the ReactRouting's Html5HistoryRouter, which means that navigation events are published and subscribed to/from the browser's HTML5 history (pushState) API but it could be any implementation of the IInteractWithBrowserRouting interface (for example, the unit tests use a "MockHistoryHandler" that allow navigation events to be raised and received without having to try to read/change the URL of the browser hosting the tests).
 
-*(Note: Routes are only matched against the URL path, there is no support for QueryString-based routing)*
+*(Note: Routes are only matched against the URL path, there is no support for QueryString-based routing - though you can still extract values from the QueryString to configure the navigation action that should be dispatched, see the "QueryString Data" section further down)*
 
 Below is an example of a "Navigator" class that defines three routes and exposes public methods so that URLs may be generated that correspond to those routes -
 
@@ -237,3 +237,73 @@ Now, given a reference "navigator" to an ExampleNavigator instance, to get to "/
     var hotelsUrl = navigator.Accommodation.Segment(new NonBlankTrimmedString("Hotels"));
 
 **Important:** You need to be sure to pass all "child navigators" through the "PullInRoutesFrom" method because a Navigator implementation neesd to be able to declare all of the results that it (and any child navigators) are responsible for and "PullInRoutesFrom" adds all of the routes from the child navigator to the internal list maintained by the parent navigator.
+
+## QueryString Data
+
+Although routes may only be defined by the URL path, it may be desirable to include some extra information in the QueryString and to use QueryString content to configure the navigation action. To return an earlier example -
+
+	// Register "/Accommodation/{string}"
+	_getAccommodationWithSegment = AddRelativeRoute(
+		routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String(),
+		routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue),
+		urlGenerator: segment => GetPath("Accommodation", segment)
+	);
+
+.. if we wanted to include a "UserId" value in the QueryString that would be passed to the **NavigateToAccommodation** action as an **Optional&lt;int&gt;** then we could use a different "AddRelativeRoute" method overload that takes a "routeActionGenerator" delegate that receives a "matchedValue" reference *and* a "queryString" reference -
+
+	// Register "/Accommodation/{string}"
+	_getAccommodationWithSegment = AddRelativeRoute(
+		routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String(),
+		routeActionGenerator: (matchedValue, queryString) => new NavigateToAccommodation(
+			matchedValue,
+			queryString.Int("UserId")
+		),
+		urlGenerator: segment => GetPath("Accommodation", segment)
+	);
+
+If there is no "UserId" QueryString (or if it is not parseable into an integer) then queryString.Int will return **Optional&lt;int&gt;**.Missing and the **Optional&lt;int&gt;** action must be designed to take this into account.
+
+There is also a "String" method available on the queryString reference (that returns a **Optional&lt;NonBlankTrimmedString&gt;**) and it should be easy for you to use this to parse QueryString values into any other data type that you might need.
+
+If you are reading values from the QueryString when processing routes then you will also want to be populating the QueryString. To do that, change the functions that build URLs such as this:
+
+	public UrlPathDetails Accommodation(NonBlankTrimmedString segment)
+	{
+		return _getAccommodationWithSegment(segment);
+	}
+		
+.. and make it return a **UrlDetails** instance (instead of **UrlPathDetail** - **UrlDetails** is just a **UrlPathDetails** with an optional QueryString).
+
+	public UrlDetails Accommodation(NonBlankTrimmedString segment, Optional<int> userId)
+	{
+		return _getAccommodationWithSegment(segment)
+			.ToUrlDetails(queryString: null)
+			.AddToQueryIfDefined("UserId", userId);
+	}
+	
+The "ToUrlDetails" function appends the specified "queryString" reference (if any) to the **UrlPathDetails** instance to create a **UrlDetails** instance.
+
+The "AddToQueryIfDefined" function will extend the **UrlDetails**'s QueryString with the specified value if it is not {Missing} (so if the "userId" is {Missing} then no QueryString will be generated but if "userId" has a value then a QueryString *will* be generated of the form "UserId=123").
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
