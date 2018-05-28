@@ -13,9 +13,11 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 
 			_navigatedCallbacks = NonNullList<Action<UrlDetails>>.Empty;
 			CurrentLocation = initialUrl;
+			LastNavigatedToUrl = null;
 		}
 
 		public UrlDetails CurrentLocation { get; private set; }
+		public Optional<UrlDetails> LastNavigatedToUrl { get; private set; }
 
 		public void RaiseNavigateToForCurrentLocation()
 		{
@@ -27,6 +29,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			if (url == null)
 				throw new ArgumentNullException("url");
 
+			LastNavigatedToUrl = CurrentLocation;
 			CurrentLocation = url;
 			RaiseCallbacks(url);
 		}
