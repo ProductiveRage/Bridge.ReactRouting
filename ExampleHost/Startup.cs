@@ -23,8 +23,8 @@ namespace ExampleHost
 					</head>
 					<body>
 						<div id=""main""></div>
-						<script src=""https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react.js""></script>
-						<script src=""https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.js""></script>
+						<script src=""https://cdnjs.cloudflare.com/ajax/libs/react/16.4.0/umd/react.production.min.js""></script>
+						<script src=""https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.0/umd/react-dom.production.min.js""></script>
 						<script src=""/Generated/Example.js""></script>
 					</body>
 					</html>
