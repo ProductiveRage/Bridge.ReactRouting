@@ -1,5 +1,5 @@
 ﻿using System;
-using Bridge.Html5;
+using Bridge;
 using Bridge.QUnit;
 using Bridge.React;
 using ProductiveRage.Immutable;

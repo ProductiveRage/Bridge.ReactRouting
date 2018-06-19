@@ -1,4 +1,4 @@
-﻿using Bridge.Html5;
+﻿using Bridge;
 using Bridge.QUnit;
 using ProductiveRage.ReactRouting.Tests.Support;
 

@@ -1,4 +1,5 @@
-﻿using Bridge.Html5;
+﻿using Bridge;
+using Bridge.Html5;
 using Bridge.React;
 using Example.Actions;
 using Example.Navigation;

@@ -3,7 +3,7 @@
   <metadata>
     <id>ProductiveRage.ReactRouting</id>
     <title>ProductiveRage.ReactRouting</title>
-    <version>4.5.0</version>
+    <version>5.0.0</version>
     <authors>ProductiveRage</authors>
     <owners>ProductiveRage</owners>
     <licenseUrl>https://github.com/ProductiveRage/Bridge.ReactRouting/blob/master/LICENSE</licenseUrl>
@@ -11,14 +11,14 @@
     <iconUrl>https://secure.gravatar.com/avatar/6a1f781d4d5e2d50dcff04f8f049767a?s=200</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A router for Bridge.NET projects, favouring strong-typing over free text description of link elements</description>
-    <copyright>Copyright 2017 ProductiveRage</copyright>
+    <copyright>Copyright 2018 ProductiveRage</copyright>
     <tags>C# bridge bridge.net react react-js router</tags>
     <dependencies>
-      <dependency id="Bridge.Core" version="16.7.1" />
-      <dependency id="Bridge.Html5" version="16.7.1" />
-      <dependency id="Bridge.React" version="3.1.7" />
-      <dependency id="ProductiveRage.Immutable" version="2.9.5" />
-      <dependency id="ProductiveRage.Immutable.Extensions" version="2.5.5" />
+      <dependency id="Bridge.Core" version="17.1.1" />
+      <dependency id="Bridge.Html5" version="17.1.1" />
+      <dependency id="Bridge.React" version="4.0.0" />
+      <dependency id="ProductiveRage.Immutable" version="3.0.0" />
+      <dependency id="ProductiveRage.Immutable.Extensions" version="3.0.0" />
     </dependencies>
   </metadata>
   <files>
