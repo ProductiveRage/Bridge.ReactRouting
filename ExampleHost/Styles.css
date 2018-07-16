@@ -78,3 +78,12 @@ div.content {
 	clear: both;
 	padding: 16px;
 }
+
+div.requested-at {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 8px;
+	background: #f1f1f1;
+	color: #c0c0c0;
+}

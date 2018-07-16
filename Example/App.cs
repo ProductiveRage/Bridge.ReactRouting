@@ -4,6 +4,7 @@ using Bridge.React;
 using Example.Actions;
 using Example.Navigation;
 using HostBridge.Components;
+using HostBridge.Stores;
 using ProductiveRage.ReactRouting;
 using ProductiveRage.ReactRouting.Helpers;
 
@@ -52,17 +53,22 @@ namespace Example
 			var dispatcher = new AppDispatcher();
 			var navigator = new ExampleNavigator(dispatcher);
 
-			// These are the components that should be displayed based upon the navigation actions that come through the dispatcher
+			// These are the components that should be displayed based upon the navigation actions that come through the dispatcher (there is a Store for the main
+			// components to illustrate how the Stores should also subscribe to navigation actions that they are interested in; for example, the HomeStore subscribes
+			// to the NavigateToHome action)
 			// - The NavigateActionMatcher class just offers a simple way to build up the mappings from navigation actions to ReactElement-to-display (the
 			//   NavigateActionMatcher instance will be passed to the RoutingStoreActivatorContainer that will ensure that the appropriate ReactElement is
 			//   rendered to whatever container is specified, see below..)
+			var homeStore = new HomeStore(dispatcher);
+			var accommodationListStore = new AccommodationListStore(dispatcher);
+			var accommodationSectionStore = new AccommodationSectionStore(dispatcher);
+			var homeContainer = new HomeContainer(homeStore, navigator);
+			var accommodationListContainer = new AccommodationListContainer(accommodationListStore, navigator);
+			var accommodationSectionContainer = new AccommodationSectionContainer(accommodationSectionStore, navigator);
 			var navigateActionMatchers = NavigateActionMatcher.Empty
-				.AddFor<NavigateToHome>(new HomeContainer(navigator))
-				.AddFor<NavigateToAccommodation>(
-					condition: action => action.Segment.IsDefined,
-					elementGenerator: action => new AccommodationListContainer(navigator, action.Segment.Value)
-				)
-				.AddFor<NavigateToAccommodation>(new AccommodationContentContainer(navigator))
+				.AddFor<NavigateToHome>(homeContainer)
+				.AddFor<NavigateToAccommodationList>(accommodationListContainer)
+				.AddFor<NavigateToAccommodationSection>(accommodationSectionContainer)
 				.AddFor<InvalidRoute>(new NotFoundContainer(navigator));
 
 			// Render the application state (since no navigiation events have been raised yet, this will not display anything - but the RoutingStoreActivatorContainer

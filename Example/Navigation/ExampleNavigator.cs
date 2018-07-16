@@ -39,14 +39,14 @@ namespace Example.Navigation
 			// Register "/Accommodation"
 			_getAccommodation = AddRelativeRoute(
 				segment: "Accommodation",
-				routeAction: new NavigateToAccommodation(Optional<NonBlankTrimmedString>.Missing),
+				routeAction: new NavigateToAccommodationList(),
 				urlGenerator: () => GetPath("Accommodation")
 			);
 
 			// Register "/Accommodation/{string}"
 			_getAccommodationWithSegment = AddRelativeRoute(
 				routeDetails: RouteBuilder.Empty.Fixed("Accommodation").String(),
-				routeActionGenerator: matchedValue => new NavigateToAccommodation(matchedValue),
+				routeActionGenerator: matchedValue => new NavigateToAccommodationSection(matchedValue),
 				urlGenerator: segment => GetPath("Accommodation", segment)
 			);
 		}
