@@ -57,8 +57,8 @@ namespace HostBridge.Components
 				this.CtorSet(_ => _.Navigator, navigator);
 				this.CtorSet(_ => _.ClassName, className);
 			}
-			public ExampleNavigator Navigator { get; private set; }
-			public Optional<ClassName> ClassName { get; private set; }
+			public ExampleNavigator Navigator { get; }
+			public Optional<ClassName> ClassName { get; }
 		}
 	}
 }

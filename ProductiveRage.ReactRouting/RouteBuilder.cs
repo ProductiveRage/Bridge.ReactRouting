@@ -7,8 +7,7 @@ namespace ProductiveRage.ReactRouting
 {
 	public sealed class RouteBuilder
 	{
-		private static RouteBuilder _empty = new RouteBuilder(NonNullList<NonBlankTrimmedString>.Empty);
-		public static RouteBuilder Empty { get { return _empty; } }
+		public static RouteBuilder Empty { get; } = new RouteBuilder(NonNullList<NonBlankTrimmedString>.Empty);
 
 		private readonly NonNullList<NonBlankTrimmedString> _segments;
 		private RouteBuilder(NonNullList<NonBlankTrimmedString> segments)
@@ -262,7 +261,7 @@ namespace ProductiveRage.ReactRouting
 			{
 				this.CtorSet(_ => _.ValueExtractedFromVariableSegment, valueExtractedFromVariableSegment);
 			}
-			public Optional<object> ValueExtractedFromVariableSegment { get; private set; }
+			public Optional<object> ValueExtractedFromVariableSegment { get; }
 		}
 
 		[IgnoreGeneric]

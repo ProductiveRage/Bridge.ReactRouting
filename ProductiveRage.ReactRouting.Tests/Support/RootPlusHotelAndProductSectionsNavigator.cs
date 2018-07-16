@@ -34,7 +34,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		}
 
 		public UrlPathDetails Root() { return _getRoot(); }
-		public RootPlusDynamicIdItemPagesNavigator<Hotel> Hotels { get; private set; }
-		public RootPlusDynamicIdItemPagesNavigator<Restaurant> Restaurants { get; private set; }
+		public RootPlusDynamicIdItemPagesNavigator<Hotel> Hotels { get; }
+		public RootPlusDynamicIdItemPagesNavigator<Restaurant> Restaurants { get; }
 	}
 }

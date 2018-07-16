@@ -14,7 +14,7 @@ namespace ProductiveRage.ReactRouting
 		{
 			this.CtorSet(_ => _.Segments, segments);
 		}
-		public NonNullList<NonBlankTrimmedString> Segments { get; private set; }
+		public NonNullList<NonBlankTrimmedString> Segments { get; }
 
 		public UrlDetails ToUrlDetails(Optional<QueryString> queryString)
 		{

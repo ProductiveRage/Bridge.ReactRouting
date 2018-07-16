@@ -10,8 +10,8 @@ namespace ProductiveRage.ReactRouting
 			this.CtorSet(_ => _.QueryString, queryString);
 		}
 
-		public NonNullList<NonBlankTrimmedString> Segments { get; private set; }
-		public Optional<QueryString> QueryString { get; private set; }
+		public NonNullList<NonBlankTrimmedString> Segments { get; }
+		public Optional<QueryString> QueryString { get; }
 
 		public UrlPathDetails ToUrlPathDetails()
 		{

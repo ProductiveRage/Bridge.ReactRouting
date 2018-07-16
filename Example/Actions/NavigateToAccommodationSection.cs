@@ -10,6 +10,6 @@ namespace Example.Actions
 			Segment = segment;
 		}
 
-		public NonBlankTrimmedString Segment { get; private set; }
+		public NonBlankTrimmedString Segment { get; }
 	}
 }

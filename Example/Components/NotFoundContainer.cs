@@ -22,7 +22,7 @@ namespace HostBridge.Components
 			{
 				this.CtorSet(_ => _.Navigator, navigator);
 			}
-			public ExampleNavigator Navigator { get; private set; }
+			public ExampleNavigator Navigator { get; }
 		}
 
 		public sealed class State : IAmImmutable { }

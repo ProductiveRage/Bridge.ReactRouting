@@ -8,6 +8,6 @@ namespace ProductiveRage.ReactRouting.Tests.Support.Actions
 		{
 			this.CtorSet(_ => _.Id, id);
 		}
-		public NonBlankTrimmedString Id { get; private set; }
+		public NonBlankTrimmedString Id { get; }
 	}
 }

@@ -33,8 +33,8 @@ namespace HostBridge.Components
 				this.CtorSet(_ => _.Store, store);
 				this.CtorSet(_ => _.Navigator, navigator);
 			}
-			public AccommodationSectionStore Store { get; private set; }
-			public ExampleNavigator Navigator { get; private set; }
+			public AccommodationSectionStore Store { get; }
+			public ExampleNavigator Navigator { get; }
 		}
 
 		public sealed class State : IAmImmutable

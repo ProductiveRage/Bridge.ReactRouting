@@ -86,8 +86,8 @@ namespace ProductiveRage.ReactRouting
 				this.CtorSet(_ => _.Value, value);
 			}
 
-			public string Name { get; private set; }
-			public Optional<string> Value { get; private set; }
+			public string Name { get; }
+			public Optional<string> Value { get; }
 
 			public override string ToString()
 			{

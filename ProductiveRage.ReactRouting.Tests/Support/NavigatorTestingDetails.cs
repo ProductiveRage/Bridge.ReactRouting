@@ -36,7 +36,7 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 			Navigator = navigator;
 		}
 
-		public TNavigator Navigator { get; private set; }
+		public TNavigator Navigator { get; }
 
 		public void NavigateTo(UrlPathDetails url)
 		{
