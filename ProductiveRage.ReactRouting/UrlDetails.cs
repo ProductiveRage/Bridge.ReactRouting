@@ -1,4 +1,5 @@
-﻿using ProductiveRage.Immutable;
+﻿using System.Linq;
+using ProductiveRage.Immutable;
 
 namespace ProductiveRage.ReactRouting
 {
@@ -20,7 +21,7 @@ namespace ProductiveRage.ReactRouting
 
 		public override string ToString()
 		{
-			return "/" + string.Join("/", Segments) + (QueryString.IsDefined ? ("?" + QueryString.ToString()) : "");
+			return "/" + string.Join("/", Segments.Select(s => s.Value)) + (QueryString.IsDefined ? ("?" + QueryString.ToString()) : "");
 		}
 	}
 }

@@ -582,7 +582,7 @@ namespace ProductiveRage.ReactRouting
 			{
 				if (segment == null)
 					throw new ArgumentException($"Null reference value encountered in {nameof(segments)} array");
-				var segmentString = segment.ToString();
+				var segmentString = (segment is NonBlankTrimmedString) ? ((NonBlankTrimmedString)segment).Value : segment.ToString();
 				if (string.IsNullOrWhiteSpace(segmentString))
 					throw new ArgumentException($"Encountered value in {nameof(segment)} array that returns a null/blank/whitespace-only value from ToString");
 				nonBlankSegments = nonBlankSegments.Add(new NonBlankTrimmedString(segmentString));

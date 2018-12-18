@@ -23,14 +23,20 @@ namespace ProductiveRage.ReactRouting.Tests.Support
 		}
 
 		[IgnoreGeneric]
+		public delegate bool ResultComparer<TValues>(TValues actual, TValues expected);
+
+		[IgnoreGeneric]
 		public static void RouteMatched<TValues>(
 			this Assert assert,
 			RouteBuilder.IBuildRoutesWithVariablesToMatch<TValues> routeInfo,
 			UrlPathDetails url,
-			TValues expectedValue)
+			TValues expectedValue,
+			ResultComparer<TValues> comparer)
 		{
-			var route = routeInfo.ToRoute(extractedValue => assert.DeepEqual(extractedValue, expectedValue));
+			var routeMatched = false;
+			var route = routeInfo.ToRoute(extractedValue => routeMatched = comparer(extractedValue, expectedValue));
 			route.ExecuteCallbackIfUrlMatches(url);
+			assert.Ok(routeMatched);
 		}
 
 		[IgnoreGeneric]
