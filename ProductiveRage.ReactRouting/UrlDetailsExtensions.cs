@@ -18,9 +18,12 @@ namespace ProductiveRage.ReactRouting
 			if (value == null)
 				throw new ArgumentNullException(nameof(value));
 
+			// 2019-01-08: Unless/until https://forums.bridge.net/forum/community/help/6001 is accepted as a bug and fixed, we can't rely upon the ToString implementation of
+			// NonBlankTrimmedString since it became annotated with [ObjectLiteral] (for deserialisation performance improvements)
+			var valueString = (value is NonBlankTrimmedString nonBlankTrimmedString) ? nonBlankTrimmedString.Value : value.ToString();
 			return new UrlDetails(
 				source.Segments,
-				source.QueryString.GetValueOrDefault(new QueryString(NonNullList<QueryString.Segment>.Empty)).Add(key, value.ToString())
+				source.QueryString.GetValueOrDefault(new QueryString(NonNullList<QueryString.Segment>.Empty)).Add(key, valueString)
 			);
 		}
 

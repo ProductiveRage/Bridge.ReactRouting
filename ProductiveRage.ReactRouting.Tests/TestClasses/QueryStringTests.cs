@@ -93,6 +93,13 @@ namespace ProductiveRage.ReactRouting.Tests.TestClasses
 				assert.Equal(queryString["x"].Count, 0);
 				assert.Equal(queryString.ToString(), "");
 			});
+
+			// This tests a fix around AddToQueryIfDefined where NonBlankTrimmedString is used, since NonBlankTrimmedString became an [ObjectLiteral]
+			QUnit.Test("Test ToString() after call AddToQueryIfDefined with NonBlankTrimmedString", assert =>
+			{
+				var url = new UrlDetails(NonNullList.Of(new NonBlankTrimmedString("home"))).AddToQueryIfDefined("q", Optional.For(new NonBlankTrimmedString("test")));
+				assert.Equal(url.ToString(), "/home?q=test");
+			});
 		}
 	}
 }
