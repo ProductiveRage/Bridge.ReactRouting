@@ -45,6 +45,7 @@
     <Compile Include="Helpers\NavigateActionMatcher.cs" />
     <Compile Include="INavigationDispatcherAction.cs" />
     <Compile Include="InvalidRoute.cs" />
+    <Compile Include="ObjectLiteralToStringSupport.cs" />
     <Compile Include="Navigator.cs" />
     <Compile Include="IMatchRoutes.cs" />
     <Compile Include="Link.cs" />

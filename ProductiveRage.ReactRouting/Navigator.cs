@@ -584,8 +584,8 @@ namespace ProductiveRage.ReactRouting
 					throw new ArgumentException($"Null reference value encountered in {nameof(segments)} array");
 
 				// 2019-01-08: Unless/until https://forums.bridge.net/forum/community/help/6001 is accepted as a bug and fixed, we can't rely upon the ToString implementation of
-				// NonBlankTrimmedString since it became annotated with [ObjectLiteral] (for deserialisation performance improvements)
-				var segmentString = (segment is NonBlankTrimmedString) ? ((NonBlankTrimmedString)segment).Value : segment.ToString();
+				// NonBlankTrimmedString since it became annotated with [ObjectLiteral] (for deserialisation performance improvements) - ObjectLiteralToStringSupport is required 
+				var segmentString = ObjectLiteralToStringSupport.ToString(segment);
 				if (string.IsNullOrWhiteSpace(segmentString))
 					throw new ArgumentException($"Encountered value in {nameof(segment)} array that returns a null/blank/whitespace-only value from ToString");
 				nonBlankSegments = nonBlankSegments.Add(new NonBlankTrimmedString(segmentString));
